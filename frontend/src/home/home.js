@@ -9,7 +9,7 @@ const LandingPage = () => {
   return (
     <>
       <Header />
-      <section className="relative mb-6">
+      <section className="relative mb-8">
         <div
           className="flex items-center justify-center"
           style={{
@@ -55,22 +55,32 @@ const LandingPage = () => {
 
       <section className="p-10" id="signUp">
         <div className="max-w-screen-xl mx-auto">
-          <div className="flex flex-col items-center gap-8 mb-16">
-            <h3 className="text-4xl font-semibold">Services We Offer</h3>
-            <p className="text-lg text-center">
+          <div className="relative flex flex-col items-center gap-8 mb-16">
+            <h3 className="text-4xl font-semibold relative z-10 text-blue-900 uppercase">
+              Register as
+            </h3>
+            <p className="text-lg text-center relative z-10">
               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius
               voluptatibus, maiores labore modi consequatur ducimus doloribus
               voluptas error asperiores!
             </p>
+            <div className="absolute -top-8 left-0 w-full h-full flex items-center justify-center">
+              <p className="text-6xl uppercase text-blue-950 opacity-10">
+                Register as
+              </p>
+            </div>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-8 shadow-lg rounded-lg bg-gray-50">
+            <div className="p-8 shadow-lg rounded-lg bg-gray-50">
               <img
                 className="w-20 h-20 mb-4 mx-auto"
                 src="/doctor-svgrepo-com.svg"
                 alt="Doctor Icon"
               />
-              <h4 className="text-xl font-semibold mb-4 text-center">Register as Doctor</h4>
+              <h4 className="text-xl font-semibold mb-4 text-center">
+                Register as Doctor
+              </h4>
               <div className="flex justify-center">
                 <Link
                   to="/doctor-signup"
@@ -116,7 +126,9 @@ const LandingPage = () => {
                 src="/doctor-14-svgrepo-com.svg"
                 alt="Admin Icon"
               />
-              <h4 className="text-xl font-semibold mb-4 text-center">Sign in as Admin</h4>
+              <h4 className="text-xl font-semibold mb-4 text-center">
+                Sign in as Admin
+              </h4>
               <div className="flex justify-center">
                 <Link
                   to="/admin-sign-in"
