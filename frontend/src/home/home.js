@@ -9,7 +9,7 @@ const LandingPage = () => {
   return (
     <>
       <Header />
-      <section className="relative mb-6">
+      <section className="relative mb-10">
         <div
           className="flex items-center justify-center"
           style={{
@@ -53,7 +53,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="p-10" id="signUp">
+      <section className="p-8" id="signUp">
         <div className="max-w-screen-xl mx-auto">
           <div className="relative flex flex-col items-center gap-8 mb-16">
             <h3 className="text-4xl font-semibold relative z-10 text-blue-900 uppercase">
