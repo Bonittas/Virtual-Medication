@@ -94,7 +94,7 @@ const LandingPage = () => {
               <h4 className="text-xl font-semibold mb-4">Sign in as Admin</h4>
               <div className="flex justify-center">
                 <Link
-                  to="/admin-sign-in"
+                  to="/admin-signin"
                   className="px-6 py-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-600"
                 >
                   Sign In

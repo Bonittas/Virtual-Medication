@@ -1,5 +1,4 @@
-// Patient_Signin.js
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -24,35 +23,57 @@ import { box, signinGrid } from "./styles";
 const theme = createTheme();
 
 const Patient_Signin = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const authError = useSelector((state) => state.auth.error);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const authError = useSelector((state) => state.auth.error);
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+    
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
   
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+    const handleSignin = async (e) => {
+      e.preventDefault();
+      setEmailError("");
+      setPasswordError("");
+    
+      if (email === "") {
+        setEmailError("Email is required");
+        return;
+      }
+    
+      // Regular expression for email validation
+      const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email.match(emailFormat)) {
+        setEmailError("Please enter a valid email address");
+        return;
+      }
+    
+      if (password === "") {
+        setPasswordError("Password is required");
+        return;
+      }
+    
+      try {
+        await dispatch(signIn(email, password));
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+          setEmailError(error.response.data.message);
+        } else {
+          setEmailError("An error occurred. Please try again later.");
+        }
+      }
+    };
+    
+  
+    useEffect(() => {
+      if (isLoggedIn) {
+        navigate("/patient/dashboard");
+      }
+    }, [isLoggedIn, navigate]);
+  
 
-  const handleSignin = (e) => {
-    e.preventDefault();
-    if (email === "" || password === "") {
-      return setEmailError("All fields are required!");
-    }
-
-    dispatch(signIn(email, password)); // Dispatch signIn action
-
-    // After dispatching, no need for axios code here
-  };
-
-  const signInWithGoogle = () => {
-    axios.get("/api/auth/patient/google") // Redirect to Google sign-in page
-      .then((response) => {
-        window.location.href = response.data.url;
-      })
-      .catch((error) => {
-        console.error("Error redirecting to Google sign-in:", error);
-      });
-  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -75,6 +96,8 @@ const Patient_Signin = () => {
               sx={{ mt: 1 }}
             >
               {authError && <Alert severity="error">{authError}</Alert>}
+              {emailError && <Alert severity="error">{emailError}</Alert>}
+              {passwordError && <Alert severity="error">{passwordError}</Alert>}
 
               <TextField
                 margin="normal"
@@ -87,7 +110,7 @@ const Patient_Signin = () => {
                 autoFocus
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                error={emailError}
+                error={Boolean(emailError)}
               />
 
               <TextField
@@ -100,7 +123,7 @@ const Patient_Signin = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                error={passwordError}
+                error={Boolean(passwordError)}
               />
 
               <Button
@@ -118,29 +141,14 @@ const Patient_Signin = () => {
                 align="center"
                 sx={{ fontWeight: "bold" }}
               >
-                OR
               </Typography>
 
-              <Grid item xs={12}>
-                <Button
-                  variant="outline"
-                  fullWidth
-                  sx={{ mt: 1, mb: 2 }}
-                  startIcon={<GoogleIcon />}
-                  onClick={() => signInWithGoogle()}
-                >
-                  Sign in with Google
-                </Button>
-              </Grid>
+             
 
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
+             
                 <Grid item>
-                  <Link href="/patient-signup" variant="body2">
+                  <Link href="/doctor-signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

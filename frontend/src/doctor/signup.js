@@ -15,12 +15,15 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GoogleIcon from "@mui/icons-material/Google";
 import axios from "axios"; 
-import { signUp } from "../actions/patient_authActions";
+import { signUp } from "../actions/doctor_authActions";
 import { box, signupGrid } from "./styles";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 const Doctor_Signup = () => {
   const [name, setName] = useState("");
@@ -35,33 +38,55 @@ const Doctor_Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    setPasswordError("");
-    setEmailError("");
-    setNameError("");
+  const NAME_REGEX = /^[A-Za-z]+$/;
 
-    if (name === "") {
-      setNameError("Name is required");
-      return;
-    }
+const handleSignup = async (e) => {
+  e.preventDefault();
+  setPasswordError("");
+  setEmailError("");
+  setNameError("");
 
-    if (password !== cpassword) {
-      setPasswordError("Passwords do not match");
-      return;
-    }
+  if (name === "") {
+    setNameError("Name is required");
+    return;
+  }
 
-    try {
-      await dispatch(signUp(name, email, password)); 
-      setSuccessMessage("Sign up successful! Redirecting to login page...");
-      setRedirectToLogin(true);
-    } catch (error) {
-      console.error("Error during signup:", error);
-    }
-  };
+  if (!NAME_REGEX.test(name.trim())) {
+    setNameError("Name should contain only alphabetic characters");
+    return;
+  }
+
+  if (!EMAIL_REGEX.test(email.trim())) {
+    setEmailError("Please enter a valid email address");
+    return;
+  }
+
+  if (password === "") {
+    setPasswordError("Password is required");
+    return;
+  }
+
+  if (!PASSWORD_REGEX.test(password)) {
+    setPasswordError("Password must contain at least 8 characters, including uppercase, lowercase, and numbers");
+    return;
+  }
+
+  if (password !== cpassword) {
+    setPasswordError("Passwords do not match");
+    return;
+  }
+
+  try {
+    await dispatch(signUp(name, email, password)); 
+    setSuccessMessage("Sign up successful! Redirecting to login page...");
+    setRedirectToLogin(true);
+  } catch (error) {
+    console.error("Error during signup:", error);
+  }
+};
+
 
   const signInWithGoogle = () => {
-    // Add your Google Sign Up logic here
   };
 
   if (redirectToLogin) {

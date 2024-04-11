@@ -1,5 +1,4 @@
-// Doctor_Signin.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -16,8 +15,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import GoogleIcon from "@mui/icons-material/Google";
-import axios from "axios"; // Import Axios for HTTP requests
+
 import { signIn } from "../actions/patient_authActions";
 import { box, signinGrid } from "./styles";
 
@@ -32,27 +30,48 @@ const Doctor_Signin = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-  const handleSignin = (e) => {
+ 
+  const handleSignin = async (e) => {
     e.preventDefault();
-    if (email === "" || password === "") {
-      return setEmailError("All fields are required!");
+    setEmailError("");
+    setPasswordError("");
+  
+    if (email === "") {
+      setEmailError("Email is required");
+      return;
     }
-
-    dispatch(signIn(email, password)); // Dispatch signIn action
-
-    // After dispatching, no need for axios code here
+  
+    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.match(emailFormat)) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+  
+    if (password === "") {
+      setPasswordError("Password is required");
+      return;
+    }
+  
+    try {
+      await dispatch(signIn(email, password));
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        setEmailError(error.response.data.message);
+      } else {
+        setEmailError("An error occurred. Please try again later.");
+      }
+    }
   };
-
-  const signInWithGoogle = () => {
-    axios.get("/api/auth/Doctor/google") // Redirect to Google sign-in page
-      .then((response) => {
-        window.location.href = response.data.url;
-      })
-      .catch((error) => {
-        console.error("Error redirecting to Google sign-in:", error);
-      });
-  };
+       
+  
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/patient/dashboard");
+    }
+  }, [isLoggedIn, navigate]);
+ 
 
   return (
     <ThemeProvider theme={theme}>
@@ -75,6 +94,8 @@ const Doctor_Signin = () => {
               sx={{ mt: 1 }}
             >
               {authError && <Alert severity="error">{authError}</Alert>}
+              {emailError && <Alert severity="error">{emailError}</Alert>}
+              {passwordError && <Alert severity="error">{passwordError}</Alert>}
 
               <TextField
                 margin="normal"
@@ -87,7 +108,7 @@ const Doctor_Signin = () => {
                 autoFocus
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                error={emailError}
+                error={Boolean(emailError)}
               />
 
               <TextField
@@ -100,7 +121,7 @@ const Doctor_Signin = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                error={passwordError}
+                error={Boolean(passwordError)}
               />
 
               <Button
@@ -118,20 +139,9 @@ const Doctor_Signin = () => {
                 align="center"
                 sx={{ fontWeight: "bold" }}
               >
-                OR
               </Typography>
 
-              <Grid item xs={12}>
-                <Button
-                  variant="outline"
-                  fullWidth
-                  sx={{ mt: 1, mb: 2 }}
-                  startIcon={<GoogleIcon />}
-                  onClick={() => signInWithGoogle()}
-                >
-                  Sign in with Google
-                </Button>
-              </Grid>
+            
 
               <Grid container>
                 <Grid item xs>

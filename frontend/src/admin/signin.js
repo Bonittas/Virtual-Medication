@@ -1,55 +1,77 @@
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Avatar,
   Button,
   CssBaseline,
   Box,
   Paper,
+  Link,
   Grid,
   TextField,
   Typography,
   Alert,
 } from "@mui/material";
-import { useState } from "react";
-import axios from "axios"; // Use axios or any other library for making HTTP requests
-
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { signIn } from "../actions/admin_authActions";
 import { box, signinGrid } from "./styles";
 
 const theme = createTheme();
 
-const Admin_Signin = () => {
+const AdminSignin = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const authError = useSelector((state) => state.auth.error);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleSignin = async (e) => {
     e.preventDefault();
-    if (email === "" || password === "") {
-      setEmailError("All fields are required!");
+    setEmailError("");
+    setPasswordError("");
+  
+    if (email === "") {
+      setEmailError("Email is required");
       return;
     }
-
+  
+    // Regular expression for email validation
+    const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.match(emailFormat)) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+  
+    if (password === "") {
+      setPasswordError("Password is required");
+      return;
+    }
+  
     try {
-      // Make HTTP POST request to your MERN backend's signin endpoint
-      const response = await axios.post("/api/auth/signin", {
-        email,
-        password,
-      });
-
-      // Redirect to dashboard upon successful signin
-      navigate("/admin/dashboard");
-    } catch (err) {
-      // Handle errors
-      console.error("Signin failed:", err.response.data.message);
-      setEmailError("Invalid credentials");
-      setPasswordError("Invalid credentials");
+      const response = await dispatch(signIn(email, password));
+      const { token } = response.data;
+      // Assuming the backend returns a token upon successful login
+      if (token) {
+        // Navigate to admin dashboard upon successful login
+        navigate("/admin/dashboard");
+      } else {
+        setPasswordError("Invalid email or password");
+      }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        setPasswordError(error.response.data.message);
+      } else {
+        setPasswordError("An error occurred. Please try again later.");
+      }
     }
   };
-
+  
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -70,11 +92,10 @@ const Admin_Signin = () => {
               onSubmit={handleSignin}
               sx={{ mt: 1 }}
             >
-              {/* ERROR ALERTS */}
+              {authError && <Alert severity="error">{authError}</Alert>}
               {emailError && <Alert severity="error">{emailError}</Alert>}
               {passwordError && <Alert severity="error">{passwordError}</Alert>}
 
-              {/* EMAIL TEXTFIELD */}
               <TextField
                 margin="normal"
                 required
@@ -86,10 +107,9 @@ const Admin_Signin = () => {
                 autoFocus
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                error={emailError}
+                error={Boolean(emailError)}
               />
 
-              {/* PASSWORD TEXTFIELD */}
               <TextField
                 margin="normal"
                 required
@@ -100,10 +120,9 @@ const Admin_Signin = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                error={passwordError}
+                error={Boolean(passwordError)}
               />
 
-              {/* SIGN IN BUTTON */}
               <Button
                 type="submit"
                 fullWidth
@@ -112,10 +131,15 @@ const Admin_Signin = () => {
               >
                 Sign In
               </Button>
+
+              <Grid container>
+                <Grid item>
+                  <Link href="/admin-signup" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
             </Box>
-            <Typography>
-              Lost credentials? Kindly contact the office.
-            </Typography>
           </Box>
         </Grid>
       </Grid>
@@ -123,4 +147,4 @@ const Admin_Signin = () => {
   );
 };
 
-export default Admin_Signin;
+export default AdminSignin;

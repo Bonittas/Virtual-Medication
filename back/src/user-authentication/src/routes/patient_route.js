@@ -7,6 +7,5 @@ const { verifyToken } = require('../controllers/patient_auth');
 router.post('/patient/signup', authController.signup);
 router.post('/patient/signin', authController.signin);
 
-// Route to get current user information
 router.get('/currentUser',  authController.getCurrentUser);
 module.exports = router;
