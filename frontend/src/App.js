@@ -204,8 +204,8 @@ const App = () => {
             <BrowserRouter>
               <Routes>
                 <Route exact path="/" element={<Home/>} />
-                <Route exact path="/doctor_signup" element={<Doctor_Signup/>} />
-                <Route exact path="/doctor_signin" element={<Doctor_Signin/>} />
+                <Route exact path="/doctor-signup" element={<Doctor_Signup/>} />
+                <Route exact path="/doctor-signin" element={<Doctor_Signin/>} />
                 <Route
                   exact
                   path="/patient-signup"
@@ -216,7 +216,7 @@ const App = () => {
                   path="/patient-signin"
                   element={<Patient_Signin/>}
                 />
-                <Route exact path="/admin_signin" element={<Admin_Signin/>} />
+                <Route exact path="/admin-signin" element={<Admin_Signin/>} />
               </Routes>
             </BrowserRouter>
           </CssBaseline>
