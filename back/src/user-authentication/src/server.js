@@ -4,11 +4,12 @@ const doctorRoutes = require('./routes/doctor_route')
 const adminRoutes = require('./routes/admin_route')
 const cors = require('cors')
 const patientRoutes = require('./routes/patient_route')
+require('dotenv').config();
 
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect('mongodb://0.0.0.0:27017/health-care');
+mongoose.connect(process.env.MONGODB_URI);
 
 const db = mongoose.connection;
 
