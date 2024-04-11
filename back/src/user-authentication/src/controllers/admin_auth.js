@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/Admin');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
+const JWT_SECRET = process.env.JWT_SECRET || 'A3$$#';
 const JWT_EXPIRES_IN = '1d';
 // exports.signup = async (req, res) => {
 //   const { name, email, password } = req.body;
