@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   Avatar,
   Button,
@@ -23,8 +23,6 @@ const theme = createTheme();
 const AdminSignin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const authError = useSelector((state) => state.auth.error);
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,28 +33,27 @@ const AdminSignin = () => {
     e.preventDefault();
     setEmailError("");
     setPasswordError("");
-  
+
     if (email === "") {
       setEmailError("Email is required");
       return;
     }
-  
+
     // Regular expression for email validation
     const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.match(emailFormat)) {
       setEmailError("Please enter a valid email address");
       return;
     }
-  
+
     if (password === "") {
       setPasswordError("Password is required");
       return;
     }
-  
+
     try {
       const response = await dispatch(signIn(email, password));
       const { token } = response.data;
-      // Assuming the backend returns a token upon successful login
       if (token) {
         // Navigate to admin dashboard upon successful login
         navigate("/admin/dashboard");
@@ -64,20 +61,17 @@ const AdminSignin = () => {
         setPasswordError("Invalid email or password");
       }
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        setPasswordError(error.response.data.message);
-      } else {
-        setPasswordError("An error occurred. Please try again later.");
-      }
+      console.error("Error during sign-in:", error);
+      setPasswordError("An error occurred. Please try again later.");
     }
   };
-  
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid item xs={false} sm={4} md={7} sx={signinGrid} />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid item xs={12} sm={8} md={5}  elevation={6} square>
           <Box sx={box}>
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
@@ -92,7 +86,6 @@ const AdminSignin = () => {
               onSubmit={handleSignin}
               sx={{ mt: 1 }}
             >
-              {authError && <Alert severity="error">{authError}</Alert>}
               {emailError && <Alert severity="error">{emailError}</Alert>}
               {passwordError && <Alert severity="error">{passwordError}</Alert>}
 
@@ -132,13 +125,7 @@ const AdminSignin = () => {
                 Sign In
               </Button>
 
-              <Grid container>
-                <Grid item>
-                  <Link href="/admin-signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
+             
             </Box>
           </Box>
         </Grid>

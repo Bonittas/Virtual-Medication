@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const doctorRoutes = require('./routes/doctor_route')
 const adminRoutes = require('./routes/admin_route')
-
+const cors = require('cors')
 const patientRoutes = require('./routes/patient_route')
 
 const app = express();
@@ -29,7 +29,13 @@ db.on('disconnected', () => {
 
 // Middleware
 app.use(express.json());
-
+app.use(cors(
+  {
+    origin:["https://depoy-mern-lwhq.vercel.app"],
+    methods:["POST","GET"],
+    credentials:true
+  }
+))
 // Routes
 app.use('/api/auth', doctorRoutes);
 app.use('/api/auth', patientRoutes);

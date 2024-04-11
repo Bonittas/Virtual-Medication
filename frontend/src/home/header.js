@@ -5,7 +5,7 @@ function header() {
     <nav className="h-20 items-center flex fixed top-0 left-0 right-0 bg-transparent z-50">
       <div className="flex w-4/5 mx-auto bg-transparent justify-between items-center h-16">
         <div className="logo">
-          <h4 className="text-4xl uppercase text-blue-800">Care</h4>
+          <h4 className="text-xl  font-cursive text-blue-900">HealthCare</h4>
         </div>
         <ul className="flex space-x-4 justify-between items-center">
           <li className="text-blue-900 hover:text-blue-700">

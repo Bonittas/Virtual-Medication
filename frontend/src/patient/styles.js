@@ -5,9 +5,11 @@ const theme = createTheme();
 export const container = {
   mt: "12vh",
   ml: "5vw",
+  border: "none", // Remove border
+  boxShadow: "none", // Remove shadow
   minHeight: "100vh",
   background: "linear-gradient(135deg, #dff6fe 30%, #0095de 90%)",
-  backgroundImage: `url('../images/blue2.jpg')`,
+  backgroundImage: `url('../images/doc3.jpg')`,
   backgroundPosition: "center",
   backgroundRepeat: "repeat-x",
   backgroundSize: "cover",
@@ -26,6 +28,8 @@ export const paper = {
   p: 2,
   display: "flex",
   flexDirection: "column",
+  border: "none", // Remove border
+  boxShadow: "none", // Remove shadow
 };
 
 export const transparentPaper = {
@@ -33,8 +37,9 @@ export const transparentPaper = {
   display: "flex",
   flexDirection: "column",
   background: "transparent",
+  border: "none", // Remove border
+  boxShadow: "none", // Remove shadow
 };
-
 export const upload = {
   p: 2,
   display: "flex",
@@ -48,14 +53,10 @@ export const avatar = {
 };
 
 export const listItem = {
-  border: "2px solid #0d7da5",
-  borderRadius: "25px",
   margin: "2px",
-  boxShadow: 2,
   backgroundColor: "#e6f7fd",
   "&:hover": {
     backgroundColor: "#d0f0fb",
-    boxShadow: 3,
     border: "3px solid #0d7da5",
   },
 };
@@ -63,7 +64,9 @@ export const listItem = {
 export const typography = { fontWeight: "bold", color: "#063547" };
 
 export const signinGrid = {
-  backgroundImage: `url('images/Patient_Signin.jpg')`,
+  backgroundImage: `url('images/pat.jpg')`,
+  border: "none", // Remove border
+  boxShadow: "none", // Remove shadow
   backgroundRepeat: "no-repeat",
   backgroundColor: (t) =>
     t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900],
@@ -72,7 +75,7 @@ export const signinGrid = {
 };
 
 export const signupGrid = {
-  backgroundImage: `url('images/Patient_Signup.png')`,
+  backgroundImage: `url('images/doc3.jpg')`,
   backgroundRepeat: "no-repeat",
   backgroundColor: (t) =>
     t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900],

@@ -78,7 +78,7 @@ export const cancelButton = {
 };
 
 export const signinGrid = {
-  backgroundImage: `url('images/Doctor_Signin.png')`,
+  backgroundImage: `url('images/bg.jpg')`,
   backgroundRepeat: "no-repeat",
   backgroundColor: (t) =>
     t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900],
@@ -87,7 +87,7 @@ export const signinGrid = {
 };
 
 export const signupGrid = {
-  backgroundImage: `url("images/Doctor_Signup.jpg")`,
+  backgroundImage: `url("images/bg2.jpg")`,
   backgroundRepeat: "no-repeat",
   backgroundColor: (t) =>
     t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900],

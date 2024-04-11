@@ -37,7 +37,7 @@ const Register = () => {
             <CardMedia
               component="img"
               sx={cardMedia}
-              image="images/doctor.jpg"
+              image="images/doc3.jpg"
               alt="Doctor"
             />
           </Card>
@@ -68,7 +68,7 @@ const Register = () => {
             <CardMedia
               component="img"
               sx={cardMedia}
-              image="images/patient.jpg"
+              image="images/pat.jpg"
               alt="Patient"
             />
           </Card>
@@ -97,7 +97,7 @@ const Register = () => {
             <CardMedia
               component="img"
               sx={cardMedia}
-              image="images/admin.jpg"
+              image="images/doc3.jpg"
               alt="Admin"
             />
           </Card>

@@ -4,7 +4,8 @@ import bgimage from "../assets/images/bg-image.png";
 import bgright from "../assets/images/bg-right.png";
 import bgleft from "../assets/images/bg-left.png";
 import Header from "./header";
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserMd, faUser, faUserCog } from '@fortawesome/free-solid-svg-icons';
 const LandingPage = () => {
   return (
     <>
@@ -57,15 +58,11 @@ const LandingPage = () => {
       <section className="p-10" id="signUp">
         <div className="max-w-screen-xl mx-auto">
           <div className="flex flex-col items-center gap-8 mb-16">
-            <h3 className="text-4xl font-semibold">Services We Offer</h3>
-            <p className="text-lg text-center">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius
-              voluptatibus, maiores labore modi consequatur ducimus doloribus
-              voluptas error asperiores!
-            </p>
+            <h3 className="text-4xl font-semibold">Register as</h3>
+            
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-gray-300 p-8 shadow-md rounded-md">
+            <div className="bg-blue-300 p-8 shadow-md rounded-md">
               <img
                 className="w-20 h-20 mb-4 mx-auto"
                 src="/doctor-svgrepo-com.svg"
@@ -75,19 +72,19 @@ const LandingPage = () => {
               <div className="flex justify-center">
                 <Link
                   to="/doctor-signup"
-                  className="px-6 py-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  className="px-6 py-3 text-lg bg-blue-900 text-white rounded-md hover:bg-blue-600"
                 >
                   Sign Up
                 </Link>
                 <Link
                   to="/doctor-signin"
-                  className="px-6 py-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-600 ml-4"
+                  className="px-6 py-3 text-lg bg-blue-900 text-white rounded-md hover:bg-blue-600 ml-4"
                 >
                   Sign In
                 </Link>
               </div>
             </div>
-            <div className="bg-gray-300 p-8 shadow-md rounded-md">
+            <div className="bg-blue-300 p-8 shadow-md rounded-md">
               <img
                 className="w-20 h-20 mb-4 mx-auto"
                 src="/doctor-health.svg"
@@ -99,34 +96,30 @@ const LandingPage = () => {
               <div className="flex justify-center">
                 <Link
                   to="/patient-signup"
-                  className="px-6 py-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  className="px-6 py-3 text-lg bg-blue-900 text-white rounded-md hover:bg-blue-600"
                 >
                   Sign Up
                 </Link>
                 <Link
                   to="/patient-signin"
-                  className="px-6 py-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-600 ml-4"
+                  className="px-6 py-3 text-lg bg-blue-900 text-white rounded-md hover:bg-blue-600 ml-4"
                 >
                   Sign In
                 </Link>
               </div>
             </div>
-            <div className="bg-gray-300 p-8 shadow-md rounded-md">
-              <img
-                className="w-20 h-20 mb-4 mx-auto"
-                src="/doctor-14-svgrepo-com.svg"
-                alt="Admin Icon"
-              />
-              <h4 className="text-xl font-semibold mb-4">Sign in as Admin</h4>
-              <div className="flex justify-center">
-                <Link
-                  to="/admin-signin"
-                  className="px-6 py-3 text-lg bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                >
-                  Sign In
-                </Link>
-              </div>
-            </div>
+            <div className="bg-blue-300 p-8 shadow-md rounded-md">
+  <FontAwesomeIcon icon={faUserCog} className="w-20 h-20 mb-4 mx-auto text-blue-900" />
+  <h4 className="text-xl font-semibold mb-4">Sign in as Admin</h4>
+  <div className="flex justify-center">
+    <Link
+      to="/admin-signin"
+      className="px-6 py-3 text-lg bg-blue-900 text-white rounded-md hover:bg-blue-600"
+    >
+      Sign In
+    </Link>
+  </div>
+</div>
           </div>
         </div>
       </section>
