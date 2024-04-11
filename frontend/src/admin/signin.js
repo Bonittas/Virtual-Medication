@@ -28,11 +28,13 @@ const AdminSignin = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [authError, setAuthError] = useState("");
 
   const handleSignin = async (e) => {
     e.preventDefault();
     setEmailError("");
     setPasswordError("");
+    setAuthError("");
 
     if (email === "") {
       setEmailError("Email is required");
@@ -53,16 +55,17 @@ const AdminSignin = () => {
 
     try {
       const response = await dispatch(signIn(email, password));
-      const { token } = response.data;
-      if (token) {
+      const { data } = response;
+
+      if (data && data.token) {
         // Navigate to admin dashboard upon successful login
         navigate("/admin/dashboard");
       } else {
-        setPasswordError("Invalid email or password");
+        setAuthError("Invalid email or password");
       }
     } catch (error) {
       console.error("Error during sign-in:", error);
-      setPasswordError("An error occurred. Please try again later.");
+      setAuthError("An error occurred. Please try again later.");
     }
   };
 
@@ -71,7 +74,7 @@ const AdminSignin = () => {
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid item xs={false} sm={4} md={7} sx={signinGrid} />
-        <Grid item xs={12} sm={8} md={5}  elevation={6} square>
+        <Grid item xs={12} sm={8} md={5} elevation={6} square>
           <Box sx={box}>
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
@@ -86,6 +89,7 @@ const AdminSignin = () => {
               onSubmit={handleSignin}
               sx={{ mt: 1 }}
             >
+              {authError && <Alert severity="error">{authError}</Alert>}
               {emailError && <Alert severity="error">{emailError}</Alert>}
               {passwordError && <Alert severity="error">{passwordError}</Alert>}
 
