@@ -1,42 +1,35 @@
 import React from "react";
-import { Box, Grid, Paper, Typography } from "@mui/material";
-import { box, headerBox, headerPaper, raleway, subtitle } from "./styles";
 
-const Header = () => {
+function header() {
   return (
-    <Paper sx={headerPaper}>
-      {/* Increase the priority of the hero background image */}
-      {
-        <img
-          style={{ display: "none" }}
-          src={process.env.PUBLIC_URL + "images/home.jpg"}
-          alt="Medicare"
-        />
-      }
-      <Box sx={box} />
-
-      {/* Text above image */}
-      <Grid container>
-        <Grid item md={6}>
-          <Box sx={headerBox}>
-            <Typography
-              component="h1"
-              variant="h3"
-              color="inherit"
-              gutterBottom
-              sx={subtitle}
-            >
-              "We are here for your care..."
-            </Typography>
-            <Typography variant="h5" color="inherit" paragraph sx={raleway}>
-              Consult from the best doctors just by sitting at your home because
-              we care for your health every moment
-            </Typography>
-          </Box>
-        </Grid>
-      </Grid>
-    </Paper>
+    <nav className="h-20 items-center flex fixed top-0 left-0 right-0 bg-transparent z-50">
+      <div className="flex w-4/5 mx-auto bg-transparent justify-between items-center h-16">
+        <div className="logo">
+          <h4 className="text-4xl uppercase text-blue-800">Care</h4>
+        </div>
+        <ul className="flex space-x-4 justify-between items-center">
+          <li className="text-blue-900 hover:text-blue-700">
+            <a href="#home">How it works</a>
+          </li>
+          <li className="text-blue-950 hover:text-blue-700">
+            <a href="#about">Department</a>
+          </li>
+          <li className="text-blue-950 hover:text-blue-700">
+            <a href="#services">Membership</a>
+          </li>
+          <li className="text-blue-950 hover:text-blue-700">
+            <a href="#contact">Help</a>
+          </li>
+          <li className="text-blue-950 hover:text-blue-700">
+            <a href="#contact">Contact</a>
+          </li>
+          <button className="bg-transparent font-semibold py-2 px-4 border border-gray-400 hover:text-blue-800 rounded-3xl">
+            <a href="#signUp">Sign In</a>
+          </button>
+        </ul>
+      </div>
+    </nav>
   );
-};
+}
 
-export default Header;
+export default header;
