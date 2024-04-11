@@ -1,4 +1,3 @@
-// Patient_Signup.js
 import React, { useState } from "react";
 import {
   Avatar,
@@ -15,10 +14,11 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GoogleIcon from "@mui/icons-material/Google";
-import axios from "axios"; // Import Axios for HTTP requests
-import { signUp } from "../actions/authActions";
+import axios from "axios"; 
+import { signUp } from "../actions/patient_authActions";
 import { box, signupGrid } from "./styles";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -30,7 +30,10 @@ const Patient_Signup = () => {
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -48,12 +51,24 @@ const Patient_Signup = () => {
       return;
     }
 
-    dispatch(signUp(name, email, password)); // Dispatch signUp action
+    try {
+      await dispatch(signUp(name, email, password)); 
+      setSuccessMessage("Sign up successful! Redirecting to login page...");
+      setRedirectToLogin(true);
+    } catch (error) {
+      console.error("Error during signup:", error);
+    }
   };
 
   const signInWithGoogle = () => {
     // Add your Google Sign Up logic here
   };
+
+  if (redirectToLogin) {
+    setTimeout(() => {
+      navigate("/patient-signin");
+    }, 2000);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -69,6 +84,7 @@ const Patient_Signup = () => {
               Patient Sign Up
             </Typography>
             <Box component="form" noValidate onSubmit={handleSignup}>
+              {successMessage && <Alert severity="success">{successMessage}</Alert>}
               {nameError && <Alert severity="error">{nameError}</Alert>}
               {emailError && <Alert severity="error">{emailError}</Alert>}
               {passwordError && <Alert severity="error">{passwordError}</Alert>}

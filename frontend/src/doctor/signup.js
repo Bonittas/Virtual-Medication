@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -15,8 +14,11 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GoogleIcon from "@mui/icons-material/Google";
-import firebase, { db, auth } from "../firebase";
+import axios from "axios"; 
+import { signUp } from "../actions/patient_authActions";
 import { box, signupGrid } from "./styles";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -25,120 +27,48 @@ const Doctor_Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
+  const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [nameError, setNameError] = useState("");
-  const history = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // SIGNUP WITH EMAIL AND PASSWORD FUNCTION
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     setPasswordError("");
     setEmailError("");
+    setNameError("");
+
     if (name === "") {
-      setNameError("Name is Required");
+      setNameError("Name is required");
       return;
     }
+
     if (password !== cpassword) {
       setPasswordError("Passwords do not match");
       return;
     }
 
-    // CHECK AUTHENTICATION
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((cred) => {
-        const user = {
-          displayName: name,
-          email: email,
-          password: password,
-          uid: cred.user.uid,
-        };
-
-        // PUSHING USER DATA IN DB
-        const userRef = db.doc(`users/${user.uid}`);
-        userRef.set({
-          name,
-          email,
-          createdAt: new Date(),
-          uid: user.uid,
-        });
-
-        // PUSHING DOCTOR DATA IN DB
-        const doctorRef = db.doc(`doctors/${user.uid}`);
-        doctorRef.set({
-          name,
-          email,
-          uid: user.uid,
-          imageURL: null,
-          isVerified: "false",
-          unreadCount: 1,
-        });
-
-        // PUSHING NEW NOTIFICATION
-        db.doc(`doctors/${cred.user.uid}`).collection("notifications").add({
-          message: "Complete your profile by going to the dashboard section!",
-          sentAt: new Date(),
-        });
-      })
-      .then(() => {
-        history.push(`/doctor/dashboard`);
-      })
-      .catch((err) => {
-        switch (err.code) {
-          case "auth/email-already-in-use":
-          case "auth/invalid-email":
-            setEmailError(err.message);
-            break;
-          case "auth/weak-password":
-            setPasswordError(err.message);
-            break;
-          default:
-            break;
-        }
-      });
+    try {
+      await dispatch(signUp(name, email, password)); 
+      setSuccessMessage("Sign up successful! Redirecting to login page...");
+      setRedirectToLogin(true);
+    } catch (error) {
+      console.error("Error during signup:", error);
+    }
   };
 
-  // SIGN UP WITH GOOGLE FUNCTION
   const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then((cred) => {
-        //console.log(cred);
-
-        // PUSHING USER DATA IN DB
-        const userRef = db.doc(`users/${cred.user.uid}`);
-        userRef.set({
-          name: cred.user.displayName,
-          email: cred.user.email,
-          createdAt: new Date(),
-          uid: cred.user.uid,
-        });
-
-        // PUSHING DOCTOR DATA IN DB
-        const doctorRef = db.doc(`doctors/${cred.user.uid}`);
-        doctorRef.set({
-          name: cred.user.displayName,
-          email: cred.user.email,
-          uid: cred.user.uid,
-          isVerified: "false",
-          imageURL: null,
-          unreadCount: 1,
-        });
-
-        // PUSHING NEW NOTIFICATION
-        db.doc(`doctors/${cred.user.uid}`).collection("notifications").add({
-          message: "Complete your profile by going to the dashboard section!",
-          sentAt: new Date(),
-        });
-      })
-      .then(() => {
-        history.push("doctor/dashboard");
-      })
-      .catch((e) => console.log(e.message));
+    // Add your Google Sign Up logic here
   };
+
+  if (redirectToLogin) {
+    setTimeout(() => {
+      navigate("/doctor-signin");
+    }, 2000);
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -154,15 +84,13 @@ const Doctor_Signup = () => {
               Doctor Sign Up
             </Typography>
             <Box component="form" noValidate onSubmit={handleSignup}>
-              {/* ERROR ALERTS */}
+              {successMessage && <Alert severity="success">{successMessage}</Alert>}
               {nameError && <Alert severity="error">{nameError}</Alert>}
               {emailError && <Alert severity="error">{emailError}</Alert>}
               {passwordError && <Alert severity="error">{passwordError}</Alert>}
-              <br />
 
               <Grid container spacing={1}>
                 <Grid item xs={12}>
-                  {/* NAME TEXTFIELD */}
                   <TextField
                     name="Name"
                     required
@@ -176,7 +104,6 @@ const Doctor_Signup = () => {
                   />
                 </Grid>
 
-                {/* EMAIL TEXTFIELD */}
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -192,7 +119,6 @@ const Doctor_Signup = () => {
                   />
                 </Grid>
 
-                {/* PASSWORD TEXTFIELD */}
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -203,13 +129,11 @@ const Doctor_Signup = () => {
                     id="password"
                     autoComplete="new-password"
                     value={password}
-                    type="password"
                     onChange={(e) => setPassword(e.target.value)}
                     error={passwordError}
                   />
                 </Grid>
 
-                {/* CONFIRM PASSWORD TEXTFIELD */}
                 <Grid item xs={12}>
                   <TextField
                     required
@@ -220,13 +144,11 @@ const Doctor_Signup = () => {
                     id="cpassword"
                     autoComplete="confirm-password"
                     value={cpassword}
-                    type="password"
                     onChange={(e) => setCPassword(e.target.value)}
                   />
                 </Grid>
               </Grid>
 
-              {/* SIGN UP BUTTON */}
               <Button
                 type="submit"
                 fullWidth
@@ -245,12 +167,10 @@ const Doctor_Signup = () => {
                 OR
               </Typography>
 
-              {/* SIGN UP WITH GOOGLE */}
               <Grid item xs={12}>
                 <Button
                   variant="outline"
                   fullWidth
-                  variant="contained"
                   sx={{ mt: 1, mb: 2 }}
                   startIcon={<GoogleIcon />}
                   onClick={() => signInWithGoogle()}
@@ -261,7 +181,7 @@ const Doctor_Signup = () => {
 
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link href="/doctor_signin" variant="body2">
+                  <Link href="/doctor/signin" variant="body2">
                     Already have an account? Sign in
                   </Link>
                 </Grid>

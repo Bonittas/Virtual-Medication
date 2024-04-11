@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const authController= require('../controllers/authController');
-const { verifyToken } = require('../controllers/authController');
+const authController= require('../controllers/patient_auth');
+const { verifyToken } = require('../controllers/patient_auth');
 
 
 router.post('/patient/signup', authController.signup);

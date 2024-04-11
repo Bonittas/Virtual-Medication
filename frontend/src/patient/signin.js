@@ -18,7 +18,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GoogleIcon from "@mui/icons-material/Google";
 import axios from "axios"; // Import Axios for HTTP requests
-import { signIn } from "../actions/authActions";
+import { signIn } from "../actions/patient_authActions";
 import { box, signinGrid } from "./styles";
 
 const theme = createTheme();
@@ -140,7 +140,7 @@ const Patient_Signin = () => {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/patient_signup" variant="body2">
+                  <Link href="/patient-signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

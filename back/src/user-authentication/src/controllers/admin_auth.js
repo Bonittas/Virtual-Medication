@@ -1,7 +1,8 @@
+
 // authController.js
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const User = require('../models/Admin');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
 const JWT_EXPIRES_IN = '1d'; // Token expiry time (1 day)
@@ -26,7 +27,7 @@ exports.signup = async (req, res) => {
 
     res.json({ token });
   } catch (error) {
-    console.error(error.message);
+    console.error('Error during signup:', error); // Log error to terminal
     res.status(500).send('Server Error');
   }
 };
@@ -52,10 +53,11 @@ exports.signin = async (req, res) => {
 
     res.json({ token });
   } catch (error) {
-    console.error(error.message);
+    console.error('Error during signin:', error); // Log error to terminal
     res.status(500).send('Server Error');
   }
 };
+
 exports.verifyToken = async (req, res, next) => {
   // Get token from header
   const token = req.header('x-auth-token');
@@ -73,7 +75,7 @@ exports.verifyToken = async (req, res, next) => {
     req.user = await User.findById(decoded.user.id).select('-password');
     next();
   } catch (error) {
-    console.error(error.message);
+    console.error('Error verifying token:', error); // Log error to terminal
     res.status(401).json({ message: 'Authorization denied. Invalid token.' });
   }
 };
@@ -86,7 +88,7 @@ exports.getCurrentUser = async (req, res) => {
 
     res.json({ user });
   } catch (error) {
-    console.error('Error fetching current user:', error);
+    console.error('Error fetching current user:', error); // Log error to terminal
     res.status(500).json({ message: 'Server Error' });
   }
 };

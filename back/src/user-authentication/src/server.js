@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const authRoutes = require('./routes/authRoute');
+const doctorRoutes = require('./routes/doctor_route')
+const adminRoutes = require('./routes/admin_route')
+
+const patientRoutes = require('./routes/patient_route')
 
 const app = express();
 
@@ -28,7 +31,9 @@ db.on('disconnected', () => {
 app.use(express.json());
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', doctorRoutes);
+app.use('/api/auth', patientRoutes);
+app.use('/api/auth', adminRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;

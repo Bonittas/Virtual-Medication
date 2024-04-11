@@ -1,5 +1,7 @@
+// Doctor_Signin.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Avatar,
   Button,
@@ -15,55 +17,41 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import GoogleIcon from "@mui/icons-material/Google";
-import firebase, { auth } from "../firebase";
+import axios from "axios"; // Import Axios for HTTP requests
+import { signIn } from "../actions/patient_authActions";
 import { box, signinGrid } from "./styles";
 
 const theme = createTheme();
 
 const Doctor_Signin = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const authError = useSelector((state) => state.auth.error);
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  // SIGN IN WITH EMAIL AND PASSWORD FUNCTION
   const handleSignin = (e) => {
     e.preventDefault();
     if (email === "" || password === "") {
       return setEmailError("All fields are required!");
     }
 
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        history.push("/doctor/profile");
-      })
-      .catch((err) => {
-        switch (err.code) {
-          case "auth/user-not-found":
-          case "auth/invalid-email":
-            setEmailError(err.message);
-            break;
-          case "auth/wrong-password":
-            setPasswordError(err.message);
-            break;
-          default:
-            break;
-        }
-      });
+    dispatch(signIn(email, password)); // Dispatch signIn action
+
+    // After dispatching, no need for axios code here
   };
 
-  // SIGN IN WITH GOOGLE FUNCTION
   const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then(() => {
-        history.push("doctor/profile");
+    axios.get("/api/auth/Doctor/google") // Redirect to Google sign-in page
+      .then((response) => {
+        window.location.href = response.data.url;
       })
-      .catch((e) => console.log(e.message));
+      .catch((error) => {
+        console.error("Error redirecting to Google sign-in:", error);
+      });
   };
 
   return (
@@ -86,11 +74,8 @@ const Doctor_Signin = () => {
               onSubmit={handleSignin}
               sx={{ mt: 1 }}
             >
-              {/* ERROR ALERTS */}
-              {emailError && <Alert severity="error">{emailError}</Alert>}
-              {passwordError && <Alert severity="error">{passwordError}</Alert>}
+              {authError && <Alert severity="error">{authError}</Alert>}
 
-              {/* EMAIL TEXTFIELD */}
               <TextField
                 margin="normal"
                 required
@@ -105,7 +90,6 @@ const Doctor_Signin = () => {
                 error={emailError}
               />
 
-              {/* PASSWORD TEXTFIELD */}
               <TextField
                 margin="normal"
                 required
@@ -119,7 +103,6 @@ const Doctor_Signin = () => {
                 error={passwordError}
               />
 
-              {/* SIGN IN BUTTON */}
               <Button
                 type="submit"
                 fullWidth
@@ -138,12 +121,10 @@ const Doctor_Signin = () => {
                 OR
               </Typography>
 
-              {/* SIGN IN WITH GOOGLE */}
               <Grid item xs={12}>
                 <Button
                   variant="outline"
                   fullWidth
-                  variant="contained"
                   sx={{ mt: 1, mb: 2 }}
                   startIcon={<GoogleIcon />}
                   onClick={() => signInWithGoogle()}
@@ -159,7 +140,7 @@ const Doctor_Signin = () => {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/doctor_signup" variant="body2">
+                  <Link href="/Doctor-signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

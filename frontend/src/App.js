@@ -75,7 +75,11 @@ const App = () => {
                   path="/patient-signup"
                   element={<Patient_Signup/>}
                 />
-
+                <Route
+                  exact
+                  path="/patient-signin"
+                  element={<Patient_Signin/>}
+                />
                   {/* DOCTOR ROUTES */}
                   <Route
                     exact
