@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000",
+  "proxy": "https://medicare-api-19xl.onrender.com",
   "dependencies": {
     "@date-io/date-fns": "^3.0.0",
     "@emotion/react": "^11.11.3",
