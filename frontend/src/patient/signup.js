@@ -40,52 +40,60 @@ const Patient_Signup = () => {
 
   const NAME_REGEX = /^[A-Za-z]+$/;
 
-const handleSignup = async (e) => {
-  e.preventDefault();
-  setPasswordError("");
-  setEmailError("");
-  setNameError("");
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setPasswordError("");
+    setEmailError("");
+    setNameError("");
+  
+    if (name === "") {
+      setNameError("Name is required");
+      return;
+    }
+  
+    if (!NAME_REGEX.test(name.trim())) {
+      setNameError("Name should contain only alphabetic characters");
+      return;
+    }
+  
+    if (!EMAIL_REGEX.test(email.trim())) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+  
+    if (password === "") {
+      setPasswordError("Password is required");
+      return;
+    }
+  
+    if (!PASSWORD_REGEX.test(password)) {
+      setPasswordError("Password must contain at least 8 characters, including uppercase, lowercase, and numbers");
+      return;
+    }
+  
+    if (password !== cpassword) {
+      setPasswordError("Passwords do not match");
+      return;
+    }
+  
+    try {
+      await dispatch(signUp(name, email, password)); 
+      setSuccessMessage("Sign up successful! Redirecting to login page...");
+      setRedirectToLogin(true);
+    } catch (error) {
+      console.error("Error during signup:", error);
+      // Show signup failed error message
+      setSuccessMessage("");
+      setNameError("Signup failed. Please try again later.");
+      // Prevent redirection to login page
+      setRedirectToLogin(false);
+    }
+  };
+  
 
-  if (name === "") {
-    setNameError("Name is required");
-    return;
-  }
 
-  if (!NAME_REGEX.test(name.trim())) {
-    setNameError("Name should contain only alphabetic characters");
-    return;
-  }
-
-  if (!EMAIL_REGEX.test(email.trim())) {
-    setEmailError("Please enter a valid email address");
-    return;
-  }
-
-  if (password === "") {
-    setPasswordError("Password is required");
-    return;
-  }
-
-  if (!PASSWORD_REGEX.test(password)) {
-    setPasswordError("Password must contain at least 8 characters, including uppercase, lowercase, and numbers");
-    return;
-  }
-
-  if (password !== cpassword) {
-    setPasswordError("Passwords do not match");
-    return;
-  }
-
-  try {
-    await dispatch(signUp(name, email, password)); 
-    setSuccessMessage("Sign up successful! Redirecting to login page...");
-    setRedirectToLogin(true);
-  } catch (error) {
-    console.error("Error during signup:", error);
-  }
-};
-
-
+  const signInWithGoogle = () => {
+  };
 
   if (redirectToLogin) {
     setTimeout(() => {
@@ -98,7 +106,7 @@ const handleSignup = async (e) => {
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid item xs={false} sm={4} md={7} sx={signupGrid} />
-        <Grid item xs={12} sm={8} md={5}  elevation={6} square>
+        <Grid item xs={12} sm={8} md={5} elevation={6} square>
           <Box sx={box}>
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
@@ -187,9 +195,20 @@ const handleSignup = async (e) => {
                 align="center"
                 sx={{ fontWeight: "bold" }}
               >
+                OR
               </Typography>
 
-              
+              <Grid item xs={12}>
+                <Button
+                  variant="outline"
+                  fullWidth
+                  sx={{ mt: 1, mb: 2 }}
+                  startIcon={<GoogleIcon />}
+                  onClick={() => signInWithGoogle()}
+                >
+                  Sign up with Google
+                </Button>
+              </Grid>
 
               <Grid container justifyContent="flex-end">
                 <Grid item>

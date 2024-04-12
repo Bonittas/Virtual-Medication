@@ -7,35 +7,34 @@ const adminRoutes = require('./routes/admin_route');
 const cors = require('cors');
 const patientRoutes = require('./routes/patient_route');
 
-require('dotenv').config();
-
 const app = express();
+app.get("/", (req, res) => {
+  res.send("Welcome to the backend of the user authentication system");
+});
 
-
-
-
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI);
+// Database connection
 mongoose.connect(process.env.MONGODB_URI);
 
 const db = mongoose.connection;
 
 db.on('error', (error) => {
-  console.error('Database connection error:', error.message);
-  process.exit(1);
+  if (error && error.code === 'ECONNREFUSED') {
+    console.error('Disconnected from database');
+  } else {
+    console.error('Database connection error:', error.message);
+    process.exit(1);
+  }
 });
 
 db.once('open', () => {
   console.log('Connected to database');
 });
 
-db.on('disconnected', () => {
-  console.log('Disconnected from database');
-});
-
+// Middleware
 app.use(express.json());
+app.use(cors());
 
-
+// Routes
 app.use('/api/auth', doctorRoutes);
 app.use('/api/auth', patientRoutes);
 app.use('/api/auth', adminRoutes);
@@ -43,6 +42,7 @@ app.use('/api/auth', adminRoutes);
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
+// Graceful shutdown
 process.on('SIGINT', async () => {
   await mongoose.connection.close();
   server.close(() => {

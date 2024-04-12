@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { signIn } from "../actions/admin_authActions";
+import { box, signinGrid } from "./styles";
 import {
   Avatar,
   Button,
@@ -15,33 +17,29 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { signIn } from "../actions/admin_authActions";
-import { box, signinGrid } from "./styles";
 
 const theme = createTheme();
 
-const AdminSignin = () => {
+const Doctor_Signin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const authError = useSelector((state) => state.auth.error);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [authError, setAuthError] = useState("");
 
   const handleSignin = async (e) => {
     e.preventDefault();
     setEmailError("");
     setPasswordError("");
-    setAuthError("");
 
     if (email === "") {
       setEmailError("Email is required");
       return;
     }
 
-    // Regular expression for email validation
     const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.match(emailFormat)) {
       setEmailError("Please enter a valid email address");
@@ -54,18 +52,13 @@ const AdminSignin = () => {
     }
 
     try {
-      const response = await dispatch(signIn(email, password));
-      const { data } = response;
-
-      if (data && data.token) {
-        // Navigate to admin dashboard upon successful login
-        navigate("/admin/dashboard");
-      } else {
-        setAuthError("Invalid email or password");
-      }
+      await dispatch(signIn(email, password));
+      // Redirect to dashboard only if login was successful
+      navigate("/admin/dashboard");
     } catch (error) {
-      console.error("Error during sign-in:", error);
-      setAuthError("An error occurred. Please try again later.");
+      console.error("Sign in error:", error);
+      // Display login error only if authentication failed
+      setEmailError("Login error");
     }
   };
 
@@ -83,12 +76,7 @@ const AdminSignin = () => {
               Admin Sign in
             </Typography>
 
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSignin}
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" noValidate onSubmit={handleSignin} sx={{ mt: 1 }}>
               {authError && <Alert severity="error">{authError}</Alert>}
               {emailError && <Alert severity="error">{emailError}</Alert>}
               {passwordError && <Alert severity="error">{passwordError}</Alert>}
@@ -120,16 +108,9 @@ const AdminSignin = () => {
                 error={Boolean(passwordError)}
               />
 
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
-
-             
             </Box>
           </Box>
         </Grid>
@@ -138,4 +119,4 @@ const AdminSignin = () => {
   );
 };
 
-export default AdminSignin;
+export default Doctor_Signin;

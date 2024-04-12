@@ -40,50 +40,56 @@ const Doctor_Signup = () => {
 
   const NAME_REGEX = /^[A-Za-z]+$/;
 
-const handleSignup = async (e) => {
-  e.preventDefault();
-  setPasswordError("");
-  setEmailError("");
-  setNameError("");
-
-  if (name === "") {
-    setNameError("Name is required");
-    return;
-  }
-
-  if (!NAME_REGEX.test(name.trim())) {
-    setNameError("Name should contain only alphabetic characters");
-    return;
-  }
-
-  if (!EMAIL_REGEX.test(email.trim())) {
-    setEmailError("Please enter a valid email address");
-    return;
-  }
-
-  if (password === "") {
-    setPasswordError("Password is required");
-    return;
-  }
-
-  if (!PASSWORD_REGEX.test(password)) {
-    setPasswordError("Password must contain at least 8 characters, including uppercase, lowercase, and numbers");
-    return;
-  }
-
-  if (password !== cpassword) {
-    setPasswordError("Passwords do not match");
-    return;
-  }
-
-  try {
-    await dispatch(signUp(name, email, password)); 
-    setSuccessMessage("Sign up successful! Redirecting to login page...");
-    setRedirectToLogin(true);
-  } catch (error) {
-    console.error("Error during signup:", error);
-  }
-};
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setPasswordError("");
+    setEmailError("");
+    setNameError("");
+  
+    if (name === "") {
+      setNameError("Name is required");
+      return;
+    }
+  
+    if (!NAME_REGEX.test(name.trim())) {
+      setNameError("Name should contain only alphabetic characters");
+      return;
+    }
+  
+    if (!EMAIL_REGEX.test(email.trim())) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+  
+    if (password === "") {
+      setPasswordError("Password is required");
+      return;
+    }
+  
+    if (!PASSWORD_REGEX.test(password)) {
+      setPasswordError("Password must contain at least 8 characters, including uppercase, lowercase, and numbers");
+      return;
+    }
+  
+    if (password !== cpassword) {
+      setPasswordError("Passwords do not match");
+      return;
+    }
+  
+    try {
+      await dispatch(signUp(name, email, password)); 
+      setSuccessMessage("Sign up successful! Redirecting to login page...");
+      setRedirectToLogin(true);
+    } catch (error) {
+      console.error("Error during signup:", error);
+      // Show signup failed error message
+      setSuccessMessage("");
+      setNameError("Signup failed. Please try again later.");
+      // Prevent redirection to login page
+      setRedirectToLogin(false);
+    }
+  };
+  
 
 
   const signInWithGoogle = () => {

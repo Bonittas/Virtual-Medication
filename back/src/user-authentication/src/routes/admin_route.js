@@ -4,7 +4,6 @@ const authController= require('../controllers/admin_auth');
 const { verifyToken } = require('../controllers/admin_auth');
 
 
-// router.post('/admin/signup', authController.signup);
 router.post('/admin/signin', authController.signin);
 
 router.get('/currentUser',  authController.getCurrentUser);
