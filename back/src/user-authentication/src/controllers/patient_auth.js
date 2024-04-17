@@ -15,9 +15,13 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ message: 'User already exists', field: 'email' });
     }
 
+    if (!password) {
+      return res.status(400).json({ message: 'Password is required', field: 'password' });
+    }
+
     user = new User({ name, email, password });
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
+    user.password = await bcrypt.hash(user.password, salt);
     await user.save();
 
     const payload = { user: { id: user.id } };
@@ -27,6 +31,7 @@ exports.signup = async (req, res) => {
   } catch (error) {
     console.error('Error during signup:', error);
     res.status(500).send('Server Error');
+    throw error; // Throw the error to log it in the console or terminal
   }
 };
 

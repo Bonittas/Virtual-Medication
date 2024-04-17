@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/Doctor');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
-const JWT_EXPIRES_IN = '1d';
+const JWT_EXPIRES_IN = '1d'; 
 
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -12,10 +12,10 @@ exports.signup = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: 'User already exists', field: 'email' });
     }
 
-    user = new User({ name, email, password });
+    user = new User({ name, email, password, verified: false }); // Set verified to false
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
     await user.save();
@@ -30,6 +30,7 @@ exports.signup = async (req, res) => {
   }
 };
 
+
 exports.signin = async (req, res) => {
   const { email, password } = req.body;
 
@@ -37,13 +38,13 @@ exports.signin = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: 'Invalid Credentials' });
+      return res.status(400).json({ message: 'Invalid Credentials', field: 'email' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid Credentials' });
+      return res.status(400).json({ message: 'Invalid Credentials', field: 'password' });
     }
 
     const payload = { user: { id: user.id } };
@@ -65,11 +66,10 @@ exports.verifyToken = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
     req.user = await User.findById(decoded.user.id).select('-password');
     next();
   } catch (error) {
-    console.error('Error verifying token:', error); 
+    console.error('Error verifying token:', error);
     res.status(401).json({ message: 'Authorization denied. Invalid token.' });
   }
 };
@@ -77,7 +77,6 @@ exports.verifyToken = async (req, res, next) => {
 exports.getCurrentUser = async (req, res) => {
   try {
     const user = req.user;
-
     res.json({ user });
   } catch (error) {
     console.error('Error fetching current user:', error);

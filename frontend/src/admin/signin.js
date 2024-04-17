@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { signIn } from "../actions/admin_authActions";
+import { useDispatch } from "react-redux";
+import { signIn } from "../actions/admin/admin_authActions"
 import { box, signinGrid } from "./styles";
 import {
   Avatar,
   Button,
   CssBaseline,
   Box,
-  Paper,
   Link,
   Grid,
   TextField,
@@ -20,15 +19,16 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme();
 
-const Doctor_Signin = () => {
+const Admin_Signin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const authError = useSelector((state) => state.auth.error);
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  // const authError = useSelector((state) => state.auth.error);
+  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const handleSignin = async (e) => {
     e.preventDefault();
@@ -52,16 +52,16 @@ const Doctor_Signin = () => {
     }
 
     try {
-      await dispatch(signIn(email, password));
-      // Redirect to dashboard only if login was successful
-      navigate("/admin/dashboard");
+      await dispatch(signIn(email, password)); 
+      console.log("Sign in successful");
+      setLoginSuccess(true); 
+      navigate('/admin/dashboard')
+
     } catch (error) {
-      console.error("Sign in error:", error);
-      // Display login error only if authentication failed
-      setEmailError("Login error");
+      setEmailError("Incorrect email or password. Please try again.");
     }
   };
-
+  
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -73,13 +73,13 @@ const Doctor_Signin = () => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5" sx={{ fontWeight: "bold" }}>
-              Admin Sign in
+             Admin Sign in
             </Typography>
 
             <Box component="form" noValidate onSubmit={handleSignin} sx={{ mt: 1 }}>
-              {authError && <Alert severity="error">{authError}</Alert>}
               {emailError && <Alert severity="error">{emailError}</Alert>}
               {passwordError && <Alert severity="error">{passwordError}</Alert>}
+              {loginSuccess && <Alert severity="success">Login successful!</Alert>}
 
               <TextField
                 margin="normal"
@@ -111,6 +111,21 @@ const Doctor_Signin = () => {
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Sign In
               </Button>
+
+              <Typography
+                component="h1"
+                variant="h6"
+                align="center"
+                sx={{ fontWeight: "bold" }}
+              ></Typography>
+
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+              </Grid>
             </Box>
           </Box>
         </Grid>
@@ -119,4 +134,4 @@ const Doctor_Signin = () => {
   );
 };
 
-export default Doctor_Signin;
+export default Admin_Signin;

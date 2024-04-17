@@ -1,104 +1,64 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  Grid,
-  Paper,
-  Container,
-  LinearProgress,
-  Typography,
-  Button,
-  TextField,
-} from "@mui/material";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createPost, updatePost } from "../actions/admin/postActions";
 import Navbar from "./navbar";
-import { container, paper, typography } from "./styles";
-import axios from "axios"; // Use axios or any other library for making HTTP requests
-
-const Create_Post = () => {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+const AdminPostForm = ({ postToEdit }) => {
+  const dispatch = useDispatch();
+  const [title, setTitle] = useState(postToEdit ? postToEdit.title : "");
+  const [body, setBody] = useState(postToEdit ? postToEdit.body : "");
   const [image, setImage] = useState(null);
-  const [progress, setProgress] = useState(0);
-  const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const handleChange = (e) => {
-    if (e.target.files[0]) {
-      setImage(e.target.files[0]);
-    }
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const handleCreate = async () => {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("body", body);
+    formData.append("image", image);
+
     try {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("body", body);
-      formData.append("image", image);
+      if (postToEdit) {
+        // Dispatch an action to update the post if editing
+        await dispatch(updatePost(postToEdit._id, formData));
+        setSuccessMessage("Post updated successfully.");
+      } else {
+        // Dispatch an action to create the post if creating
+        await dispatch(createPost(formData));
+        setSuccessMessage("Post created successfully.");
+      }
 
-      // Make HTTP POST request to your MERN backend's create post endpoint
-      await axios.post("/api/posts", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      navigate("/latest-updates");
+      // Clear form fields after successful submission
+      setTitle("");
+      setBody("");
+      setImage(null);
     } catch (error) {
-      console.error("An error occurred:", error);
-      // handleGeneralError(error); // Handle unexpected errors
+      console.error("Error:", error);
+      setSuccessMessage(""); // Clear success message in case of error
     }
   };
 
   return (
-    <>
-      <Navbar />
-      <Container maxWidth="lg" sx={container}>
-        <Typography variant="h4" align="center" sx={typography}>
-          Create Post
-        </Typography>
-        <Paper sx={paper}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                id="Title"
-                name="Title"
-                label="Title"
-                fullWidth
-                size="small"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                id="Body"
-                name="Body"
-                label="Body"
-                fullWidth
-                multiline
-                size="small"
-                rows={10}
-                value={body}
-                onChange={(e) => setBody(e.target.value)}
-              />
-            </Grid>
+    <>      <Navbar  /> {/* Pass handleNavigation as a prop */}
 
-            <Grid item xs={12}>
-              <LinearProgress variant="determinate" value={progress} />
-              <br />
-              <input type="file" onChange={handleChange} />
-            </Grid>
-
-            <Grid item xs={12}>
-              <Button variant="contained" onClick={handleCreate}>
-                Create
-              </Button>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Container>
+    <form onSubmit={handleSubmit} className=" max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 my-20">
+      <div className="mb-4">
+        <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-2">Title:</label>
+        <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required />
+      </div>
+      <div className="mb-6">
+        <label htmlFor="body" className="block text-gray-700 text-sm font-bold mb-2">Body:</label>
+        <textarea id="body" value={body} onChange={(e) => setBody(e.target.value)} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required />
+      </div>
+      <div className="mb-6">
+        <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">Image:</label>
+        <input type="file" id="image" accept="image/*" onChange={(e) => setImage(e.target.files[0])} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required />
+      </div>
+      <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">{postToEdit ? "Update Post" : "Create Post"}</button>
+      {successMessage && <p className="text-green-500 mt-2">{successMessage}</p>}
+    </form>
     </>
   );
 };
 
-export default Create_Post;
+export default AdminPostForm;

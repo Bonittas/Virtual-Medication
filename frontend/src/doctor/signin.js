@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { signIn } from "../actions/doctor_authActions";
+import { signIn } from "../actions/doctor_authActions"; 
 import { box, signinGrid } from "./styles";
 import {
   Avatar,
@@ -53,21 +53,16 @@ const Doctor_Signin = () => {
     }
 
     try {
-      await dispatch(signIn(email, password));
+      await dispatch(signIn(email, password)); 
       console.log("Sign in successful");
-      setLoginSuccess(true); // Set login success
-      navigate("/doctor/dashboard");
+      setLoginSuccess(true); 
+      navigate('/doctor/dashboard')
 
     } catch (error) {
-      console.error("Sign in error:", error);
-      if (error.response && error.response.data && error.response.data.message) {
-        setEmailError(error.response.data.message);
-      } else {
-        setEmailError("An error occurred. Please try again later.");
-      }
+      setEmailError("Invalid email or password. Please try again.");
     }
   };
-
+  
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -83,7 +78,6 @@ const Doctor_Signin = () => {
             </Typography>
 
             <Box component="form" noValidate onSubmit={handleSignin} sx={{ mt: 1 }}>
-              {authError && <Alert severity="error">{authError}</Alert>}
               {emailError && <Alert severity="error">{emailError}</Alert>}
               {passwordError && <Alert severity="error">{passwordError}</Alert>}
               {loginSuccess && <Alert severity="success">Login successful!</Alert>}
@@ -133,7 +127,7 @@ const Doctor_Signin = () => {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="/Doctor-signup" variant="body2">
+                  <Link href="/doctor-signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

@@ -40,7 +40,7 @@ import Doctors from "./admin/doctors";
 import Patients from "./admin/patients";
 import Create_Post from "./admin/create_post";
 import Latest_Updates from "./admin/latest_updates";
-
+import Signout from "./admin/signout"
 const App = () => {
   const [user, setUser] = useState("");
 
@@ -69,6 +69,21 @@ const App = () => {
               <AuthProvider>
                 <Routes>
                   {/* ROOT */}
+                  <Route
+                    exact
+                    path="/admin/dashboard"
+                    element={<Admin_Dashboard/>}
+                  />
+                  <Route exact path="/doctors" element={<Doctors/>} />
+                  <Route exact path="/patients" element={<Patients/>} />
+                  <Route exact path="/create-post" element={<Create_Post/>} />
+                  <Route exact path="/signout" element={<Signout/>} />
+
+                  <Route
+                    exact
+                    path="/latest_updates"
+                    element={Latest_Updates}
+                  />
                   <Route exact path="/" element={<Home/>} />
                                   <Route
                   exact
@@ -83,6 +98,8 @@ const App = () => {
                                 <Route exact path="/doctor-signup" element={<Doctor_Signup/>} />
                 <Route exact path="/doctor-signin" element={<Doctor_Signin/>} />
                 <Route exact path="/admin-signin" element={<Admin_Signin/>} />
+                <Route exact path="/create-post" element={<Create_Post/>} />
+
                   <Route
                     exact
                     path="/doctor/dashboard"
@@ -186,7 +203,7 @@ const App = () => {
                   />
                   <Route exact path="/doctors" element={<Doctors/>} />
                   <Route exact path="/patients" element={<Patients/>} />
-                  <Route exact path="/create_post" element={<Create_Post/>} />
+                  <Route exact path="/create-post" element={<Create_Post/>} />
                   <Route
                     exact
                     path="/latest_updates"

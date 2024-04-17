@@ -4,16 +4,15 @@ import {
   Button,
   CssBaseline,
   Box,
-  Paper,
-  Link,
   Grid,
   TextField,
   Typography,
   Alert,
 } from "@mui/material";
+import { Link } from "react-router-dom";
+
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import GoogleIcon from "@mui/icons-material/Google";
 import axios from "axios"; 
 import { signUp } from "../actions/doctor_authActions";
 import { box, signupGrid } from "./styles";
@@ -34,7 +33,6 @@ const Doctor_Signup = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -79,27 +77,15 @@ const Doctor_Signup = () => {
     try {
       await dispatch(signUp(name, email, password)); 
       setSuccessMessage("Sign up successful! Redirecting to login page...");
-      setRedirectToLogin(true);
+      setTimeout(() => {
+        navigate("/doctor-signin");
+      }, 2000);
     } catch (error) {
       console.error("Error during signup:", error);
-      // Show signup failed error message
       setSuccessMessage("");
       setNameError("Signup failed. Please try again later.");
-      // Prevent redirection to login page
-      setRedirectToLogin(false);
     }
   };
-  
-
-
-  const signInWithGoogle = () => {
-  };
-
-  if (redirectToLogin) {
-    setTimeout(() => {
-      navigate("/doctor-signin");
-    }, 2000);
-  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -131,7 +117,7 @@ const Doctor_Signup = () => {
                     value={name}
                     autoFocus
                     onChange={(e) => setName(e.target.value)}
-                    error={nameError}
+                    error={Boolean(nameError)}
                   />
                 </Grid>
 
@@ -146,7 +132,7 @@ const Doctor_Signup = () => {
                     value={email}
                     type="email"
                     onChange={(e) => setEmail(e.target.value)}
-                    error={emailError}
+                    error={Boolean(emailError)}
                   />
                 </Grid>
 
@@ -161,7 +147,7 @@ const Doctor_Signup = () => {
                     autoComplete="new-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    error={passwordError}
+                    error={Boolean(passwordError)}
                   />
                 </Grid>
 
@@ -188,27 +174,6 @@ const Doctor_Signup = () => {
               >
                 Sign Up
               </Button>
-
-              <Typography
-                component="h1"
-                variant="h6"
-                align="center"
-                sx={{ fontWeight: "bold" }}
-              >
-                OR
-              </Typography>
-
-              <Grid item xs={12}>
-                <Button
-                  variant="outline"
-                  fullWidth
-                  sx={{ mt: 1, mb: 2 }}
-                  startIcon={<GoogleIcon />}
-                  onClick={() => signInWithGoogle()}
-                >
-                  Sign up with Google
-                </Button>
-              </Grid>
 
               <Grid container justifyContent="flex-end">
                 <Grid item>

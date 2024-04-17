@@ -53,18 +53,13 @@ const Patient_Signin = () => {
     }
 
     try {
-      await dispatch(signIn(email, password));
+      await dispatch(signIn(email, password)); 
       console.log("Sign in successful");
-      setLoginSuccess(true); // Set login success
-      navigate("/patient/dashboard");
+      setLoginSuccess(true); 
+      navigate('/patient/dashboard')
 
     } catch (error) {
-      console.error("Sign in error:", error);
-      if (error.response && error.response.data && error.response.data.message) {
-        setEmailError(error.response.data.message);
-      } else {
-        setEmailError("An error occurred. Please try again later.");
-      }
+      setEmailError("Incorrect email or password. Please try again.");
     }
   };
   
@@ -83,7 +78,6 @@ const Patient_Signin = () => {
             </Typography>
 
             <Box component="form" noValidate onSubmit={handleSignin} sx={{ mt: 1 }}>
-              {authError && <Alert severity="error">{authError}</Alert>}
               {emailError && <Alert severity="error">{emailError}</Alert>}
               {passwordError && <Alert severity="error">{passwordError}</Alert>}
               {loginSuccess && <Alert severity="success">Login successful!</Alert>}

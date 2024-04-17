@@ -1,11 +1,18 @@
+import React from "react";
 import { Grid, Paper, Container, Typography } from "@mui/material";
 import Navbar from "./navbar";
 import { container, paper, typography } from "./styles";
 
 const Admin_Dashboard = () => {
+  const handleNavigation = (route) => {
+    // Navigate to the specified route
+    // Implement navigation logic here
+    console.log("Navigating to", route);
+  };
+
   return (
     <>
-      <Navbar />
+      <Navbar handleNavigation={handleNavigation} /> {/* Pass handleNavigation as a prop */}
       <Container maxWidth="lg" sx={container}>
         <Grid container spacing={3}>
           <Grid item xs={12}>

@@ -32,8 +32,11 @@ db.once('open', () => {
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000',
+};
 
+app.use(cors(corsOptions));
 // Routes
 app.use('/api/auth', doctorRoutes);
 app.use('/api/auth', patientRoutes);

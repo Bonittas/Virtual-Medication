@@ -14,6 +14,10 @@ const doctorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  verified: {
+    type: Boolean,
+    default: false, // Initially not verified
+  },
 });
 
 module.exports = mongoose.model('Doctors', doctorSchema);
