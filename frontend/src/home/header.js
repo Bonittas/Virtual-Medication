@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import {Link} from "react-router-dom"
 function Header() {
   const [scrolled, setScrolled] = useState(false);
   
@@ -27,9 +27,6 @@ function Header() {
           <h4 className="text-xl  font-cursive text-blue-900">HealthCare</h4>
         </div>
         <ul className="flex space-x-4 justify-between items-center">
-          <li className="text-blue-900 hover:text-blue-700">
-            <a href="#home">How it works</a>
-          </li>
 
 
           <li className="text-blue-950 hover:text-blue-700">
@@ -39,7 +36,7 @@ function Header() {
             <a href="#contact">Contact</a>
           </li>
           <button className="bg-transparent font-semibold py-2 px-4 border border-gray-400 hover:text-blue-800 rounded-3xl">
-            <a href="#option">Sign In</a>
+            <Link to="/option">Sign In</Link>
           </button>
         </ul>
       </div>
