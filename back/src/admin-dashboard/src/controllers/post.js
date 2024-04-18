@@ -18,12 +18,13 @@ const upload = multer({ storage: storage });
 
 exports.getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find().select('-__v').populate('image', 'url');
     res.json(posts);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 exports.createPost = async (req, res) => {
   const { title, body } = req.body;

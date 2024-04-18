@@ -67,23 +67,23 @@ const Doctors = () => {
     <>
       <Navbar />
       <div>
-        <h1 className="text-2xl mt-32 font-bold m-4">Registered Doctors</h1>
-        <div className="  m-4">
+        <h1 className="text-2xl mt-32 text-center font-bold m-4">Registered Doctors</h1>
+        <div className="flex justify-center  m-4">
           <input
             type="text"
             placeholder="Search Doctors..."
             value={searchQuery}
             onChange={handleSearchChange}
-            className="border bg-blue-50 border-gray-400 rounded-md px-3 py-2 w-64"
+            className="border bg-blue-50 border-gray-400 rounded-full px-3 py-2 w-2/3"
           />
         </div>
         {currentDoctors.length === 0 ? (
           <div>No doctors found.</div>
         ) : (
           <>
-            <ul className="divide-y divide-gray-200">
+            <ul className="divide-y divide-gray-200 m-6 ">
               {currentDoctors.map((doctor) => (
-                <li key={doctor._id} className="bg-blue-50 border m-4 w-2/3 rounded-md px-4 py-4 flex items-center">
+                <li key={doctor._id} className="bg-blue-50 border m-4 w-full rounded-md px-4 py-8 flex items-center">
                   <div className="flex-1">
                     <div className="text-lg font-semibold">{doctor.name}</div>
                     <div className="text-sm text-gray-500">{doctor.email}</div>

@@ -9,6 +9,7 @@ import './index.css';
 import Home from "./home/home";
 import LoggedIn from "./home/loggedIn";
 // DOCTOR'S PAGES
+import OptionPage from "./home/optionPage"
 import Doctor_Signup from "./doctor/signup";
 import Doctor_Signin from "./doctor/signin";
 import Doctor_Dashboard from "./doctor/dashboard/dashboard";
@@ -41,6 +42,8 @@ import Patients from "./admin/patients";
 import Create_Post from "./admin/create_post";
 import Latest_Updates from "./admin/latest_updates";
 import Signout from "./admin/signout"
+import AdminDashboard from "./admin/dashboard"
+import Dashboard from "@mui/icons-material/Dashboard";
 const App = () => {
   const [user, setUser] = useState("");
 
@@ -71,9 +74,10 @@ const App = () => {
                   {/* ROOT */}
                   <Route
                     exact
-                    path="/admin/dashboard"
-                    element={<Admin_Dashboard/>}
+                    path="/dashboard"
+                    element={<AdminDashboard/>}
                   />
+
                   <Route exact path="/doctors" element={<Doctors/>} />
                   <Route exact path="/patients" element={<Patients/>} />
                   <Route exact path="/create-post" element={<Create_Post/>} />
@@ -81,10 +85,12 @@ const App = () => {
 
                   <Route
                     exact
-                    path="/latest_updates"
-                    element={Latest_Updates}
+                    path="/latest-updates"
+                    element={<Latest_Updates/>}
                   />
                   <Route exact path="/" element={<Home/>} />
+                  <Route exact path="/option" element={<OptionPage/>} />
+
                                   <Route
                   exact
                   path="/patient-signup"

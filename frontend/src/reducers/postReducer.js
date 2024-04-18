@@ -11,6 +11,12 @@ const initialState = {
           ...state,
           posts: [...state.posts, action.payload],
         };
+        case "GET_POSTS":
+      return {
+        ...state,
+        posts: action.payload,
+      };
+    
       case "UPDATE_POST":
         return {
           ...state,
@@ -25,8 +31,10 @@ const initialState = {
         };
       default:
         return state;
-    }
-  };
+    };
+    
+
+  }
   
   export default postReducer;
   

@@ -23,7 +23,7 @@ const OptionPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col text-black items-center justify-center relative">
+        <div className="min-h-screen my-4 flex flex-col text-black items-center justify-center relative">
             <div className="bg-gray-300 border rounded-md w-full max-w-lg p-4 flex flex-col items-center">
                 <div className="mb-8">
                     <p className="text-lg text-center font-bold">Join HealthLink</p>
@@ -48,11 +48,11 @@ const OptionPage = () => {
                             htmlFor="doctorOption" 
                             className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'doctor' ? 'border-blue-500' : 'border-gray-400'}`}
                         >
-                            {selectedOption === 'doctor' && <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black w-2 h-2 rounded-full"></span>}
+                            {selectedOption === 'doctor' && <span className=" transform -translate-x-1/2 -translate-y-1/2 bg-black w-2 h-2 rounded-full"></span>}
                         </label>
                         <label htmlFor="doctorOption" className="cursor-pointer">Join as Doctor</label>
                     </div>
-                    <div className="flex bg-white border rounded-fmd px-8 py-2 text-black items-center ">
+                    <div className="flex bg-white border rounded-md px-8 py-2 text-black items-center ">
                         <input 
                             type="radio" 
                             id="patientOption" 
@@ -64,14 +64,13 @@ const OptionPage = () => {
                         />
                         <label 
                             htmlFor="patientOption" 
-                            className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'patient' ? 'border-green-500' : 'border-gray-400'}`}
+                            className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'patient' ? 'border-green-500 text-black' : 'border-gray-400'}`}
                         >
-                            {selectedOption === 'patient' && <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black w-2 h-2 rounded-full"></span>}
+                            {selectedOption === 'patient' && <span className=" transform -translate-x-1/2 -translate-y-1/2 bg-black w-4 h-4 rounded-full"></span>}
                         </label>
                         <label htmlFor="patientOption" className="cursor-pointer">Sign Up as Patient</label>
                     </div>
                 </div>
-                {/* Signup button */}
                 <button
                     onClick={handleSignup}
                     disabled={!selectedOption}

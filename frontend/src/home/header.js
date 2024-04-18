@@ -30,12 +30,8 @@ function Header() {
           <li className="text-blue-900 hover:text-blue-700">
             <a href="#home">How it works</a>
           </li>
-          <li className="text-blue-950 hover:text-blue-700">
-            <a href="#about">Department</a>
-          </li>
-          <li className="text-blue-950 hover:text-blue-700">
-            <a href="#services">Membership</a>
-          </li>
+
+
           <li className="text-blue-950 hover:text-blue-700">
             <a href="#contact">Help</a>
           </li>
@@ -43,7 +39,7 @@ function Header() {
             <a href="#contact">Contact</a>
           </li>
           <button className="bg-transparent font-semibold py-2 px-4 border border-gray-400 hover:text-blue-800 rounded-3xl">
-            <a href="#signUp">Sign In</a>
+            <a href="/option">Sign In</a>
           </button>
         </ul>
       </div>

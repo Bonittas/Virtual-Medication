@@ -13,18 +13,18 @@ export const signIn = (email, password) => {
   };
 };
 
-export const logout = () => {
+export const logout = (navigate) => { // Accept navigate function as argument
   return async (dispatch) => {
     try {
       await axios.post("http://localhost:5000/api/auth/admin/signout");
       dispatch({ type: 'LOGOUT' }); // Dispatch action to clear user state
+      navigate('/'); // Navigate to '/' after successful logout
     } catch (error) {
       console.error('Error during logout:', error);
       // Handle error if needed
     }
   };
 };
-
 export const signUp = (name, email, password) => {
   return async (dispatch) => {
     try {
