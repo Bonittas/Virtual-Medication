@@ -46,8 +46,13 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
-  // Proxy requests to the post service
   app.use(
+    '/api/auth/admin/signup',
+    createProxyMiddleware({
+      target: 'https://medicare-3.onrender.com/',
+      changeOrigin: true,
+    })
+  );  app.use(
     '/api/posts',
     createProxyMiddleware({
       target: 'https://medicare-12.onrender.com',

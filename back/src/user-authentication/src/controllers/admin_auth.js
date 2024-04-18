@@ -47,40 +47,43 @@ exports.verifyToken = async (req, res, next) => {
     res.status(401).json({ message: 'Authorization denied. Invalid token.' });
   }
 };
-exports.signup = (name, email, password) => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.post("/api/auth/admin/signup", { name, email, password });
-      dispatch({ type: 'SIGN_UP', payload: response.data }); 
-    } catch (error) {
-      console.error('Error during signup:', error); 
-      let errorMessage = "An error occurred";
-      if (error.response && error.response.data && error.response.data.message) {
-        errorMessage = error.response.data.message;
-      }
-      dispatch({ type: 'SIGN_UP_ERROR', payload: errorMessage }); 
-    }
-  };
-};
 
-exports.verifyToken = async (req, res, next) => {
-  const token = req.header('x-auth-token');
-
-  if (!token) {
-    return res.status(401).json({ message: 'Authorization denied. No token provided.' });
-  }
+exports.signup = async (req, res) => {
+  const { name, email, password } = req.body;
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let user = await User.findOne({ email });
 
-    req.user = await User.findById(decoded.user.id).select('-password');
-    next();
+    if (user) {
+      return res.status(400).json({ message: 'User already exists', field: 'email' });
+    }
+
+    user = new User({ name, email, password, verified: false }); // Set verified to false
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    await user.save();
+
+    const payload = { user: { id: user.id } };
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+
+    res.json({ token });
   } catch (error) {
-    console.error('Error verifying token:', error); 
-    res.status(401).json({ message: 'Authorization denied. Invalid token.' });
+    console.error('Error during signup:', error);
+    res.status(500).send('Server Error');
   }
 };
 
+
+
+exports.logout = async (req, res) => {
+  try {
+    res.clearCookie('jwt'); 
+    res.json({ message: 'Logout successful' });
+  } catch (error) {
+    console.error('Error during logout:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
 exports.getCurrentUser = async (req, res) => {
   try {
     const user = req.user;
@@ -88,15 +91,6 @@ exports.getCurrentUser = async (req, res) => {
     res.json({ user });
   } catch (error) {
     console.error('Error fetching current user:', error); 
-    res.status(500).json({ message: 'Server Error' });
-  }
-};
-exports.logout = async (req, res) => {
-  try {
-    res.clearCookie('jwt'); 
-    res.json({ message: 'Logout successful' });
-  } catch (error) {
-    console.error('Error during logout:', error);
     res.status(500).json({ message: 'Server Error' });
   }
 };

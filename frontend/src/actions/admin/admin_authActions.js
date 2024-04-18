@@ -29,12 +29,10 @@ export const signUp = (name, email, password) => {
   return async (dispatch) => {
     try {
       const response = await axios.post("https://medicare-3.onrender.com/api/auth/admin/signup", { name, email, password });
-      dispatch({ type: 'SIGN_UP', payload: response.data });
+      dispatch({ type: 'SIGN_UP', payload: response.data }); 
     } catch (error) {
-      console.error('Error during signup:', error);
-      console.error('Error details:', error.response.data); // Log the error details
-      dispatch({ type: 'SIGN_UP_ERROR', payload: error.message });
-      throw error;
+      console.error('Error during signup:', error); 
+      dispatch({ type: 'SIGN_UP_ERROR', payload: error.message }); 
     }
   };
 };
