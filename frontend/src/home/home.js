@@ -30,10 +30,10 @@ const LandingPage = () => {
                 You will be treated by caring specialist doctors.
               </p>
               <Link
-                to="/contact"
+                to="/signup"
                 className="inline-block px-8 py-3 text-lg text-white font-medium bg-blue-950 rounded-3xl hover:bg-blue-800"
               >
-                Make an Appointment
+                Signup
               </Link>
             </div>
             <div className="lg:w-2/5 z-10 mt-36">
