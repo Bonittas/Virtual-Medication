@@ -103,6 +103,7 @@ const App = () => {
                 <Route exact path="/doctor-signin" element={<Doctor_Signin/>} />
                 <Route exact path="/admin-signin" element={<Admin_Signin/>} />
                 <Route exact path="/create-post" element={<Create_Post/>} />
+                <Route exact path="/option" element={<OptionPage/>} />
 
                   <Route
                     exact
@@ -225,6 +226,8 @@ const App = () => {
             <BrowserRouter>
               <Routes>
                 <Route exact path="/" element={<Home/>} />
+                <Route exact path="/option" element={<OptionPage/>} />
+
                 <Route exact path="/doctor-signup" element={<Doctor_Signup/>} />
                 <Route exact path="/doctor-signin" element={<Doctor_Signin/>} />
                 <Route
@@ -238,6 +241,8 @@ const App = () => {
                   element={<Patient_Signin/>}
                 />
                 <Route exact path="/admin-signin" element={<Admin_Signin/>} />
+                <Route exact path="/option" element={<OptionPage/>} />
+
               </Routes>
             </BrowserRouter>
           </CssBaseline>
