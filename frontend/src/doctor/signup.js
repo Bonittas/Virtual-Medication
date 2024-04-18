@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios"; 
-import { signUp } from "../actions/admin/admin_authActions";
+import { signUp } from "../actions/doctor_authActions";
 import { box, signupGrid } from "./styles";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
