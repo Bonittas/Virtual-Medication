@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from '../images/s3.svg'; // Update the path to your image file
+import backgroundImage from '../images/s4.svg'; // Update the path to your image file
+import headerImage from '../images/s5.svg'; // Update the path to your image file
 
 const OptionPage = () => {
     const navigate = useNavigate();
@@ -29,13 +30,16 @@ const OptionPage = () => {
     };
 
     return (
-        <div className="min-h-screen my-4 flex flex-col text-black items-center justify-center relative">
+        <div className="min-h-screen mt-1 mb-6 flex flex-col text-black items-center justify-center relative">
+            <img src={headerImage} alt="Background" className="mt-1  w-1/2 h-24 " />
+
             <div className="bg-gray-300 border rounded-md w-full max-w-lg p-4 flex flex-col items-center">
+
                 <div className="mb-8">
                     <p className="text-lg text-center font-bold">Join HealthLink</p>
                     <p className="text-xl text-center font-bold mb-4">Connecting Care Anywhere</p>
 
-                    <img src={backgroundImage} alt="Background" className="mt-4 w-64 h-64" />
+                    <img src={backgroundImage} alt="Background" className="mt-4 w-72 h-36" />
                 </div>
                 <div className="flex flex-col w-full">
                     <h2 className="text-lg font-bold mb-4">Join as :</h2>
@@ -54,7 +58,7 @@ const OptionPage = () => {
                             htmlFor="doctorOption" 
                             className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'doctor' ? 'border-blue-500' : 'border-gray-400'}`}
                         >
-                            {selectedOption === 'doctor' && <span className="bg-black w-2 h-2 rounded-full"></span>}
+                            {selectedOption === 'doctor' && <span className="bg-black w-2 h-2 rounded-full absolute inset-0 m-auto"></span>}
                         </label>
                         <label htmlFor="doctorOption" className="cursor-pointer">Join as Doctor</label>
                     </div>
@@ -72,7 +76,7 @@ const OptionPage = () => {
                             htmlFor="adminOption" 
                             className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'admin' ? 'border-yellow-500' : 'border-gray-400'}`}
                         >
-                            {selectedOption === 'admin' && <span className="bg-black w-2 h-2 rounded-full"></span>}
+                            {selectedOption === 'admin' && <span className="bg-black w-2 h-2 rounded-full absolute inset-0 m-auto"></span>}
                         </label>
                         <label htmlFor="adminOption" className="cursor-pointer">{selectedOption === 'admin' ? 'Sign In as Admin' : 'Admin Signin'}</label>
                     </div>
@@ -90,7 +94,7 @@ const OptionPage = () => {
                             htmlFor="patientOption" 
                             className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'patient' ? 'border-green-500 text-black' : 'border-gray-400'}`}
                         >
-                            {selectedOption === 'patient' && <span className="bg-black w-2 h-2 rounded-full"></span>}
+                            {selectedOption === 'patient' && <span className="bg-black w-2 h-2 rounded-full absolute inset-0 m-auto"></span>}
                         </label>
                         <label htmlFor="patientOption" className="cursor-pointer">Sign Up as Patient</label>
                     </div>
