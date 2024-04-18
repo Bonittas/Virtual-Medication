@@ -5,7 +5,7 @@ module.exports = function (app) {
   app.use(
     '/api/auth/admin/signin',
     createProxyMiddleware({
-      target: 'http://localhost:5000',
+      target: 'https://medicare-3.onrender.com/',
       changeOrigin: true,
     })
   );
@@ -13,14 +13,14 @@ module.exports = function (app) {
   app.use(
     '/api/auth/doctor/signin',
     createProxyMiddleware({
-      target: 'http://localhost:5000',
+      target: 'https://medicare-3.onrender.com/',
       changeOrigin: true,
     })
   );
   app.use(
     '/api/auth/doctor/signup',
     createProxyMiddleware({
-      target: 'http://localhost:5000',
+      target: 'https://medicare-3.onrender.com/',
       changeOrigin: true,
     })
   );
@@ -28,21 +28,21 @@ module.exports = function (app) {
   app.use(
     '/api/auth/patient/signin',
     createProxyMiddleware({
-      target: 'http://localhost:5000',
+      target: 'https://medicare-3.onrender.com/',
       changeOrigin: true,
     })
   );
   app.use(
     '/api/auth/patient/signup',
     createProxyMiddleware({
-      target: 'http://localhost:5000',
+      target: 'https://medicare-3.onrender.com/',
       changeOrigin: true,
     })
   );
   app.use(
     '/api/auth/currentUser',
     createProxyMiddleware({
-      target: 'http://localhost:5000',
+      target: 'https://medicare-3.onrender.com/',
       changeOrigin: true,
     })
   );
