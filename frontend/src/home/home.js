@@ -53,7 +53,6 @@ const LandingPage = () => {
         </div>
       </section>
 <section>
-  <OptionsPage/>
 </section>
 
     </>
