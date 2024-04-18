@@ -14,11 +14,17 @@ const OptionPage = () => {
         setSelectedOption('patient');
     };
 
+    const handleAdminSignin = () => {
+        setSelectedOption('admin');
+    };
+
     const handleSignup = () => {
         if (selectedOption === 'doctor') {
             navigate('/doctor-signup');
         } else if (selectedOption === 'patient') {
             navigate('/patient-signup');
+        } else if (selectedOption === 'admin') {
+            navigate('/admin-signin');
         }
     };
 
@@ -48,9 +54,27 @@ const OptionPage = () => {
                             htmlFor="doctorOption" 
                             className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'doctor' ? 'border-blue-500' : 'border-gray-400'}`}
                         >
-                            {selectedOption === 'doctor' && <span className=" transform -translate-x-1/2 -translate-y-1/2 bg-black w-2 h-2 rounded-full"></span>}
+                            {selectedOption === 'doctor' && <span className="bg-black w-2 h-2 rounded-full"></span>}
                         </label>
                         <label htmlFor="doctorOption" className="cursor-pointer">Join as Doctor</label>
+                    </div>
+                    <div className="flex bg-white border rounded-md px-8 py-2 text-black items-center mb-4 ">
+                        <input 
+                            type="radio" 
+                            id="adminOption" 
+                            name="signupOption" 
+                            value="admin" 
+                            checked={selectedOption === 'admin'}
+                            onChange={handleAdminSignin}
+                            className="hidden"
+                        />
+                        <label 
+                            htmlFor="adminOption" 
+                            className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'admin' ? 'border-yellow-500' : 'border-gray-400'}`}
+                        >
+                            {selectedOption === 'admin' && <span className="bg-black w-2 h-2 rounded-full"></span>}
+                        </label>
+                        <label htmlFor="adminOption" className="cursor-pointer">{selectedOption === 'admin' ? 'Sign In as Admin' : 'Admin Signin'}</label>
                     </div>
                     <div className="flex bg-white border rounded-md px-8 py-2 text-black items-center ">
                         <input 
@@ -66,7 +90,7 @@ const OptionPage = () => {
                             htmlFor="patientOption" 
                             className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'patient' ? 'border-green-500 text-black' : 'border-gray-400'}`}
                         >
-                            {selectedOption === 'patient' && <span className=" transform -translate-x-1/2 -translate-y-1/2 bg-black w-4 h-4 rounded-full"></span>}
+                            {selectedOption === 'patient' && <span className="bg-black w-2 h-2 rounded-full"></span>}
                         </label>
                         <label htmlFor="patientOption" className="cursor-pointer">Sign Up as Patient</label>
                     </div>
@@ -76,7 +100,7 @@ const OptionPage = () => {
                     disabled={!selectedOption}
                     className="bg-blue-500 hover:bg-blue-700 w-full text-white font-bold py-2 px-4 rounded-md mt-4"
                 >
-                    Sign Up
+                    {selectedOption === 'admin' ? 'Sign In' : 'Sign Up'}
                 </button>
             </div>
         </div>
