@@ -10,7 +10,9 @@ const path = require("path");
 
 const PORT = process.env.PORT || 5001;
 app.use("/uploads/", express.static(path.join(__dirname, "uploads")));
-
+app.get("/", (req, res) => {
+  res.send("Welcome to the backend of the admin dashboard system");
+});
 connectDB();
 app.use(express.json());
 const corsOptions = {
