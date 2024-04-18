@@ -65,13 +65,12 @@ const App = () => {
   return (
     <>
       {user ? (
-        // ROUTES AVAILABLE IF THE USER IS AUTHENTICATED
         <>
           <CssBaseline>
             <BrowserRouter>
               <AuthProvider>
                 <Routes>
-                  {/* ROOT */}
+                <Route exact path="/option" element={<OptionPage/>} />
                   <Route
                     exact
                     path="/dashboard"
@@ -89,7 +88,6 @@ const App = () => {
                     element={<Latest_Updates/>}
                   />
                   <Route exact path="/" element={<Home/>} />
-                  <Route exact path="/option" element={<OptionPage/>} />
 
                                   <Route
                   exact
