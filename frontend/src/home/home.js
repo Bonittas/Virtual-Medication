@@ -29,7 +29,7 @@ const LandingPage = () => {
                 You can get the care you need 24/7 – be it online or in person.
                 You will be treated by caring specialist doctors.
               </p>
-              <Link to="/option" variant="body2">
+              <Link to="/option" variant="body2" className="text-white rounded-full bg-blue-950 px-5 py-2">
 Signup                  
 </Link>
             </div>
