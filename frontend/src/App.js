@@ -55,7 +55,7 @@ const App = () => {
                 <Routes>
                   <Route
                     exact
-                    path="/dashboard"
+                    path="/admin/dashboard"
                     element={<AdminDashboard/>}
                   />
 
