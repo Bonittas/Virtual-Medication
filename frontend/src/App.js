@@ -52,16 +52,7 @@ const App = () => {
                 <Routes>
 
 
-                  <Route exact path="/doctors" element={<Doctors/>} />
-                  <Route exact path="/patients" element={<Patients/>} />
-                  <Route exact path="/create-post" element={<Create_Post/>} />
-                  <Route exact path="/signout" element={<Signout/>} />
-
-                  <Route
-                    exact
-                    path="/latest-updates"
-                    element={<Latest_Updates/>}
-                  />
+              
                   <Route exact path="/" element={<Home/>} />
 
                                   <Route
@@ -132,6 +123,16 @@ const App = () => {
                     exact
                     path="/admin-dashboard"
                     element={<AdminDashboard/>}
+                  />
+                      <Route exact path="/doctors" element={<Doctors/>} />
+                  <Route exact path="/patients" element={<Patients/>} />
+                  <Route exact path="/create-post" element={<Create_Post/>} />
+                  <Route exact path="/signout" element={<Signout/>} />
+
+                  <Route
+                    exact
+                    path="/latest-updates"
+                    element={<Latest_Updates/>}
                   />
                 <Route exact path="/admin-signin" element={<Admin_Signin/>} />
                 <Route exact path="/option" element={<OptionPage/>} />
