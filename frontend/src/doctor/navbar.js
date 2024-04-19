@@ -23,7 +23,6 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import CreateIcon from "@mui/icons-material/Create";
-import Notifications from "./notifications";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PersonIcon from "@mui/icons-material/Person";
 import DateRangeIcon from "@mui/icons-material/DateRange";
@@ -135,7 +134,6 @@ const Navbar = () => {
           <ListItem button component="a" href="/doctor/notifications">
             <Tooltip title="Notifications" placement="right">
               <ListItemIcon>
-                <Notifications />
               </ListItemIcon>
             </Tooltip>
             <ListItemText>Notifications</ListItemText>

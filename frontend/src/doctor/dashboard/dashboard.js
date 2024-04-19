@@ -1,8 +1,6 @@
 import { Grid, Paper, Container } from "@mui/material";
 import { useAuth } from "../../contexts/AuthContext";
 import Navbar from "../navbar";
-import Form from "./form";
-import Upload from "./upload";
 import { container, paper } from "../styles";
 import { upload } from "../../patient/styles";
 import { Dashboard } from '@mui/icons-material/Dashboard';

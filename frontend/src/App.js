@@ -13,28 +13,11 @@ import OptionPage from "./home/optionPage"
 import Doctor_Signup from "./doctor/signup";
 import Doctor_Signin from "./doctor/signin";
 import Doctor_Dashboard from "./doctor/dashboard/dashboard";
-import Doctor_Profile from "./doctor/profile";
-import Appointments from "./doctor/appointments";
-import Doctor_Scheduled_Meetings from "./doctor/scheduled_meetings";
-import Patient from "./doctor/patient";
-import Doctor_Notifications from "./doctor/doctor_notifications";
-import Doctor_Room from "./doctor/videoMeeting/room";
-import Your_Patients from "./doctor/your_patients";
-import Doctor_Latest_Updates from "./doctor/latest_updates";
-// PATIENT'S PAGES
+
 import Patient_Signup from "./patient/signup";
 import Patient_Signin from "./patient/signin";
 import Patient_Dashboard from "./patient/dashboard/dashboard";
-import Patient_Profile from "./patient/profile";
-import View_Doctors from "./patient/view_doctors";
-import Book_Appointment from "./patient/book_appointment";
-import Doctor from "./patient/doctor";
-import Patient_Notifications from "./patient/patient_notifications";
-import Patient_Scheduled_Meetings from "./patient/scheduled_meetings";
-import Patient_Room from "./patient/videoMeeting/room";
-import Patient_Latest_Updates from "./patient/latest_updates";
-import Past_Appointments from "./patient/past_appointments";
-// ADMIN'S PAGES
+
 import Admin_Signin from "./admin/signin";
 import Admin_Dashboard from "./admin/dashboard";
 import Doctors from "./admin/doctors";
@@ -110,94 +93,14 @@ const App = () => {
                     path="/doctor/dashboard"
                     element={<Doctor_Dashboard/>}
                   />
-                  <Route
-                    exact
-                    path="/doctor/profile"
-                    element={<Doctor_Profile/>}
-                  />
-                  <Route
-                    exact
-                    path="/doctor/appointments"
-                    element={<Appointments/>}
-                  />
-                  <Route
-                    exact
-                    path="/doctor/notifications"
-                    element={<Doctor_Notifications/>}
-                  />
-                  <Route
-                    exact
-                    path="/doctor/scheduled_meetings"
-                    element={<Doctor_Scheduled_Meetings/>}
-                  />
-                  <Route
-                    exact
-                    path="/doctor/room/:roomID"
-                    element={<Doctor_Room/>}
-                  />
-                  <Route
-                    exact
-                    path="/doctor/your_patients"
-                    element={<Your_Patients/>}
-                  />
-                  <Route
-                    exact
-                    path="/patient_profile/:uid"
-                    element={<Patient/>}
-                  />
-                  <Route
-                    exact
-                    path="/doctor/latest_updates"
-                    element={<Doctor_Latest_Updates/>}
-                  />
-
+               
                   {/* PATIENT ROUTES */}
                   <Route
                     exact
                     path="/patient/dashboard"
                     element={<Patient_Dashboard/>}
                   />
-                  <Route
-                    exact
-                    path="/patient/profile"
-                    element={<Patient_Profile/>}
-                  />
-                  <Route
-                    exact
-                    path="/patient/view_doctors"
-                    element={<View_Doctors/>}
-                  />
-                  <Route
-                    exact
-                    path="/patient/book_appointment"
-                    element={<Book_Appointment/>}
-                  />
-                  <Route exact path="/doctor_profile/:uid" component={<Doctor/>} />
-                  <Route
-                    exact
-                    path="/patient/notifications"
-                    element={<Patient_Notifications/>}
-                  />
-                  <Route
-                    exact
-                    path="/patient/scheduled_meetings"
-                    element={<Patient_Scheduled_Meetings/>}
-                  />
-                  <Route
-                    exact
-                    path="/patient/room/:roomID"
-                    element={<Patient_Room/>}
-                  />
-                  <Route
-                    exact
-                    path="/patient/latest_updates"
-                    element={<Patient_Latest_Updates/>}
-                  />
-                  <Route
-                    exact
-                    path="/patient/past_appointments"
-                    element={<Past_Appointments/>}
-                  />
+                
                   
 
                   {/* ADMIN ROUTES */}

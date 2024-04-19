@@ -29,7 +29,6 @@ const Navbar = () => {
     { path: "/doctors", icon: faUser, label: "Doctors" },
     { path: "/create-post", icon: faTags, label: "Create Post" },
     { path: "/latest-updates", icon: faQuestionCircle, label: "Latest Updates" },
-    { path: "/signout", icon: faSignOutAlt, label: "Signout" }
   ];
 
   return (
