@@ -56,9 +56,8 @@ const OptionPage = () => {
                         />
                         <label 
                             htmlFor="doctorOption" 
-                            className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'doctor' ? 'border-blue-500' : 'border-gray-400'}`}
+                            className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'doctor' ? 'border-blue-900' : 'border-gray-400'}`}
                         >
-                            {selectedOption === 'doctor' && <span className="bg-black w-2 h-2 rounded-full absolute inset-0 m-auto"></span>}
                         </label>
                         <label htmlFor="doctorOption" className="cursor-pointer">Join as Doctor</label>
                     </div>
@@ -74,9 +73,8 @@ const OptionPage = () => {
                         />
                         <label 
                             htmlFor="adminOption" 
-                            className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'admin' ? 'border-yellow-500' : 'border-gray-400'}`}
+                            className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'admin' ? 'border-yellow-900' : 'border-gray-400'}`}
                         >
-                            {selectedOption === 'admin' && <span className="bg-black w-2 h-2 rounded-full absolute inset-0 m-auto"></span>}
                         </label>
                         <label htmlFor="adminOption" className="cursor-pointer">{selectedOption === 'admin' ? 'Sign In as Admin' : 'Admin Signin'}</label>
                     </div>
@@ -92,9 +90,8 @@ const OptionPage = () => {
                         />
                         <label 
                             htmlFor="patientOption" 
-                            className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'patient' ? 'border-green-500 text-black' : 'border-gray-400'}`}
+                            className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'patient' ? 'border-green-900 text-black' : 'border-gray-400'}`}
                         >
-                            {selectedOption === 'patient' && <span className="bg-black w-2 h-2 rounded-full absolute inset-0 m-auto"></span>}
                         </label>
                         <label htmlFor="patientOption" className="cursor-pointer">Sign Up as Patient</label>
                     </div>
