@@ -57,7 +57,7 @@ const Admin_Signin = () => {
   
       if (email === "admin@gmail.com" && password === "1233455") {
         setLoginSuccess(true);
-        navigate("/admin/dashboard");
+        navigate("/admin-dashboard");
       } else {
         setLoginSuccess(true);
       }

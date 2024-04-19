@@ -19,18 +19,15 @@ import Patient_Signin from "./patient/signin";
 import Patient_Dashboard from "./patient/dashboard/dashboard";
 
 import Admin_Signin from "./admin/signin";
-import Admin_Dashboard from "./admin/dashboard";
 import Doctors from "./admin/doctors";
 import Patients from "./admin/patients";
 import Create_Post from "./admin/create_post";
 import Latest_Updates from "./admin/latest_updates";
 import Signout from "./admin/signout"
 import AdminDashboard from "./admin/dashboard"
-import Dashboard from "@mui/icons-material/Dashboard";
 const App = () => {
   const [user, setUser] = useState("");
 
-  //SETTING THE USER IF HE IS AUTHENTICATED
   const authlistener = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -55,7 +52,7 @@ const App = () => {
                 <Routes>
                   <Route
                     exact
-                    path="/admin/dashboard"
+                    path="/admin-dashboard"
                     element={<AdminDashboard/>}
                   />
 
@@ -101,12 +98,7 @@ const App = () => {
                 
                   
 
-                  {/* ADMIN ROUTES */}
-                  <Route
-                    exact
-                    path="/admin/dashboard"
-                    element={<Admin_Dashboard/>}
-                  />
+               
                   <Route exact path="/doctors" element={<Doctors/>} />
                   <Route exact path="/patients" element={<Patients/>} />
                   <Route exact path="/create-post" element={<Create_Post/>} />
