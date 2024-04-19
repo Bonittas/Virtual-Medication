@@ -36,7 +36,7 @@ function Header() {
             <a href="#contact">Contact</a>
           </li>
           <button className="bg-transparent font-semibold py-2 px-4 border border-gray-400 hover:text-blue-800 rounded-3xl">
-            <Link href="/admin-signin">Sign In</Link>
+            <Link to="/admin-signin" variant="body2">Sign In</Link>
           </button>
         </ul>
       </div>
