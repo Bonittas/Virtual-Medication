@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Router, Route, Routes } from "react-router-dom";
-import firebase from "./firebase";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CssBaseline } from "@mui/material";
 import './index.css';
 
-// HOMEPAGE
 import Home from "./home/home";
 import LoggedIn from "./home/loggedIn";
-// DOCTOR'S PAGES
 import OptionPage from "./home/optionPage"
 import Doctor_Signup from "./doctor/signup";
 import Doctor_Signin from "./doctor/signin";
@@ -27,20 +24,6 @@ import Signout from "./admin/signout"
 import AdminDashboard from "./admin/dashboard"
 const App = () => {
   const [user, setUser] = useState("");
-
-  const authlistener = () => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser("");
-      }
-    });
-  };
-
-  useEffect(() => {
-    authlistener();
-  }, []);
 
   return (
     <>

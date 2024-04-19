@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import firebase from "../firebase";
 import { styled, useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -46,8 +45,7 @@ const Navbar = () => {
 
   // SIGN OUT FUNCTION
   const handleSignout = () => {
-    firebase.auth().signOut();
-    history.push("/#");
+
   };
 
   return (

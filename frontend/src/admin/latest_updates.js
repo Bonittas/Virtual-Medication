@@ -26,12 +26,10 @@ const Posts = () => {
     return <div>Error: {error}</div>;
   }
 
-  // Filtering posts based on search query
   const filteredPosts = posts.filter((post) =>
     post.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Pagination logic
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
@@ -49,10 +47,10 @@ const Posts = () => {
       _id: postId,
       title: editTitle,
       body: editBody,
-      image: editImage // Include updated image URL
+      image: editImage 
     };
     dispatch(updatePost(postId, updatedPost));
-    setEditablePostId(""); // Exit edit mode
+    setEditablePostId("");
   };
 
   return (
@@ -73,7 +71,7 @@ const Posts = () => {
           {currentPosts.map((post) => (
             <div key={post._id} className="border bg-blue-50">
               <img
-                src={`http://localhost:5001/${post.image}`}
+                src={`https://medicare-12.onrender.com/${post.image}`}
                 alt={post.title}
                 className="w-full h-56 rounded-y-md"
               />

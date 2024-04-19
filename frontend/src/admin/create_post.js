@@ -19,27 +19,24 @@ const AdminPostForm = ({ postToEdit }) => {
 
     try {
       if (postToEdit) {
-        // Dispatch an action to update the post if editing
         await dispatch(updatePost(postToEdit._id, formData));
         setSuccessMessage("Post updated successfully.");
       } else {
-        // Dispatch an action to create the post if creating
         await dispatch(createPost(formData));
         setSuccessMessage("Post created successfully.");
       }
 
-      // Clear form fields after successful submission
       setTitle("");
       setBody("");
       setImage(null);
     } catch (error) {
       console.error("Error:", error);
-      setSuccessMessage(""); // Clear success message in case of error
+      setSuccessMessage(""); 
     }
   };
 
   return (
-    <>      <Navbar  /> {/* Pass handleNavigation as a prop */}
+    <>      <Navbar  />
 
     <form onSubmit={handleSubmit} className=" max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 my-20">
       <div className="mb-4">

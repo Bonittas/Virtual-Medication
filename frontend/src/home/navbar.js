@@ -7,7 +7,6 @@ const Navbar = (props) => {
 
   return (
     <React.Fragment id="">
-      {/* TITLE */}
       <Toolbar sx={titleToolbar}>
         <Typography
           variant="h3"
@@ -20,7 +19,6 @@ const Navbar = (props) => {
         </Typography>
       </Toolbar>
 
-      {/* LINKS TO VARIOUS SECTIONS */}
       <Toolbar component="nav" variant="dense" sx={navbarToolbar}>
         {sections.map((section) => (
           <Link

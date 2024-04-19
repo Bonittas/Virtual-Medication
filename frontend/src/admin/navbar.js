@@ -25,7 +25,7 @@ const Navbar = () => {
   };
 
   const links = [
-    { path: "/dashboard", icon: faHome, label: "Dashboard" },
+    { path: "/admin-dashboard", icon: faHome, label: "Dashboard" },
     { path: "/doctors", icon: faUser, label: "Doctors" },
     { path: "/create-post", icon: faTags, label: "Create Post" },
     { path: "/latest-updates", icon: faQuestionCircle, label: "Latest Updates" },
