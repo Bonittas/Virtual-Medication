@@ -3,7 +3,7 @@ import axios from 'axios'; // Import axios
 export const signIn = (email, password) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post("https://medicare-3.onrender.com/api/auth/doctor/signin", { email, password });
+      const response = await axios.post("http://medicare-3.onrender.com/api/auth/doctor/signin", { email, password });
       dispatch({ type: 'SIGN_IN', payload: response.data });
     } catch (error) {
       console.error('Error during signin:', error);
@@ -16,7 +16,7 @@ export const signIn = (email, password) => {
 export const signUp = (name, email, password) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post("https://medicare-3.onrender.com/api/auth/doctor/signup", { name, email, password });
+      const response = await axios.post("http://medicare-3.onrender.com/api/auth/doctor/signup", { name, email, password });
       dispatch({ type: 'SIGN_UP', payload: response.data }); 
     } catch (error) {
       console.error('Error during signup:', error); 

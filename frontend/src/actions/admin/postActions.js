@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const createPost = (postData) => async (dispatch) => {
   try {
-    const res = await axios.post("https://medicare-12.onrender.com/api/posts", postData, {
+    const res = await axios.post("https://localhost:5001/api/posts", postData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -20,7 +20,7 @@ export const createPost = (postData) => async (dispatch) => {
 
 export const updatePost = (postId, postData) => async (dispatch) => {
   try {
-    const res = await axios.put(`https://medicare-12.onrender.com/api/posts/${postId}`, postData);
+    const res = await axios.put(`http://localhost:5001/api/posts/${postId}`, postData);
     dispatch({
       type: "UPDATE_POST",
       payload: res.data,
@@ -32,7 +32,7 @@ export const updatePost = (postId, postData) => async (dispatch) => {
 
 export const deletePost = (postId) => async (dispatch) => {
   try {
-    await axios.delete(`https://medicare-12.onrender.com/api/posts/${postId}`);
+    await axios.delete(`http://localhost:5001/api/posts/${postId}`);
     dispatch({
       type: "DELETE_POST",
       payload: postId,
@@ -43,7 +43,7 @@ export const deletePost = (postId) => async (dispatch) => {
 };
 export const getPosts = () => async (dispatch) => {
   try {
-    const res = await axios.get("https://medicare-12.onrender.com/api/posts");
+    const res = await axios.get("http://localhost:5001/api/posts");
     dispatch({
       type: "GET_POSTS",
       payload: res.data,

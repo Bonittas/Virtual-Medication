@@ -29,40 +29,35 @@ const Admin_Signin = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loginSuccess, setLoginSuccess] = useState(false);
-
   const handleSignin = async (e) => {
     e.preventDefault();
     setEmailError("");
     setPasswordError("");
-  
     if (email === "") {
       setEmailError("Email is required");
       return;
     }
-  
     const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.match(emailFormat)) {
       setEmailError("Please enter a valid email address");
       return;
     }
-  
     if (password === "") {
       setPasswordError("Password is required");
       return;
     }
-  
+
     try {
-      // await dispatch(signIn(email, password)); 
+      await dispatch(signIn(email, password));
+      // Redirect to dashboard only if login was successful
+      navigate("/admin-dashboard");
+      await dispatch(signIn(email, password)); 
       console.log("Sign in successful");
-  
-      if (email === "admin@gmail.com" && password === "123456789") {
-        setLoginSuccess(true);
-        navigate("/admin-dashboard");
-      } else {
-        setLoginSuccess(true);
-      }
-  
+      setLoginSuccess(true); 
+
     } catch (error) {
+      console.error("Sign in error:", error);
+      setEmailError("Login error");
       setEmailError("Incorrect email or password. Please try again.");
     }
   };
@@ -84,6 +79,7 @@ const Admin_Signin = () => {
             <Box component="form" noValidate onSubmit={handleSignin} sx={{ mt: 1 }}>
               {emailError && <Alert severity="error">{emailError}</Alert>}
               {passwordError && <Alert severity="error">{passwordError}</Alert>}
+              {loginSuccess && <Alert severity="success">Login successful!</Alert>}
 
               <TextField
                 margin="normal"
