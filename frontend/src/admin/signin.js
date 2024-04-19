@@ -84,7 +84,6 @@ const Admin_Signin = () => {
             <Box component="form" noValidate onSubmit={handleSignin} sx={{ mt: 1 }}>
               {emailError && <Alert severity="error">{emailError}</Alert>}
               {passwordError && <Alert severity="error">{passwordError}</Alert>}
-              {loginSuccess && <Alert severity="success">Login successful!</Alert>}
 
               <TextField
                 margin="normal"
