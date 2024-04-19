@@ -29,8 +29,9 @@ const LandingPage = () => {
                 You can get the care you need 24/7 – be it online or in person.
                 You will be treated by caring specialist doctors.
               </p>
-              <Link href="/option" variant="body2">
-Signup                  </Link>
+              <Link to="/option" variant="body2">
+Signup                  
+</Link>
             </div>
             <div className="lg:w-2/5 z-10 mt-36">
               <img

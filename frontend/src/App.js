@@ -53,7 +53,6 @@ const App = () => {
             <BrowserRouter>
               <AuthProvider>
                 <Routes>
-                <Route exact path="/option" element={<OptionPage/>} />
                   <Route
                     exact
                     path="/dashboard"
@@ -86,7 +85,6 @@ const App = () => {
                 <Route exact path="/doctor-signin" element={<Doctor_Signin/>} />
                 <Route exact path="/admin-signin" element={<Admin_Signin/>} />
                 <Route exact path="/create-post" element={<Create_Post/>} />
-                <Route exact path="/option" element={<OptionPage/>} />
 
                   <Route
                     exact
