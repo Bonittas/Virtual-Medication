@@ -55,7 +55,7 @@ const Admin_Signin = () => {
       // await dispatch(signIn(email, password)); 
       console.log("Sign in successful");
   
-      if (email === "admin@gmail.com" && password === "1233455") {
+      if (email === "admin@gmail.com" && password === "123456789") {
         setLoginSuccess(true);
         navigate("/admin-dashboard");
       } else {

@@ -50,11 +50,7 @@ const App = () => {
             <BrowserRouter>
               <AuthProvider>
                 <Routes>
-                  <Route
-                    exact
-                    path="/admin-dashboard"
-                    element={<AdminDashboard/>}
-                  />
+
 
                   <Route exact path="/doctors" element={<Doctors/>} />
                   <Route exact path="/patients" element={<Patients/>} />
@@ -113,7 +109,6 @@ const App = () => {
           </CssBaseline>
         </>
       ) : (
-        // ROUTES AVAILABLE IF THE USER IS NOT AUTHENTICATED
         <>
           <CssBaseline>
             <BrowserRouter>
@@ -133,6 +128,11 @@ const App = () => {
                   path="/patient-signin"
                   element={<Patient_Signin/>}
                 />
+                                  <Route
+                    exact
+                    path="/admin-dashboard"
+                    element={<AdminDashboard/>}
+                  />
                 <Route exact path="/admin-signin" element={<Admin_Signin/>} />
                 <Route exact path="/option" element={<OptionPage/>} />
 
