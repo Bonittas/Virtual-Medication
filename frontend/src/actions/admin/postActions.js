@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const createPost = (postData) => async (dispatch) => {
   try {
-    const res = await axios.post("https://localhost:5001/api/posts", postData, {
+    const res = await axios.post("http://localhost:5001/api/posts", postData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

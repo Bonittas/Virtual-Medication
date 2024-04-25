@@ -2,8 +2,10 @@ require('dotenv').config();
 
 const express = require("express");
 const connectDB = require("./config/db");
-const postRoutes = require("./routes/post");
 const cors = require('cors');
+
+const postRoutes = require("./routes/post");
+const viewPatients = require("./routes/getPatients")
 const viewDoctors = require("./routes/getDoctors")
 const app = express();
 const path = require("path");
@@ -24,6 +26,7 @@ app.use(express.json());
 
 app.use("/api/posts", postRoutes);
 app.use('/api/admin', viewDoctors)
+app.use('/api/admin', viewPatients)
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts, deletePost, updatePost } from "../actions/admin/postActions";
-import Navbar from "./navbar";
 
 const Posts = () => {
   const dispatch = useDispatch();
@@ -55,7 +54,6 @@ const Posts = () => {
 
   return (
     <>
-      <Navbar />
       <div>
         <h1 className="text-2xl text-center mt-20 m-4">Latest updates and Posts</h1>
         <div className="m-4 flex justify-center">
@@ -79,25 +77,7 @@ const Posts = () => {
                 <div className="p-4">
                   <h2 className="text-lg text-gray-500 font-md mb-2">{post.title}</h2>
                   <p className="mb-2 text-gray-500 ">{post.body}</p>
-                  <div className="mt-4 flex justify-end">
-                    <button
-                      onClick={() => {
-                        setEditTitle(post.title);
-                        setEditBody(post.body);
-                        setEditImage(post.image);
-                        setEditablePostId(post._id);
-                      }}
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mr-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(post._id)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-                    >
-                      Delete
-                    </button>
-                  </div>
+              
                 </div>
               ) : (
                 <div className="p-4">

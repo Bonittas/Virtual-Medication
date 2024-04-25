@@ -5,6 +5,7 @@ import bgright from "../assets/images/bg-right.png";
 import bgleft from "../assets/images/bg-left.png";
 import Header from "./header";
 import OptionsPage from './optionPage'
+import Posts from './posts'
 const LandingPage = () => {
   return (
     <>
@@ -51,7 +52,7 @@ Signup
       </section>
 <section>
 </section>
-
+<Posts/>
     </>
   );
 };

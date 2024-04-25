@@ -1,24 +1,11 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { signIn } from "../actions/doctor_authActions"; 
-import { box, signinGrid } from "./styles";
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  Box,
-  Paper,
-  Link,
-  Grid,
-  TextField,
-  Typography,
-  Alert,
-} from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-const theme = createTheme();
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { signIn } from "../actions/doctor_authActions";
+import { signinGrid, box, paper, avatar } from "./styles";
+import doctorSignInImage from "../images/s2.svg";
 
 const Doctor_Signin = () => {
   const navigate = useNavigate();
@@ -53,90 +40,84 @@ const Doctor_Signin = () => {
     }
 
     try {
-      await dispatch(signIn(email, password)); 
+      await dispatch(signIn(email, password));
       console.log("Sign in successful");
-      setLoginSuccess(true); 
-      navigate('/doctor/dashboard')
-
+      setLoginSuccess(true);
+      navigate("/doctor-dashboard");
     } catch (error) {
       setEmailError("Invalid email or password. Please try again.");
     }
   };
-  
+
   return (
-    <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid item xs={false} sm={4} md={7} sx={signinGrid} />
-        <Grid item xs={12} sm={8} md={5} elevation={6} square>
-          <Box sx={box}>
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5" sx={{ fontWeight: "bold" }}>
-              Doctor Sign in
-            </Typography>
-
-            <Box component="form" noValidate onSubmit={handleSignin} sx={{ mt: 1 }}>
-              {emailError && <Alert severity="error">{emailError}</Alert>}
-              {passwordError && <Alert severity="error">{passwordError}</Alert>}
-              {loginSuccess && <Alert severity="success">Login successful!</Alert>}
-
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
+    <div className="my-3  flex justify-center items-center" >
+      <div className="border bg-gray-300 w-1/3 p-3 rounded-md">
+      <div className="flex justify-center items-center">
+      <img src={doctorSignInImage} alt="Doctor Sign In" className="w-fit h-32" />
+      </div>
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="text-center">
+          
+          <h2 className="mt-2 text-gray-500 text-center text-xl font-md ">
+            Doctor Sign in
+          </h2>
+        </div>
+        <form className="mt-4 space-y-6" onSubmit={handleSignin}>
+          {emailError && <p className="text-red-500">{emailError}</p>}
+          {passwordError && <p className="text-red-500">{passwordError}</p>}
+          {loginSuccess && (
+            <p className="text-green-500">Login successful!</p>
+          )}
+          <div className="rounded-md  shadow-sm ">
+            <div className="my-6 ">
+              <label htmlFor="email-address" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email-address"
                 name="email"
+                type="email"
                 autoComplete="email"
-                autoFocus
+                required
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded- focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                error={Boolean(emailError)}
               />
-
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
+              <input
                 id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                error={Boolean(passwordError)}
               />
+            </div>
+          </div>
 
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Sign In
-              </Button>
-
-              <Typography
-                component="h1"
-                variant="h6"
-                align="center"
-                sx={{ fontWeight: "bold" }}
-              ></Typography>
-
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="/doctor-signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
-    </ThemeProvider>
+          <div>
+            <button
+              type="submit"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign in
+            </button>
+            <p className="my-2 text-blue-400">
+            <Link to='/doctor-signup' >Don't have an account? Signup here</Link>
+            </p>
+          </div>
+        </form>
+      </div>
+      </div>
+    </div>
   );
 };
 

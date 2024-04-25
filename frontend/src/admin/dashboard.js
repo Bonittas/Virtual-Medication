@@ -14,7 +14,7 @@ const Admin_Dashboard = () => {
     <>
       <div className="mb-4"><Navbar /> </div>
       <Container maxWidth="lg" sx={container}>
-        <Grid container spacing={4}>
+        <Grid container spacing={1}>
           <Grid item xs={12}>
             <Typography variant="h4" align="center" sx={typography}>
               ADMIN DASHBOARD
