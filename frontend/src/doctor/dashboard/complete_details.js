@@ -23,7 +23,8 @@ const CompleteDetails = (props) => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [image, setImage] = useState(null);
-
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -61,8 +62,11 @@ const CompleteDetails = (props) => {
     );
     try {
       await dispatch(completeDetails(formData));
+      setSuccessMessage('Profile successfully updated.');
+      setErrorMessage('');
     } catch (error) {
-      console.error("Failed to complete profile:", error.message);
+      setErrorMessage('Error while editing profile.');
+      setSuccessMessage('');
     }
   };
 
@@ -76,10 +80,14 @@ const CompleteDetails = (props) => {
     <form onSubmit={handleSubmit}>
       <div className="mt-20">
         <div className="mx-6">
+          
           <h6 className="text-xl font-semibold">Complete Details</h6>
-          <p className="text-sm text-green-600 mb-4">
+          <p className="text-sm text-right text-green-600 mb-4">
             Be careful while editing the important details!
           </p>
+          {successMessage && <p className="text-green-500 w-1/4 text-center bg-green-200 p-4 mb-4">{successMessage}</p>}
+      {errorMessage && <p className="text-red-500 bg-red-100 mb-4">{errorMessage}</p>}
+  
           <div className=" flex justify-center rounded-md bg-green-100 p-4">
             <div className="w-1/3">
               <div>

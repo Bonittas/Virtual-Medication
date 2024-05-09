@@ -32,6 +32,7 @@ exports.signup = async (req, res) => {
   }
 };
 
+// Modify the completeDetails controller
 exports.completeDetails = async (req, res) => {
   try {
     // Check if details are provided in the request body
@@ -83,12 +84,10 @@ exports.completeDetails = async (req, res) => {
       endTime 
     };
 
-    // If file uploaded, update file field in user document
-  
-
     // If profile picture uploaded, update imageUrl field in user document
     if (req.file) {
-      updatedUserFields.imageUrl = req.file.path;
+      // Extract the file name from req.file.path and store it in imageUrl
+      updatedUserFields.imageUrl = req.file.filename;
     }
 
     const updatedUser = await User.findByIdAndUpdate(userId, updatedUserFields, { new: true });

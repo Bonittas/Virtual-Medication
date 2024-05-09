@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const notifications= new mongoose.Schema({
+const notificationSchema = new mongoose.Schema({
   recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' },
   message: String,
   type: String,
@@ -40,8 +40,7 @@ const doctorSchema = new mongoose.Schema({
   country: String,
   startTime: String,
   endTime: String,
-  imageUrl: String, 
-  notifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }]
+  imageUrl: String,
 
 });
 

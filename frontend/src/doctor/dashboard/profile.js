@@ -42,7 +42,13 @@ const Profile = () => {
       <h1 className="text-3xl font-bold mb-4">Welcome, {user.name}</h1>
       <div className="bg-green-50 p-6 rounded-lg mb-8 shadow-md">
         <div className="grid grid-cols-3 gap-4 mt-2">
-          <div>
+          <div> <div className="flex h-full w-full items-center mb-4">
+              {user.imageUrl ? (
+                <img src={`uploads/${user.imageUrl}`} alt="Profile" className="w-full h-full rounded-md mr-4 border-2 border-green-100" />
+              ) : (
+                <div className="w-full h-full rounded-md bg-green-200 mr-4"></div>
+              )}
+                              </div>
 
               <div>
                 </div>
