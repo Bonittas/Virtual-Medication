@@ -40,7 +40,6 @@ export const viewDoctors = () => {
   };
 };
 
-// Action creators for verifying a doctor
 export const verifyDoctorSuccess = (doctorId) => ({
   type: VERIFY_DOCTOR_SUCCESS,
   payload: doctorId,

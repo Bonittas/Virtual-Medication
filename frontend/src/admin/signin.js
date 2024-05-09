@@ -29,6 +29,7 @@ const Admin_Signin = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [loginSuccess, setLoginSuccess] = useState(false);
+
   const handleSignin = async (e) => {
     e.preventDefault();
     setEmailError("");
@@ -46,22 +47,15 @@ const Admin_Signin = () => {
       setPasswordError("Password is required");
       return;
     }
-
     try {
       await dispatch(signIn(email, password));
-      // Redirect to dashboard only if login was successful
-      navigate("/admin-dashboard");
-      await dispatch(signIn(email, password)); 
-      console.log("Sign in successful");
-      setLoginSuccess(true); 
-
+      navigate("/admin-dashboard"); // Redirect to dashboard upon successful login
     } catch (error) {
       console.error("Sign in error:", error);
       setEmailError("Login error");
       setEmailError("Incorrect email or password. Please try again.");
-    }
   };
-  
+}
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>

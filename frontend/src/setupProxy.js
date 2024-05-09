@@ -18,6 +18,13 @@ module.exports = function (app) {
     })
   );
   app.use(
+    '/api/auth/doctor/details',
+    createProxyMiddleware({
+      target: 'https://localhost:5000',
+      changeOrigin: true,
+    })
+  );
+  app.use(
     '/api/auth/doctor/signup',
     createProxyMiddleware({
       target: 'https://localhost:5000',

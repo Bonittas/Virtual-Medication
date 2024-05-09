@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
 
+const notifications= new mongoose.Schema({
+  recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' },
+  message: String,
+  type: String,
+  timestamp: { type: Date, default: Date.now }
+});
 const doctorSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -18,23 +24,25 @@ const doctorSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  // Add nullable fields for profile completion
   medicalSpeciality: String,
   age: Number,
   gender: String,
   degree: String,
   regNumber: String,
-  yearOfReg: Number,
+  yearOfReg: String,
   stateMedicalCouncil: String,
-  experience: Number,
+  experience: String,
   address1: String,
   address2: String,
   city: String,
   state: String,
   pincode: String,
   country: String,
-  startTime: Date,
-  endTime: Date,
+  startTime: String,
+  endTime: String,
+  imageUrl: String, 
+  notifications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' }]
+
 });
 
-module.exports = mongoose.model('Doctors', doctorSchema);
+module.exports = mongoose.model('Doctor', doctorSchema);

@@ -3,13 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faHome, faUser, faTags, faQuestionCircle, faSignOutAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logout } from "../actions/admin/admin_authActions";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../actions/admin/admin_authActions";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Get the navigate function
+  const navigate = useNavigate();
 
   const handleDrawerOpen = () => {
     setOpen(true);

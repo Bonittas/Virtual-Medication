@@ -6,8 +6,11 @@ const doctorRoutes = require('./routes/doctor_route');
 const adminRoutes = require('./routes/admin_route');
 const cors = require('cors');
 const patientRoutes = require('./routes/patient_route');
+const path = require("path");
 
 const app = express();
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.get("/", (req, res) => {
   res.send("Welcome to the backend of the user authentication system");
 });

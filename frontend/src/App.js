@@ -3,14 +3,19 @@ import { BrowserRouter, Router, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CssBaseline } from "@mui/material";
 import './index.css';
-
+import Footer from "./home/footer"
 import Home from "./home/home";
 import LoggedIn from "./home/loggedIn";
 import OptionPage from "./home/optionPage"
 import Doctor_Signup from "./doctor/signup";
+import Doctor_Profile from "./doctor/dashboard/profile";
+import Updates from "./doctor/dashboard/editProfile"
+
 import Doctor_Signin from "./doctor/signin";
 import Doctor_Dashboard from "./doctor/dashboard/dashboard";
+import Doctor_Signout from "./doctor/dashboard/signout"
 import Complete_Details from "./doctor/dashboard/complete_details"
+import Notification from "./doctor/dashboard/Notification";
 import Patient_Signup from "./patient/signup";
 import Patient_Signin from "./patient/signin";
 import Patient_Dashboard from "./patient/dashboard/dashboard";
@@ -101,6 +106,29 @@ const App = () => {
                     path="/complete-details"
                     element={<Complete_Details/>}
                   />  
+                                                                         <Route
+                    exact
+                    path="/doctor-signout"
+                    element={<Doctor_Signout/>}
+                  />  
+                                  
+                                                       <Route
+                    exact
+                    path="/updates"
+                    element={<Updates/>}
+                  />  
+<Route
+  exact
+  path="/doctor/profile"
+  element={<Doctor_Profile />}
+/>
+<Route
+  exact
+  path="/notifications"
+  element={<Notification />}
+/>
+
+        <Route exact path="/profile-edit" component={<Updates/>} />
                         <Route
                     exact
                     path="/doctor-dashboard"
@@ -127,6 +155,7 @@ const App = () => {
               </Routes>
             </BrowserRouter>
           </CssBaseline>
+          <Footer/>
         </>
       )}
     </>

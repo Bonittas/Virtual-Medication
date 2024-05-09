@@ -43,7 +43,7 @@ const Doctor_Signin = () => {
       await dispatch(signIn(email, password));
       console.log("Sign in successful");
       setLoginSuccess(true);
-      navigate("/doctor-dashboard");
+      navigate("/doctor/profile");
     } catch (error) {
       setEmailError("Invalid email or password. Please try again.");
     }

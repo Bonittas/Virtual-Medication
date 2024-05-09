@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { viewDoctors, verifyDoctor, unverifyDoctor } from "../actions/admin/viewDoctors";
 import Navbar from "./navbar";
-
 const Doctors = () => {
   const dispatch = useDispatch();
   const { doctors, loading, error } = useSelector(state => state.doctors);
@@ -86,9 +85,20 @@ const Doctors = () => {
                 <li key={doctor._id} className="bg-blue-50 border m-4 w-full rounded-md px-4 py-8 flex items-center">
                   <div className="flex-1">
                     <div className="text-lg font-semibold">{doctor.name}</div>
-                    <div className="text-sm text-gray-500">{doctor.email}</div>
-                    <div className="text-sm text-gray-500">{doctor.specialization}</div>
-                  </div>
+                    <div className="text-sm text-gray-500">Email: {doctor.email}</div>
+                    <div className="text-sm text-gray-500">Medical Speciality: {doctor.medicalSpeciality}</div>
+                    <div className="text-sm text-gray-500">Age: {doctor.age}</div>
+                    <div className="text-sm text-gray-500">Gender: {doctor.gender}</div>
+                    <div className="text-sm text-gray-500">Degree: {doctor.degree}</div>
+                    <div className="text-sm text-gray-500">Registration Number: {doctor.regNumber}</div>
+                    <div className="text-sm text-gray-500">Year of Registration: {doctor.yearOfReg}</div>
+                    <div className="text-sm text-gray-500">State Medical Council: {doctor.stateMedicalCouncil}</div>
+                    <div className="text-sm text-gray-500">Experience: {doctor.experience}</div>
+                    <div className="text-sm text-gray-500">Address: {doctor.address1}, {doctor.address2}, {doctor.city}, {doctor.state}, {doctor.pincode}, {doctor.country}</div>
+                    <div className="text-sm text-gray-500">Working Hours: {doctor.startTime} - {doctor.endTime}</div>
+                    <div><img src={`http://localhost:5001/${doctor.imageUrl}`} alt={doctor.name} className="w-20 h-20 rounded-full mx-auto" />
+                    </div>
+                </div>
                   <div>
                     {doctor.verified ? (
                       <button
@@ -110,22 +120,21 @@ const Doctors = () => {
               ))}
             </ul>
             <div className="my-8 flex justify-center">
-  <nav>
-    <ul className="pagination flex">
-      {Array.from({ length: Math.ceil(filteredDoctors.length / itemsPerPage) }, (_, i) => (
-        <li key={i} className={`page-item ${i + 1 === currentPage ? 'active' : ''}`}>
-          <button
-            onClick={() => paginate(i + 1)}
-            className={`page-link focus:outline-none rounded-md px-3 py-1 mx-1 ${i + 1 === currentPage ? 'bg-blue-200' : 'bg-gray-200 hover:bg-blue-50'}`}
-          >
-            {i + 1}
-          </button>
-        </li>
-      ))}
-    </ul>
-  </nav>
-</div>
-
+              <nav>
+                <ul className="pagination flex">
+                  {Array.from({ length: Math.ceil(filteredDoctors.length / itemsPerPage) }, (_, i) => (
+                    <li key={i} className={`page-item ${i + 1 === currentPage ? 'active' : ''}`}>
+                      <button
+                        onClick={() => paginate(i + 1)}
+                        className={`page-link focus:outline-none rounded-md px-3 py-1 mx-1 ${i + 1 === currentPage ? 'bg-blue-200' : 'bg-gray-200 hover:bg-blue-50'}`}
+                      >
+                        {i + 1}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
           </>
         )}
       </div>

@@ -177,7 +177,7 @@ const Doctor_Signup = () => {
 
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link href="/doctor-signin" variant="body2">
+                  <Link to="/doctor-signin" variant="body2">
                     Already have an account? Sign in
                   </Link>
                 </Grid>
