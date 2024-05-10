@@ -7,6 +7,7 @@ import Footer from "./home/footer"
 import Home from "./home/home";
 import LoggedIn from "./home/loggedIn";
 import OptionPage from "./home/optionPage"
+import SignInOptions from "./home/signinOptions"
 import Doctor_Signup from "./doctor/signup";
 import Doctor_Profile from "./doctor/dashboard/profile";
 import Updates from "./doctor/dashboard/editProfile"
@@ -88,6 +89,7 @@ const App = () => {
               <Routes>
                 <Route exact path="/" element={<Home/>} />
                 <Route exact path="/option" element={<OptionPage/>} />
+                <Route exact path="/signin-option" element={<SignInOptions/>} />
 
                 <Route exact path="/doctor-signup" element={<Doctor_Signup/>} />
                 <Route exact path="/doctor-signin" element={<Doctor_Signin/>} />
@@ -155,7 +157,6 @@ const App = () => {
               </Routes>
             </BrowserRouter>
           </CssBaseline>
-          <Footer/>
         </>
       )}
     </>

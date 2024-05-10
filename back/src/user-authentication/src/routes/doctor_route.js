@@ -12,7 +12,7 @@ router.post('/doctor/signin', authController.signin);
 router.post('/doctor/signout', authController.logout);
 
 router.put('/doctor/details', verifyToken, upload.single('profilePicture'), authController.completeDetails);
-router.get('/currentUser',  authController.getCurrentUser);
+router.get('/currentUser', verifyToken, authController.getCurrentUser);
 router.put('/doctor/profile', verifyToken, upload.single('profilePicture'), authController.updateProfile);
 router.put('/updateDoctor', verifyToken, upload.single('profilePicture'), authController.updateUserData);
 router.get('/notifications', verifyToken, authController.getNotifications);

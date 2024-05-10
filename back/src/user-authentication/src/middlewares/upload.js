@@ -1,12 +1,17 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+
 const storage = multer.diskStorage({
-  destination: './uploads', // Save files to the 'uploads' folder in the backend directory
+  destination: './images',
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, 'profilePicture-' + uniqueSuffix + ext);
+    const validExtensions = ['.jpg', '.jpeg', '.png', '.gif']; 
+    if (validExtensions.includes(ext.toLowerCase())) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, 'profilePicture-' + uniqueSuffix + ext);
+    } else {
+      cb(new Error('Only JPG, JPEG, PNG, and GIF files are allowed'));
+    }
   }
 });
 
@@ -14,13 +19,6 @@ const upload = multer({
   storage: storage,
   limits: {
     fileSize: 1024 * 1024 * 5 // Limit file size to 5MB
-  },
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only image files are allowed'));
-    }
   }
 });
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createPost, updatePost } from "../actions/admin/postActions";
 import Navbar from "./navbar";
+import Footer from "../home/footer"
 
 const AdminPostForm = ({ postToEdit }) => {
   const dispatch = useDispatch();
@@ -60,6 +61,9 @@ const AdminPostForm = ({ postToEdit }) => {
         {successMessage && <p className="text-green-500 mt-2">{successMessage}</p>}
         {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
       </form>
+      <div className="bg-blue-950">
+    <Footer/>
+    </div>
     </>
   );
 };

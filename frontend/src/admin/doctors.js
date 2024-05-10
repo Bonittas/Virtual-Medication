@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { viewDoctors, verifyDoctor, unverifyDoctor } from "../actions/admin/viewDoctors";
 import Navbar from "./navbar";
+import Footer from "../home/footer"
 const Doctors = () => {
   const dispatch = useDispatch();
   const { doctors, loading, error } = useSelector(state => state.doctors);
@@ -138,6 +139,9 @@ const Doctors = () => {
           </>
         )}
       </div>
+      <div className="bg-blue-950">
+    <Footer/>
+    </div>
     </>
   );
 };

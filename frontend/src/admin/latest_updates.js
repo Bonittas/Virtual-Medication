@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts, deletePost, updatePost } from "../actions/admin/postActions";
 import Navbar from "./navbar";
+import Footer from "../home/footer"
 
 const Posts = () => {
   const dispatch = useDispatch();
@@ -144,6 +145,9 @@ const Posts = () => {
           ))}
         </div>
       </div>
+      <div className="bg-blue-950">
+    <Footer/>
+    </div>
     </>
   );
 };

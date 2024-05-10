@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchNotifications } from '../../actions/notificationActions';
 import Nav from './dashboard'
+import Footer from "../../home/footer"
+
 const Notification = () => {
   const dispatch = useDispatch();
   const { notifications, loading, error } = useSelector(state => state.notifications);
@@ -31,6 +33,9 @@ const Notification = () => {
       ) : (
         <p>No notifications found.</p>
       )}
+    </div>
+    <div className="bg-green-600">
+    <Footer/>
     </div>
     </>
   );

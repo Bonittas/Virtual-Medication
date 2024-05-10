@@ -9,7 +9,7 @@ const patientRoutes = require('./routes/patient_route');
 const path = require("path");
 
 const app = express();
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.get("/", (req, res) => {
   res.send("Welcome to the backend of the user authentication system");

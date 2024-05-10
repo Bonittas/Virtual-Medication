@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserData } from '../../actions/doctor_authActions';
 import Nav from './dashboard'
+import Footer from "../../home/footer"
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -322,6 +323,10 @@ const EditProfile = () => {
           Save Changes
         </button>
       </form>
+    </div>
+
+    <div className="bg-green-600">
+    <Footer/>
     </div>
     </>
 

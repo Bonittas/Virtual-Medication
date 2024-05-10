@@ -188,6 +188,7 @@ exports.getCurrentUser = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
 exports.getUserData = async (req, res) => {
   try {
     const userId = req.user._id;

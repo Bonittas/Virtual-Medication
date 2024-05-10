@@ -6,6 +6,8 @@ import bgleft from "../assets/images/bg-left.png";
 import Header from "./header";
 import OptionsPage from './optionPage'
 import Posts from './posts'
+import Footer from "./footer"
+import About from "./about"
 const LandingPage = () => {
   return (
     <>
@@ -51,8 +53,13 @@ Signup
         </div>
       </section>
 <section>
+  <About/>
 </section>
+
 <Posts/>
+<div className="bg-blue-300">
+    <Footer/>
+    </div>
     </>
   );
 };

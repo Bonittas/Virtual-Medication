@@ -5,6 +5,7 @@ import { faBars, faTimes, faUser, faChartBar, faPen,faBell, faCog, faSignOutAlt 
 import { logout } from "../../actions/doctor_authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../home/footer"
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
@@ -24,6 +25,8 @@ const Navbar = () => {
   };
 
   return (
+    <>        
+  
     <div className="flex">
       <div className={`fixed top-0 left-0 w-full flex items-center justify-between bg-green-600 py-2 px-4 `}>
         <button
@@ -94,6 +97,8 @@ const Navbar = () => {
         </ul>
       </nav>
     </div>
+ 
+    </>
   );
 };
 

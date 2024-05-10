@@ -85,7 +85,7 @@ const CompleteDetails = (props) => {
           <p className="text-sm text-right text-green-600 mb-4">
             Be careful while editing the important details!
           </p>
-          {successMessage && <p className="text-green-500 w-1/4 text-center bg-green-200 p-4 mb-4">{successMessage}</p>}
+          {successMessage && <p className="text-black w-1/4 text-center bg-green-300 p-4 mb-4">{successMessage}</p>}
       {errorMessage && <p className="text-red-500 bg-red-100 mb-4">{errorMessage}</p>}
   
           <div className=" flex justify-center rounded-md bg-green-100 p-4">
@@ -101,6 +101,9 @@ const CompleteDetails = (props) => {
                   className="border border-gray-300 rounded-md p-2 w-full"
                 />
               </div>
+              <label className="block text-sm font-semibold my-1">
+                Name
+                </label>
               <input
   type="text"
   value={name}
