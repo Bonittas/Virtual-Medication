@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchNotifications } from '../../actions/notificationActions';
 import Nav from './dashboard'
 import Footer from "../../home/footer"
+import Appointmets_Request from "./appointmentRequests"
 
 const Notification = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const Notification = () => {
         <p>No notifications found.</p>
       )}
     </div>
+    <Appointmets_Request/>
     <div className="bg-green-600">
     <Footer/>
     </div>

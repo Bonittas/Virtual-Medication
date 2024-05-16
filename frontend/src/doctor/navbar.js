@@ -55,8 +55,13 @@ const Navbar = () => {
               Profile
             </Link>
           </li>
-          {/* Add other list items here */}
-          <li className="mt-8 mb-2">
+          <li className="mb-2">
+            <Link to="/appointments" className="flex items-center text-gray-700 hover:text-green-600">
+              <span className="mr-2">
+                <FontAwesomeIcon icon={faUser} size="lg" />
+              </span>
+Appointments            </Link>
+          </li>          <li className="mt-8 mb-2">
             <button onClick={handleSignout} className="flex items-center text-gray-700 hover:text-red-600">
               <span className="mr-2">
                 <FontAwesomeIcon icon={faSignOutAlt} size="lg" />

@@ -85,7 +85,7 @@ const Doctors = () => {
               {currentDoctors.map((doctor) => (
                 <li key={doctor._id} className="bg-blue-50 border m-4 w-full rounded-md px-4 py-8 flex items-center">
                   <div className="flex-1">
-                    <div className="text-lg font-semibold">{doctor.name}</div>
+                    <div className="text-lg font-semibold">Name:{doctor.name}</div>
                     <div className="text-sm text-gray-500">Email: {doctor.email}</div>
                     <div className="text-sm text-gray-500">Medical Speciality: {doctor.medicalSpeciality}</div>
                     <div className="text-sm text-gray-500">Age: {doctor.age}</div>

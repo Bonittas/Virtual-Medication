@@ -6,6 +6,7 @@ const fs = require('fs');
 const Notification = require("../../models/doctorNotification")
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
 const JWT_EXPIRES_IN = '1d'; 
+const Appointments = require("../../models/appointmetSchema")
 
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -31,7 +32,6 @@ exports.signup = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
-
 // Modify the completeDetails controller
 exports.completeDetails = async (req, res) => {
   try {
@@ -127,11 +127,18 @@ exports.uploadImage = async (req, res) => {
 
 exports.getUserData = async (req, res) => {
   try {
+    // Assuming 'req.user' contains the authenticated user data
     const userId = req.user._id;
-    const userData = await User.findById(userId);
-    res.json({ userData });
+
+    const userDetails = await User.findById(userId);
+
+    if (!userDetails) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ user: userDetails });
   } catch (error) {
-    console.error('Error fetching user data:', error);
+    console.error('Error fetching complete user details:', error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
@@ -161,6 +168,7 @@ exports.signin = async (req, res) => {
     res.status(500).send('Server Error');
   }
 };
+
 
 exports.verifyToken = (req, res, next) => {
   const token = req.header('x-auth-token');
@@ -292,5 +300,28 @@ exports.logout = async (req, res) => {
   } catch (error) {
     console.error('Error during logout:', error);
     res.status(500).json({ message: 'Server Error' });
+  }
+};
+exports.getAppointments = async (req, res) => {
+  try {
+    // Check if the user making the request is authenticated
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Check if the authenticated user is a doctor
+    const doctor = await User.findById(req.user._id);
+    if (!doctor || doctor.role !== 'doctor') {
+      return res.status(403).json({ error: 'Forbidden' });
+    }
+
+    // If the authenticated user is a doctor, fetch their appointments
+    const doctorId = req.user._id;
+    const appointments = await Appointments.find({ doctor: doctorId });
+
+    res.status(200).json(appointments);
+  } catch (error) {
+    console.error('Error fetching appointments:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };

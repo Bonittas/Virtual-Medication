@@ -1,8 +1,10 @@
-// authReducer.js
 const initialState = {
   user: null,
   error: null,
-  userData: null
+  userData: null,
+  userProfile: null,
+  notifications: [],
+  appointments: [], // Add appointments state
 };
 
 const authReducer = (state = initialState, action) => {
@@ -27,10 +29,35 @@ const authReducer = (state = initialState, action) => {
         error: action.payload
       };
     case 'FETCH_USER_DATA_SUCCESS':
+    case 'FETCH_USER_PROFILE_SUCCESS':
       return {
         ...state,
         userData: action.payload,
         error: null
+      };
+    case 'FETCH_NOTIFICATIONS_SUCCESS':
+      return {
+        ...state,
+        notifications: action.payload,
+        error: null
+      };
+    case 'FETCH_NOTIFICATIONS_ERROR':
+      return {
+        ...state,
+        notifications: [],
+        error: action.payload
+      };
+    case 'FETCH_APPOINTMENTS_SUCCESS': // Action type for fetching appointments
+      return {
+        ...state,
+        appointments: action.payload,
+        error: null
+      };
+    case 'FETCH_APPOINTMENTS_ERROR': 
+      return {
+        ...state,
+        appointments: [],
+        error: action.payload
       };
     default:
       return state;

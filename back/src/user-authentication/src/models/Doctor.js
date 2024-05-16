@@ -6,6 +6,12 @@ const notificationSchema = new mongoose.Schema({
   type: String,
   timestamp: { type: Date, default: Date.now }
 });
+const appointmentSchema = new mongoose.Schema({
+  modeOfConsultation: String,
+  preferredDateTime: Date,
+  symptoms: String,
+  status: { type: String, default: 'pending' } // status can be 'pending', 'accepted', 'rejected', etc.
+});
 const doctorSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -41,6 +47,8 @@ const doctorSchema = new mongoose.Schema({
   startTime: String,
   endTime: String,
   imageUrl: String,
+  appointments: [appointmentSchema],
+  notifications: [notificationSchema]
 
 });
 

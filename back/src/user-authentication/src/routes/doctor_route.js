@@ -16,10 +16,12 @@ router.get('/currentUser', verifyToken, authController.getCurrentUser);
 router.put('/doctor/profile', verifyToken, upload.single('profilePicture'), authController.updateProfile);
 router.put('/updateDoctor', verifyToken, upload.single('profilePicture'), authController.updateUserData);
 router.get('/notifications', verifyToken, authController.getNotifications);
+router.get('/doctor/appointments/:id', verifyToken, authController.getAppointments);
+
 // router.post('/doctor/uploadFile', verifyToken, upload.single('file'), authController.uploadFile);
 // router.post('/doctor/uploadImage', verifyToken, upload.single('profilePicture'), authController.uploadImage);
 
 // router.get('/user/profile', verifyToken,  getDoctor.getUserData);
-router.get('/doctor/profile/:doctorId', verifyToken, getDoctor.getDoctorProfile);
+// router.get('/doctor/profile/:doctorId', verifyToken, getDoctor.getDoctorProfile);
 
 module.exports = router;

@@ -29,3 +29,36 @@ export const FETCH_USER_DATA_ERROR = 'FETCH_USER_DATA_ERROR';
 export const FETCH_NOTIFICATIONS_REQUEST = 'FETCH_NOTIFICATIONS_REQUEST';
 export const FETCH_NOTIFICATIONS_SUCCESS = 'FETCH_NOTIFICATIONS_SUCCESS';
 export const FETCH_NOTIFICATIONS_FAILURE = 'FETCH_NOTIFICATIONS_FAILURE';
+// actionTypes.js
+
+export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
+export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
+export const SIGN_IN_ERROR = 'SIGN_IN_ERROR';
+export const SIGN_UP_ERROR = 'SIGN_UP_ERROR';
+export const COMPLETE_DETAILS_SUCCESS = 'COMPLETE_DETAILS_SUCCESS';
+export const COMPLETE_DETAILS_ERROR = 'COMPLETE_DETAILS_ERROR';
+export const FETCH_PATIENT_DATA_ERROR = 'FETCH_PATIENT_DATA_ERROR';
+// Add more action types as needed
+// ActionTypes
+export const FETCH_PATIENT_DATA_REQUEST = 'FETCH_PATIENT_DATA_REQUEST';
+export const FETCH_PATIENT_DATA_SUCCESS = 'FETCH_PATIENT_DATA_SUCCESS';
+export const FETCH_PATIENT_DATA_FAILURE = 'FETCH_PATIENT_DATA_FAILURE';
+
+// Action Creators
+export const fetchPatientDataRequest = () => ({
+  type: FETCH_PATIENT_DATA_REQUEST
+});
+
+export const fetchPatientDataSuccess = (patientData) => ({
+  type: FETCH_PATIENT_DATA_SUCCESS,
+  payload: patientData
+});
+
+export const fetchPatientDataFailure = (error) => ({
+  type: FETCH_PATIENT_DATA_FAILURE,
+  payload: error
+});
+
+export const UPDATE_USER_PROFILE_REQUEST = 'UPDATE_USER_PROFILE_REQUEST';
+export const UPDATE_USER_PROFILE_SUCCESS = 'UPDATE_USER_PROFILE_SUCCESS';
+export const UPDATE_USER_PROFILE_FAILURE = 'UPDATE_USER_PROFILE_FAILURE';

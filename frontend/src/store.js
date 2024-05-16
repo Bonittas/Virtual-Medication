@@ -8,7 +8,8 @@ import viewDoctors from './reducers/viewDoctors'
 import viewPatients  from "./reducers/viewPatients";
 import userReducer from "./reducers/profileReducer";
 import notificationReducer from "./reducers/notificationReducer"
-userReducer
+import userDataReducer from "./reducers/patientReducer";
+import appointmentReducer from "./reducers/appointment";
 const rootReducer = combineReducers({
   auth: authReducer,
   posts: postReducer,
@@ -16,6 +17,9 @@ const rootReducer = combineReducers({
   patients: viewPatients,
   user: userReducer,
   notifications: notificationReducer,
+  userData: userDataReducer,
+  appointments: appointmentReducer,
+
 });
 
 const store = configureStore({

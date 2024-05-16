@@ -11,7 +11,7 @@ import SignInOptions from "./home/signinOptions"
 import Doctor_Signup from "./doctor/signup";
 import Doctor_Profile from "./doctor/dashboard/profile";
 import Updates from "./doctor/dashboard/editProfile"
-
+import PatientUpdates from "./patient/dashboard/editProfile"
 import Doctor_Signin from "./doctor/signin";
 import Doctor_Dashboard from "./doctor/dashboard/dashboard";
 import Doctor_Signout from "./doctor/dashboard/signout"
@@ -20,7 +20,7 @@ import Notification from "./doctor/dashboard/Notification";
 import Patient_Signup from "./patient/signup";
 import Patient_Signin from "./patient/signin";
 import Patient_Dashboard from "./patient/dashboard/dashboard";
-
+import Patient_Profile from "./patient/dashboard/profile"
 import Admin_Signin from "./admin/signin";
 import Doctors from "./admin/doctors";
 import Patients from "./admin/patients";
@@ -28,6 +28,9 @@ import Create_Post from "./admin/create_post";
 import Latest_Updates from "./admin/latest_updates";
 import Signout from "./admin/signout"
 import AdminDashboard from "./admin/dashboard"
+import Patient_Complete_Details from "./patient/dashboard/complete_details"
+import Doctors_Patient_Page from "./patient/doctors"
+import Appointments from "./doctor/dashboard/appointmentRequests"
 const App = () => {
   const [user, setUser] = useState("");
 
@@ -54,7 +57,11 @@ const App = () => {
                   path="/patient-signin"
                   element={<Patient_Signin/>}
                 />
-                              
+                                    <Route
+  exact
+  path="/patient/profile"
+  element={<Patient_Profile />}
+/>          
                                 <Route exact path="/doctor-signup" element={<Doctor_Signup/>} />
                 <Route exact path="/doctor-signin" element={<Doctor_Signin/>} />
                 <Route exact path="/admin-signin" element={<Admin_Signin/>} />
@@ -98,27 +105,54 @@ const App = () => {
                   path="/patient-signup"
                   element={<Patient_Signup/>}
                 />
+
                 <Route
                   exact
                   path="/patient-signin"
                   element={<Patient_Signin/>}
                 />
+
                                                        <Route
+                    exact
+                    path="/complete-detail"
+                    element={<Patient_Complete_Details/>}
+                  />  
+                                                                         <Route
                     exact
                     path="/complete-details"
                     element={<Complete_Details/>}
-                  />  
+                  /> 
                                                                          <Route
                     exact
                     path="/doctor-signout"
                     element={<Doctor_Signout/>}
                   />  
+                                                                                           <Route
+                    exact
+                    path="/appointments"
+                    element={<Appointments/>}
+                  /> 
+                                                                                           <Route
+                    exact
+                    path="/doctorsList"
+                    element={<Doctors_Patient_Page/>}
+                  />
                                   
                                                        <Route
                     exact
                     path="/updates"
                     element={<Updates/>}
                   />  
+                                                                         <Route
+                    exact
+                    path="/patient-updates"
+                    element={<PatientUpdates/>}
+                  /> 
+                                                      <Route
+  exact
+  path="/patient/profile"
+  element={<Patient_Profile />}
+/>  
 <Route
   exact
   path="/doctor/profile"

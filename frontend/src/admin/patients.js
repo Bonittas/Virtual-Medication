@@ -106,8 +106,20 @@ const Patients = () => {
                 <li key={patient._id} className="bg-blue-50 border m-4 w-full rounded-md px-4 py-8 flex items-center">
                   <div className="flex-1">
                     <div className="text-lg font-semibold">{patient.name}</div>
-                    <div className="text-sm text-gray-500">{patient.email}</div>
-                  </div>
+                    <div className="text-sm text-gray-500">Email: {patient.email}</div>
+                    <div className="text-sm text-gray-500">Medical Speciality: {patient.medicalSpeciality}</div>
+                    <div className="text-sm text-gray-500">Age: {patient.age}</div>
+                    <div className="text-sm text-gray-500">Gender: {patient.gender}</div>
+                    <div className="text-sm text-gray-500">Degree: {patient.degree}</div>
+                    <div className="text-sm text-gray-500">Registration Number: {patient.regNumber}</div>
+                    <div className="text-sm text-gray-500">Year of Registration: {patient.yearOfReg}</div>
+                    <div className="text-sm text-gray-500">State Medical Council: {patient.stateMedicalCouncil}</div>
+                    <div className="text-sm text-gray-500">Experience: {patient.experience}</div>
+                    <div className="text-sm text-gray-500">Address: {patient.address1}, {patient.address2}, {patient.city}, {patient.state}, {patient.pincode}, {patient.country}</div>
+                    <div className="text-sm text-gray-500">Working Hours: {patient.startTime} - {patient.endTime}</div>
+                    <div><img src={`http://localhost:5000/uploads/${patient.imageUrl}`} alt={patient.name} className="w-20 h-20 rounded-full mx-auto" />
+                    </div>
+                    </div>
                   <div>
                     {patient.verified ? (
                       <button
