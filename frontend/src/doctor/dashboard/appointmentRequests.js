@@ -4,7 +4,6 @@ import axios from 'axios';
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
-  const [user, setUser] = useState([]);
   const userId  = useParams();
 
   useEffect(() => {
