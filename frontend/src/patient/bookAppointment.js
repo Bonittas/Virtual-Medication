@@ -1,29 +1,56 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { requestAppointment} from "../actions/patient_authActions";
+import { requestAppointment } from "../actions/patient_authActions";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle,faClose, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
-const AppointmentForm = ({ doctor, onClose }) => {
+const AppointmentForm = ({ doctorId, onClose }) => {
   const dispatch = useDispatch();
   const [modeOfConsultation, setModeOfConsultation] = useState("");
   const [preferredDateTime, setPreferredDateTime] = useState("");
   const [symptoms, setSymptoms] = useState("");
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const appointmentData = {
-      doctorId: doctor._id,
+      doctorId,
       modeOfConsultation,
       preferredDateTime,
       symptoms
     };
-    dispatch(requestAppointment(appointmentData));
-    onClose();
+    try {
+      await dispatch(requestAppointment(appointmentData));
+      setSuccessMessage("Appointment requested successfully");
+      setTimeout(() => {
+        setSuccessMessage(null);
+        onClose();
+      }, 3000);
+    } catch (error) {
+      setErrorMessage("Failed to request appointment");
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 3000);
+    }
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
       <div className="bg-white rounded-lg shadow-lg p-6 w-full sm:w-96">
-        <h2 className="text-xl font-semibold mb-4">Book Appointment with {doctor.name}</h2>
+        <h2 className="text-xl font-semibold mb-4">Book Appointment</h2>
+        {successMessage && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <FontAwesomeIcon icon={faCheckCircle} className="mr-2" />
+            {successMessage}
+          </div>
+        )}
+        {errorMessage && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <FontAwesomeIcon icon={faTimesCircle} className="mr-2" />
+            {errorMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="modeOfConsultation" className="block text-gray-700">Mode of Consultation:</label>
@@ -60,7 +87,7 @@ const AppointmentForm = ({ doctor, onClose }) => {
           <div className="flex justify-end">
             <button
               type="button"
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-6 py-2 rounded mr-2"
+              className="bg-red-600 hover:bg-red-400 text-gray-800 px-6 py-2 rounded mr-2"
               onClick={onClose}
             >
               Cancel

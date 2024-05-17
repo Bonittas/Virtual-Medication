@@ -112,7 +112,7 @@ const CompleteDetails = (props) => {
 />
               <div>
                 <label className="block text-sm font-semibold mb-1">
-                  Medical Speciality
+                 Father Name
                 </label>
                 <input
                   type="text"
@@ -150,8 +150,7 @@ const CompleteDetails = (props) => {
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">
-                  Degree
-                </label>
+Job                </label>
                 <input
                   type="text"
                   value={degree}
@@ -186,8 +185,7 @@ const CompleteDetails = (props) => {
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">
-                  State Medical Council
-                </label>
+Home Town                </label>
                 <input
                   type="text"
                   value={stateMedicalCouncil}
@@ -200,8 +198,7 @@ const CompleteDetails = (props) => {
             <div className="w-1/3 ml-5">
               <div>
                 <label className="block text-sm font-semibold mb-1">
-                  Experience
-                </label>
+Martial Status                </label>
                 <input
                   type="text"
                   value={experience}

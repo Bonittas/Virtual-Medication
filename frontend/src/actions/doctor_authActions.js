@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { FETCH_USER_DATA_SUCCESS, FETCH_USER_DATA_ERROR, UPDATE_USER_DATA_SUCCESS, UPDATE_USER_DATA_ERROR } from './actionTypes';
+import { FETCH_USER_DATA_SUCCESS, FETCH_VERIFIED_DOCTORS_REQUEST,
+  FETCH_VERIFIED_DOCTORS_SUCCESS,
+  FETCH_VERIFIED_DOCTORS_FAILURE, FETCH_USER_DATA_ERROR, UPDATE_USER_DATA_SUCCESS, UPDATE_USER_DATA_ERROR } from './actionTypes';
 
 export const signUp = (name, email, password) => {
   return async (dispatch) => {
@@ -131,3 +133,38 @@ export const logout = (navigate) => { // Accept navigate function as argument
     }
   };
 };
+export const fetchVerifiedDoctors = () => {
+  return async (dispatch) => {
+    dispatch(fetchVerifiedDoctorsRequest());
+
+    try {
+      const token = localStorage.getItem('token');
+
+      const response = await axios.get('http://localhost:5000/api/auth/doctors/verified',{
+      headers: {
+        'x-auth-token': token
+      }
+    })
+      dispatch(fetchVerifiedDoctorsSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchVerifiedDoctorsFailure(error.message));
+    }
+  };
+};
+
+// Action creator for fetch verified doctors request
+export const fetchVerifiedDoctorsRequest = () => ({
+  type: FETCH_VERIFIED_DOCTORS_REQUEST
+});
+
+// Action creator for fetch verified doctors success
+export const fetchVerifiedDoctorsSuccess = (doctors) => ({
+  type: FETCH_VERIFIED_DOCTORS_SUCCESS,
+  payload: doctors
+});
+
+// Action creator for fetch verified doctors failure
+export const fetchVerifiedDoctorsFailure = (error) => ({
+  type: FETCH_VERIFIED_DOCTORS_FAILURE,
+  payload: error
+});

@@ -67,17 +67,17 @@ const Profile = () => {
             <p className="text-gray-700 font-bold text-gray-700 font-bold py-4">Name: {user.name}</p>
 
               <p className="text-gray-700 font-bold text-gray-700 font-bold">Email: {user.email}</p>
-              <p className="text-gray-700 font-bold text-gray-700 py-4">Medical Speciality: {user.medicalSpeciality}</p>
+              <p className="text-gray-700 font-bold text-gray-700 py-4">Father Name: {user.medicalSpeciality}</p>
               <p className="text-gray-700 font-bold text-gray-700">Age: {user.age}</p>
               <p className="text-gray-700 font-bold text-gray-700 py-4">Gender: {user.gender}</p>
-              <p className="text-gray-700 font-bold text-gray-700">Degree: {user.degree}</p>
+              <p className="text-gray-700 font-bold text-gray-700">Job: {user.degree}</p>
               <p className="text-gray-700 font-bold text-gray-700 mt-4">Address: {user.address1}, {user.address2}, {user.city}, {user.state}, {user.country}, {user.pincode}</p>
             </div>
             <div>
               <p className="text-gray-700 font-bold text-gray-700 py-4">Registration Number: {user.regNumber}</p>
               <p className="text-gray-700 font-bold text-gray-700">Year of Registration: {user.yearOfReg}</p>
-              <p className="text-gray-700 font-bold text-gray-700 py-4">State Medical Council: {user.stateMedicalCouncil}</p>
-              <p className="text-gray-700 font-bold text-gray-700">Experience: {user.experience}</p>
+              <p className="text-gray-700 font-bold text-gray-700 py-4">Home Town: {user.stateMedicalCouncil}</p>
+              <p className="text-gray-700 font-bold text-gray-700">Martial Status: {user.experience}</p>
               <p className="text-gray-700 font-bold text-gray-700 mt-4">Working Hours: {user.startTime} - {user.endTime}</p>
             </div>
           </div>

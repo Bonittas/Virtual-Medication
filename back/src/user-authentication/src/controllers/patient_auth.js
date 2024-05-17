@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/Patient');
 const Doctor = require('../models/Doctor');
-
+const Appointment = require("../models/appointmetSchema")
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
 const JWT_EXPIRES_IN = '1d'; 
 
@@ -176,49 +176,45 @@ exports.updateUserData = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
-
-// exports.getCurrentUser = async (req, res) => {
-//   try {
-//     // Assuming 'req.user' contains the authenticated user data
-//     const userId = req.user._id;
-
-//     const userDetails = await User.findById(userId);
-
-//     if (!userDetails) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-
-//     res.json({ user: userDetails });
-//   } catch (error) {
-//     console.error('Error fetching complete user details:', error); // Log the error
-//     res.status(500).json({ message: 'Server Error' });
-//   }
-// };
+exports.getVerifiedDoctors = async (req, res) => {
+  try {
+    const verifiedDoctors = await Doctor.find({ verified: true });
+    res.json({ doctors: verifiedDoctors });
+  } catch (error) {
+    console.error('Error fetching verified doctors:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
 exports.bookAppointment = async (req, res) => {
   try {
     const { doctorId, modeOfConsultation, preferredDateTime, symptoms } = req.body;
+    const patientId = req.user._id; // Assuming the patient is authenticated
 
-    // Find the doctor by ID
+    // Check if the doctor exists
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) {
-      return res.status(404).json({ error: 'Doctor not found' });
+      return res.status(404).json({ message: 'Doctor not found' });
     }
 
-    // Create new appointment
-    const appointment = {
+    // Create a new appointment instance
+    const newAppointment = new Appointment({
+      doctor: doctorId,
+      patient: patientId,
       modeOfConsultation,
       preferredDateTime,
-      symptoms,
-      status: 'pending' // status can be 'pending', 'accepted', 'rejected', etc.
-    };
+      symptoms
+    });
 
-    // Add appointment to the doctor's appointments array
-    doctor.appointments.push(appointment);
+    // Save the appointment to the database
+    await newAppointment.save();
+
+    // Add the appointment to the doctor's appointments
+    doctor.appointments.push(newAppointment);
     await doctor.save();
 
-    res.status(201).json({ message: 'Appointment booked successfully' });
+    res.status(201).json({ success: true, message: 'Appointment request submitted successfully' });
   } catch (error) {
-    console.error('Error booking appointment:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error requesting appointment:', error);
+    res.status(500).json({ success: false, message: 'Appointment request failed' });
   }
 };

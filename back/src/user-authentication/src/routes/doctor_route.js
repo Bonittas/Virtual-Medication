@@ -10,13 +10,20 @@ const getDoctorProfile = require('../controllers/doctors/doctorProfile')
 router.post('/doctor/signup', authController.signup);
 router.post('/doctor/signin', authController.signin);
 router.post('/doctor/signout', authController.logout);
+router.put('/appointment-requests/:id/approve', authController.approveAppointment);
+router.get('/appointment-requests', authController.getAppointmentRequests);
 
+router.put('/appointment-requests/:id/reject', authController.rejectAppointment);
+router.get('/patient/currentUser',verifyToken,  authController.getCurrentUser);
 router.put('/doctor/details', verifyToken, upload.single('profilePicture'), authController.completeDetails);
 router.get('/currentUser', verifyToken, authController.getCurrentUser);
 router.put('/doctor/profile', verifyToken, upload.single('profilePicture'), authController.updateProfile);
 router.put('/updateDoctor', verifyToken, upload.single('profilePicture'), authController.updateUserData);
 router.get('/notifications', verifyToken, authController.getNotifications);
 router.get('/doctor/appointments/:id', verifyToken, authController.getAppointments);
+router.get('/approved-appointments',authController.getApprovedAppointments);
+router.get('/rejected-appointments',authController.getRejectedAppointments);
+
 
 // router.post('/doctor/uploadFile', verifyToken, upload.single('file'), authController.uploadFile);
 // router.post('/doctor/uploadImage', verifyToken, upload.single('profilePicture'), authController.uploadImage);

@@ -1,59 +1,91 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { viewDoctors } from "../actions/admin/viewDoctors";
 import Navbar from "./dashboard/dashboard";
 import Footer from "../home/footer";
+import axios from 'axios';
 import AppointmentForm from "./bookAppointment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faBriefcaseMedical,faPlusCircle,faLocation, faCalendarAlt, faClock, faMapMarkerAlt, faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 const Doctors = () => {
-  const dispatch = useDispatch();
-  const { doctors, loading, error } = useSelector((state) => state.doctors);
+  const [verifiedDoctors, setVerifiedDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [showAppointmentForm, setShowAppointmentForm] = useState(false); // Track if appointment form is shown
+  const [showAppointmentForm, setShowAppointmentForm] = useState(false);
 
   useEffect(() => {
-    dispatch(viewDoctors());
-  }, [dispatch]);
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:5000/api/auth/doctors/verified', {
+          headers: {
+            'x-auth-token': token
+          }
+        });
+        const data = response.data;
+        setVerifiedDoctors(data.doctors);
+        setFilteredDoctors(data.doctors);
+        setLoading(false);
+      } catch (error) {
+        setError("Failed to fetch doctors data");
+        setLoading(false);
+      }
+    };
 
-  useEffect(() => {
-    if (!doctors || doctors.length === 0) {
-      setFilteredDoctors([]);
-    } else if (searchQuery.trim() === "") {
-      const verifiedDoctors = doctors.filter((doctor) => doctor.verified === true);
-      setFilteredDoctors(verifiedDoctors);
-    } else {
-      const filtered = doctors.filter(
-        (doctor) =>
-          doctor.verified === true &&
-          (doctor.name && doctor.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (doctor.email && doctor.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
-          (doctor.specialization && doctor.specialization.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-      setFilteredDoctors(filtered);
-    }
-  }, [searchQuery, doctors]);
+    fetchData();
+  }, []);
 
   const handleShowMoreDetails = (doctor) => {
     setSelectedDoctor(doctor);
   };
 
   const handleBookAppointment = () => {
-    setShowAppointmentForm(true); // Show appointment form when "Book Appointment" button is clicked
+    if (selectedDoctor) {
+      setShowAppointmentForm(true);
+    } else {
+      // Optionally, you can handle this case by showing an error message or logging a message
+      console.error("No doctor selected");
+    }
   };
+  
 
-  const handleAppointmentSubmission = () => {
-    // Handle appointment submission
-    setShowAppointmentForm(false); // Hide appointment form after submission
+  const handleAppointmentSubmission = async (doctorId, modeOfConsultation, preferredDateTime, symptoms) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post('http://localhost:5000/api/auth/book-appointment', {
+        doctorId,
+        modeOfConsultation,
+        preferredDateTime,
+        symptoms
+      }, {
+        headers: {
+          'x-auth-token': token
+        }
+      });
+      setShowAppointmentForm(false);
+      // Optionally, you can display a success message or perform any other action upon successful appointment booking
+    } catch (error) {
+      console.error('Error booking appointment:', error);
+      // Handle error (e.g., display error message to the user)
+    }
   };
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
     setCurrentPage(1);
+    const filtered = verifiedDoctors.filter(
+      (doctor) =>
+        doctor.name.toLowerCase().includes(query) ||
+        (doctor.medicalSpeciality && doctor.medicalSpeciality.toLowerCase().includes(query)) // Add null check for medicalSpeciality
+    );
+    setFilteredDoctors(filtered);
   };
+  
 
   const indexOfLastDoctor = currentPage * itemsPerPage;
   const indexOfFirstDoctor = indexOfLastDoctor - itemsPerPage;
@@ -71,7 +103,9 @@ const Doctors = () => {
 
   return (
     <>
+    <div className="z-30">
       <Navbar />
+      </div>
       <div className="container mx-auto">
         <h1 className="text-3xl mt-10 mb-6 text-center font-bold">Verified Doctors</h1>
         <div className="flex justify-center mb-8">
@@ -83,28 +117,34 @@ const Doctors = () => {
             className="border border-gray-300 rounded-md px-4 py-2 w-1/2"
           />
         </div>
-        <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 z-10 gap-6 sm:grid-cols-2 lg:grid-cols-2">
           {currentDoctors.map((doctor) => (
             <li
               key={doctor._id}
-              className="bg-white rounded-lg shadow-lg p-6 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl"
+              className="bg-white rounded-lg shadow-lg p-6
+              "
             >
-              <h3 className="text-lg font-semibold mb-2">{doctor.name}</h3>
-              <p className="text-gray-700 mb-2">Medical Speciality: {doctor.medicalSpeciality}</p>
-              <p className="text-gray-700 mb-2">Age: {doctor.age}</p>
-              <p className="text-gray-700 mb-2">Gender: {doctor.gender}</p>
+              <h3 className="text-lg font-semibold mb-2">
+                <FontAwesomeIcon icon={faUser} className="mr-2" />
+                {doctor.name}
+              </h3>
+              <p className="text-gray-700 mb-2">
+                <FontAwesomeIcon icon={faBriefcaseMedical} className="mr-2" />
+                Medical Speciality: {doctor.medicalSpeciality}
+              </p>
+              <p className="text-gray-700 mb-2">
+                Gender: {doctor.gender}
+              </p>
+              <p className="text-gray-700 mb-2">
+                <FontAwesomeIcon icon={faLocation} className="mr-2" />
+               Location: {doctor.address1},  {doctor.country}
+              </p>
               <div className="flex justify-end">
                 <button
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+                  className="bg-green-500 hover:bg-green-600 text-white  pl-2 w-10 h-10 rounded-full"
                   onClick={() => handleShowMoreDetails(doctor)}
                 >
-                  More Details
-                </button>
-                <button
-                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded ml-2"
-                  onClick={() => handleBookAppointment()}
-                >
-                  Book Appointment
+                <FontAwesomeIcon icon={faPlusCircle} className="mr-2 w-7 h-7" />
                 </button>
               </div>
             </li>
@@ -130,12 +170,40 @@ const Doctors = () => {
       </div>
       
       {selectedDoctor && (
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Details of {selectedDoctor.name}</h2>
-          <p className="text-gray-700 mb-2">Name: {selectedDoctor.name}</p>
-          <p className="text-gray-700 mb-2">Medical Speciality: {selectedDoctor.medicalSpeciality}</p>
-          <p className="text-gray-700 mb-2">Age: {selectedDoctor.age}</p>
-          <p className="text-gray-700 mb-2">Gender: {selectedDoctor.gender}</p>
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full sm:w-1/2 my-4">
+            <h2 className="text-xl font-semibold mb-4">Details of {selectedDoctor.name}</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-gray-700 font-semibold">
+                  <FontAwesomeIcon icon={faCalendarAlt} className="mr-2" />
+                  Name:
+                </p>
+                <p className="text-gray-700">{selectedDoctor.name}</p>
+              </div>
+ 
+              <div>
+                <p className="text-gray-700 font-semibold">
+                  <FontAwesomeIcon icon={faBriefcaseMedical} className="mr-2" />
+                  Medical Speciality:
+                </p>
+                <p className="text-gray-700 mb-2">Gender: {selectedDoctor.gender}</p>
+              </div>
+              <div>
+                <p className="text-gray-700 font-semibold">
+                  <FontAwesomeIcon icon={faClock} className="mr-2" />
+                  Age:
+                </p>
+                <p className="text-gray-700">{selectedDoctor.age}</p>
+              </div>
+              <div>
+                <p className="text-gray-700 font-semibold">
+                  <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" />
+                  Address:
+                </p>
+                <p className="text-gray-700">{selectedDoctor.address}</p>
+              </div>
+              <p className="text-gray-700 mb-2">Gender: {selectedDoctor.gender}</p>
           <p className="text-gray-700 mb-2">Degree: {selectedDoctor.degree}</p>
           <p className="text-gray-700 mb-2">Registration Number: {selectedDoctor.regNumber}</p>
           <p className="text-gray-700 mb-2">Year of Registration: {selectedDoctor.yearOfReg}</p>
@@ -143,31 +211,33 @@ const Doctors = () => {
           <p className="text-gray-700 mb-2">Experience: {selectedDoctor.experience}</p>
           <p className="text-gray-700 mb-2">Address: {selectedDoctor.address1}, {selectedDoctor.address2}, {selectedDoctor.city}, {selectedDoctor.state}, {selectedDoctor.pincode}, {selectedDoctor.country}</p>
           <p className="text-gray-700 mb-2">Working Hours: {selectedDoctor.startTime} - {selectedDoctor.endTime}</p>
-          <div className="flex justify-end">
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-              onClick={() => setSelectedDoctor(null)}
-            >
-              Close Details
-            </button>
-            <button
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded ml-2"
-              onClick={() => handleBookAppointment()}
-            >
-              Book Appointment
-            </button>
+                      </div>
+            <div className="flex justify-end mt-4">
+
+              <button
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded "
+                onClick={() => handleBookAppointment()}
+              >
+                Book Appointment
+              </button>
+              <button
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 ml-2 rounded"
+                onClick={() => setSelectedDoctor(null)}
+              >
+Close              </button>
+            </div>
           </div>
         </div>
       )}
       
       {showAppointmentForm && (
         <AppointmentForm
-          doctor={selectedDoctor}
+          doctorId={selectedDoctor._id}
           onClose={() => setShowAppointmentForm(false)}
           onSubmit={handleAppointmentSubmission}
         />
       )}
-      
+
       <Footer />
     </>
   );

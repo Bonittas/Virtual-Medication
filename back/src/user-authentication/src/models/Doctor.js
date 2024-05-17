@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const notificationSchema = new mongoose.Schema({
   recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' },
@@ -6,7 +7,8 @@ const notificationSchema = new mongoose.Schema({
   type: String,
   timestamp: { type: Date, default: Date.now }
 });
-const appointmentSchema = new mongoose.Schema({
+const appointmentSchema = new Schema({
+  patient: { type: Schema.Types.ObjectId, ref: 'Patient' },
   modeOfConsultation: String,
   preferredDateTime: Date,
   symptoms: String,

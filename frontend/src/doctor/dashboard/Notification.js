@@ -35,7 +35,6 @@ const Notification = () => {
         <p>No notifications found.</p>
       )}
     </div>
-    <Appointmets_Request/>
     <div className="bg-green-600">
     <Footer/>
     </div>

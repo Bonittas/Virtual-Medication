@@ -6,7 +6,7 @@ const fs = require('fs');
 const Notification = require("../../models/doctorNotification")
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
 const JWT_EXPIRES_IN = '1d'; 
-const Appointments = require("../../models/appointmetSchema")
+const Appointment = require("../../models/appointmetSchema")
 
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -189,10 +189,18 @@ exports.verifyToken = (req, res, next) => {
 
 exports.getCurrentUser = async (req, res) => {
   try {
-    const user = req.user;
-    res.json({ user });
+    // Assuming 'req.user' contains the authenticated user data
+    const userId = req.user._id;
+
+    const userDetails = await User.findById(userId);
+
+    if (!userDetails) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ user: userDetails });
   } catch (error) {
-    console.error('Error fetching current user:', error);
+    console.error('Error fetching complete user details:', error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
@@ -317,11 +325,97 @@ exports.getAppointments = async (req, res) => {
 
     // If the authenticated user is a doctor, fetch their appointments
     const doctorId = req.user._id;
-    const appointments = await Appointments.find({ doctor: doctorId });
+    const appointments = await Appointment.find({ doctor: doctorId }).populate('patient', 'name'); // Assuming 'patient' is the field referencing the patient document
 
-    res.status(200).json(appointments);
+    // Map the appointments to include patient name, ID, date, and time
+    const formattedAppointments = appointments.map(appointment => ({
+      _id: appointment._id,
+      patientName: appointment.patient.name,
+      patientId: appointment.patient._id, // Assuming patient ID is stored in the patient document
+      date: appointment.date,
+      time: appointment.time,
+      symptoms: appointment.symptoms,
+      status: appointment.status
+    }));
+
+    res.status(200).json(formattedAppointments);
   } catch (error) {
     console.error('Error fetching appointments:', error);
     res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+exports.getAppointmentRequests = async (req, res) => {
+  try {
+    const appointmentRequests = await Appointment.find({ status: 'pending' })
+      .populate('patient', 'name email age gender'); // Populate patient data with specified fields
+
+    res.json({ appointmentRequests });
+  } catch (error) {
+    console.error('Error fetching appointment requests:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+exports.getApprovedAppointments = async (req, res) => {
+  try {
+    const approvedAppointments = await Appointment.find({ status: 'approved' })
+      .populate('patient', 'name email age gender'); // Populate patient data with specified fields
+    res.json({ approvedAppointments });
+  } catch (error) {
+    console.error('Error fetching approved appointments:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+exports.getRejectedAppointments = async (req, res) => {
+  try {
+    const rejectedAppointments = await Appointment.find({ status: 'rejected' })
+      .populate('patient', 'name email age gender'); // Populate patient data with specified fields
+    res.json({ rejectedAppointments });
+  } catch (error) {
+    console.error('Error fetching rejected appointments:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+
+// Controller method to approve an appointment request
+exports.approveAppointment = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const appointment = await Appointment.findById(id);
+    if (!appointment) {
+      return res.status(404).json({ message: 'Appointment not found' });
+    }
+
+    appointment.status = 'approved';
+    await appointment.save();
+
+    res.json({ success: true, message: 'Appointment approved successfully' });
+  } catch (error) {
+    console.error('Error approving appointment:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
+
+// Controller method to reject an appointment request
+exports.rejectAppointment = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const appointment = await Appointment.findById(id);
+    if (!appointment) {
+      return res.status(404).json({ message: 'Appointment not found' });
+    }
+
+    appointment.status = 'rejected';
+    await appointment.save();
+
+    res.json({ success: true, message: 'Appointment rejected successfully' });
+  } catch (error) {
+    console.error('Error rejecting appointment:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
   }
 };

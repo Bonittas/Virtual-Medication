@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes, faUser, faChartBar, faPen,faBell, faCog, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes, faUser,faCalendarCheck, faChartBar, faPen,faBell, faCog, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { logout } from "../../actions/doctor_authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -62,13 +62,7 @@ const Navbar = () => {
               Profile
             </Link>
           </li>
-          <li className="mb-2">
-            <Link to="/appointments" className="flex items-center text-gray-700 hover:text-green-600">
-              <span className="mr-2">
-                <FontAwesomeIcon icon={faUser} size="lg" />
-              </span>
-Appointments            </Link>
-          </li>   
+   
           <li className="mb-2">
             <Link to="/updates" className="flex items-center text-white hover:text-white">
               <span className="mr-2">
@@ -77,6 +71,13 @@ Appointments            </Link>
               Edit Profile
             </Link>
             </li>
+            <li className="mb-2">
+            <Link to="/appointments" className="flex items-center text-white ">
+              <span className="mr-2">
+                <FontAwesomeIcon icon={faCalendarCheck} size="lg py-3 text-white" />
+              </span>
+Appointments            </Link>
+          </li>
           <li className="mb-2">
             <Link to="/notifications" className="flex items-center text-white hover:text-white">
               <span className="mr-2">

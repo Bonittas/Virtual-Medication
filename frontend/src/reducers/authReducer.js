@@ -4,7 +4,8 @@ const initialState = {
   userData: null,
   userProfile: null,
   notifications: [],
-  appointments: [], // Add appointments state
+  appointments: [], 
+  verifiedDoctors: [], // Add verified doctors state
 };
 
 const authReducer = (state = initialState, action) => {
@@ -47,7 +48,7 @@ const authReducer = (state = initialState, action) => {
         notifications: [],
         error: action.payload
       };
-    case 'FETCH_APPOINTMENTS_SUCCESS': // Action type for fetching appointments
+    case 'FETCH_APPOINTMENTS_SUCCESS': 
       return {
         ...state,
         appointments: action.payload,
@@ -57,6 +58,18 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         appointments: [],
+        error: action.payload
+      };
+    case 'FETCH_VERIFIED_DOCTORS_SUCCESS': // Action type for fetching verified doctors
+      return {
+        ...state,
+        verifiedDoctors: action.payload,
+        error: null
+      };
+    case 'FETCH_VERIFIED_DOCTORS_ERROR': 
+      return {
+        ...state,
+        verifiedDoctors: [],
         error: action.payload
       };
     default:
