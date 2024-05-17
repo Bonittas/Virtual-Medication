@@ -49,7 +49,9 @@ const DoctorDashboard = () => {
       console.error("Error approving appointment:", error);
     }
   };
-
+  const togglePatientProfile = (patientId) => {
+    setExpandedPatientId((prevId) => (prevId === patientId ? null : patientId));
+  };
   const handleRejectAppointment = async (appointmentId) => {
     try {
       await axios.put(`http://localhost:5000/api/auth/appointment-requests/${appointmentId}/reject`);
@@ -72,9 +74,7 @@ const DoctorDashboard = () => {
     }
   };
 
-  const togglePatientProfile = (patientId) => {
-    setExpandedPatientId(prevId => prevId === patientId ? null : patientId);
-  };
+
 
   if (loading) {
     return (
@@ -102,7 +102,7 @@ const DoctorDashboard = () => {
           <span>No appointment requests found.</span>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {appointmentRequests.map(appointment => (
             <div
               key={appointment._id}
@@ -121,16 +121,15 @@ const DoctorDashboard = () => {
                 </button>
               </div>
               {expandedPatientId === appointment.patient._id && (
-                <div className="mt-4">
-                                    <div>Name: {appointment.patient.name}</div>
-
-                  <div>Email: {appointment.patient.email}</div>
-                  <div>Age: {appointment.patient.age}</div>
-                  <div>Gender: {appointment.patient.gender}</div>
-                  <div>Address: {appointment.patient.address1}</div>
-                  <div>Country: {appointment.patient.country}</div>
-                </div>
-              )}
+  <div className="mt-4 bg-gray-200 w-1/2 rounded p-4">
+    <div>Name: {appointment.patient.name}</div>
+    <div>Email: {appointment.patient.email}</div>
+    <div>Age: {appointment.patient.age}</div>
+    <div>Gender: {appointment.patient.gender}</div>
+    <div>Address: {appointment.patient.address1}</div>
+    <div>Country: {appointment.patient.country}</div>
+  </div>
+)}
               <div className="mt-4">
                 <div className="flex items-center">
                   <FontAwesomeIcon icon={faCalendarCheck} className="text-gray-400 mr-2" />
