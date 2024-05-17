@@ -14,7 +14,6 @@ router.put('/appointment-requests/:id/approve', authController.approveAppointmen
 router.get('/appointment-requests', authController.getAppointmentRequests);
 
 router.put('/appointment-requests/:id/reject', authController.rejectAppointment);
-router.get('/patient/currentUser',verifyToken,  authController.getCurrentUser);
 router.put('/doctor/details', verifyToken, upload.single('profilePicture'), authController.completeDetails);
 router.get('/currentUser', verifyToken, authController.getCurrentUser);
 router.put('/doctor/profile', verifyToken, upload.single('profilePicture'), authController.updateProfile);

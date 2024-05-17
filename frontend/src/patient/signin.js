@@ -59,7 +59,7 @@ const Patient_Signin = () => {
         <div className="text-center">
           
           <h2 className="mt-2 text-gray-500 text-center text-xl font-md ">
-            Doctor Sign in
+            Patient Sign in
           </h2>
         </div>
         <form className="mt-4 space-y-6" onSubmit={handleSignin}>
@@ -111,7 +111,7 @@ const Patient_Signin = () => {
               Sign in
             </button>
             <p className="my-2 text-blue-400">
-            <Link to='/doctor-signup' >Don't have an account? Signup here</Link>
+            <Link to='/patient-signup' >Don't have an account? Signup here</Link>
             </p>
           </div>
         </form>

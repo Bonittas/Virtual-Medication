@@ -53,6 +53,13 @@ module.exports = function (app) {
   //     changeOrigin: true,
   //   })
   // );
+    app.use(
+    '/api/auth/patient/currentUser',
+    createProxyMiddleware({
+      target: 'https://localhost:5000',
+      changeOrigin: true,
+    })
+  );
   app.use(
     '/api/auth/admin/signup',
     createProxyMiddleware({
