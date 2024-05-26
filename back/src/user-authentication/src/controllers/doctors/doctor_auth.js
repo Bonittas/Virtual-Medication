@@ -442,41 +442,49 @@ exports.getMeetings = async (req, res) => {
 };
 
 exports.approveAppointment = async (req, res) => {
-  const { appointmentId } = req.params;
+  const { id } = req.params;
 
   try {
-    const appointment = await Appointment.findById(appointmentId);
-
+    const appointment = await Appointment.findById(id);
     if (!appointment) {
-      return res.status(404).json({ error: 'Appointment request not found' });
+      return res.status(404).json({ message: 'Appointment not found' });
     }
 
+    // Change status to approved
     appointment.status = 'approved';
+
+    // Generate Google Meet link
+    const googleMeetLink = generateGoogleMeetLink(appointment.preferredDateTime); // Implement this function
+
+    // Save Google Meet link to appointment document
+    appointment.googleMeetLink = googleMeetLink;
+
     await appointment.save();
 
-    res.json({ appointment });
+    res.json({ success: true, message: 'Appointment approved successfully', googleMeetLink });
   } catch (error) {
-    console.error('Error accepting appointment request:', error);
-    res.status(500).json({ message: 'Server Error' });
+    console.error('Error approving appointment:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
   }
 };
 
+
+// Controller method to reject an appointment request
 exports.rejectAppointment = async (req, res) => {
-  const { appointmentId } = req.params;
+  const { id } = req.params;
 
   try {
-    const appointment = await Appointment.findById(appointmentId);
-
+    const appointment = await Appointment.findById(id);
     if (!appointment) {
-      return res.status(404).json({ error: 'Appointment request not found' });
+      return res.status(404).json({ message: 'Appointment not found' });
     }
 
-    appointment.status = 'declined';
+    appointment.status = 'rejected';
     await appointment.save();
 
-    res.json({ appointment });
+    res.json({ success: true, message: 'Appointment rejected successfully' });
   } catch (error) {
-    console.error('Error declining appointment request:', error);
-    res.status(500).json({ message: 'Server Error' });
+    console.error('Error rejecting appointment:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
   }
 };

@@ -1,39 +1,13 @@
-// models/appointment.js
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const appointmentSchema = new mongoose.Schema({
-  doctor: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Doctor',
-    required: true
-  },
-  patient: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Patient',
-    required: true
-  },
-  modeOfConsultation: {
-    type: String,
-    enum: ['online', 'offline'],
-    required: true
-  },
-  preferredDateTime: {
-    type: Date,
-    required: true
-  },
-  symptoms: {
-    type: String
-  },
-  status: {
-    type: String,
-    enum: ['pending', 'approved', 'rejected'],
-    default: 'pending'
-  },
-  googleMeetLink: {
-    type: String
-  }
-}, { timestamps: true });
+const appointmentSchema = new Schema({
+  doctor: { type: Schema.Types.ObjectId, ref: 'Doctor' },
+  patient: { type: Schema.Types.ObjectId, ref: 'Patient' },
+  modeOfConsultation: String,
+  preferredDateTime: Date,
+  symptoms: String,
+  status: { type: String, default: 'pending' } // status can be 'pending', 'accepted', 'rejected', etc.
+});
 
-const Appointment = mongoose.model('Appointment', appointmentSchema);
-
-module.exports = Appointment;
+module.exports = mongoose.model('Appointment', appointmentSchema);

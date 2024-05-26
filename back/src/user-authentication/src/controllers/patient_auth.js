@@ -6,7 +6,7 @@ const Notification = require("../models/patientNotification");
 const Appointment = require("../models/appointmetSchema");
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
 const JWT_EXPIRES_IN = '1d'; 
-
+const Room = require("../models/Room")
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -267,5 +267,32 @@ exports.getVerifiedDoctors = async (req, res) => {
   } catch (error) {
     console.error('Error fetching verified doctors:', error);
     res.status(500).json({ message: 'Server Error' });
+  }
+};
+exports.getStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const appointment = await Appointment.findById(id);
+
+    if (!appointment) {
+      return res.status(404).json({ error: 'Appointment not found' });
+    }
+
+    if (appointment.status === 'approved') {
+      // If appointment is approved, generate join meeting link
+      const room = await Room.findOne({ appointment: appointment._id });
+      if (!room) {
+        return res.status(500).json({ error: 'Room not found' });
+      }
+      const joinMeetingLink = `/patient-room/${room._id}`;
+      return res.status(200).json({ message: 'Appointment successfully approved', joinMeetingLink });
+    } else if (appointment.status === 'rejected') {
+      return res.status(200).json({ message: 'Appointment rejected' });
+    } else {
+      return res.status(200).json({ message: 'Appointment pending approval' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };

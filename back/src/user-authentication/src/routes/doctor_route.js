@@ -11,7 +11,7 @@ router.post('/doctor/signup', authController.signup);
 router.post('/doctor/signin', authController.signin);
 router.post('/doctor/signout', authController.logout);
 router.put('/appointment-requests/:id/approve', authController.approveAppointment);
-router.get('/appointment-requests', authController.getAppointmentRequests);
+router.get('/appointment-requests',verifyToken, authController.getAppointmentRequests);
 
 router.put('/appointment-requests/:id/reject', authController.rejectAppointment);
 router.put('/doctor/details', verifyToken, upload.single('profilePicture'), authController.completeDetails);

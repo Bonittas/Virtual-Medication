@@ -1,15 +1,9 @@
-// client/src/components/PatientRoom.js
+// Doctor_Room.js and PatientRoom.js
 
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
-import { IconButton, Tooltip, AppBar, Toolbar } from "@mui/material";
-import MicIcon from "@mui/icons-material/Mic";
-import MicOffIcon from "@mui/icons-material/MicOff";
-import VideocamIcon from "@mui/icons-material/Videocam";
-import VideocamOffIcon from "@mui/icons-material/VideocamOff";
-import CallEndIcon from "@mui/icons-material/CallEnd";
 
 const Container = styled.div`
   padding: 2vw;
@@ -37,11 +31,9 @@ const Video = (props) => {
   return <StyledVideo controls playsInline autoPlay ref={ref} />;
 };
 
-const PatientRoom = (props) => {
+const VideoRoom = (props) => {
   const [peers, setPeers] = useState([]);
   const [stream, setStream] = useState();
-  const [audioMuted, setAudioMuted] = useState(false);
-  const [videoMuted, setVideoMuted] = useState(false);
   const socketRef = useRef();
   const userVideo = useRef();
   const peersRef = useRef([]);
@@ -138,73 +130,8 @@ const PatientRoom = (props) => {
     return peer;
   }
 
-  // TOGGLE AUDIO AND VIDEO OPTIONS
-
-  function toggleMuteAudio() {
-    if (stream) {
-      setAudioMuted(!audioMuted);
-      stream.getAudioTracks()[0].enabled = audioMuted;
-    }
-  }
-
-  function toggleMuteVideo() {
-    if (stream) {
-      setVideoMuted(!videoMuted);
-      stream.getVideoTracks()[0].enabled = videoMuted;
-    }
-  }
-
-  let audioControl;
-  if (audioMuted) {
-    audioControl = (
-      <Tooltip title="Microphone" placement="top">
-        <IconButton onClick={() => toggleMuteAudio()} style={{ color: "#ffffff" }}>
-          <MicIcon />
-        </IconButton>
-      </Tooltip>
-    );
-  } else {
-    audioControl = (
-      <Tooltip title="Mute Microphone" placement="top">
-        <IconButton onClick={() => toggleMuteAudio()} style={{ color: "#ffffff" }}>
-          <MicOffIcon />
-        </IconButton>
-      </Tooltip>
-    );
-  }
-
-  let videoControl;
-  if (videoMuted) {
-    videoControl = (
-      <Tooltip title="Video" placement="top">
-        <IconButton onClick={() => toggleMuteVideo()} style={{ color: "#ffffff" }}>
-          <VideocamIcon />
-        </IconButton>
-      </Tooltip>
-    );
-  } else {
-    videoControl = (
-      <Tooltip title="Mute Video" placement="top">
-        <IconButton onClick={() => toggleMuteVideo()} style={{ color: "#ffffff" }}>
-          <VideocamOffIcon />
-        </IconButton>
-      </Tooltip>
-    );
-  }
-
   return (
     <Container>
-      <AppBar position="static">
-        <Toolbar>
-          {audioControl}
-          {videoControl}
-          <Tooltip title="End Call" placement="top">
-            <IconButton onClick={() => window.location.href = '/'} style={{ color: "#ff0000" }}>
-              <CallEndIcon />
-            </IconButton>
-          </Tooltip>
-        </Toolbar>
-      </AppBar>
       <StyledVideo muted ref={userVideo} autoPlay playsInline />
       {peers.map((peer) => {
         return <Video key={peer.peerID} peer={peer.peer} />;
@@ -213,4 +140,4 @@ const PatientRoom = (props) => {
   );
 };
 
-export default PatientRoom;
+export default VideoRoom;
