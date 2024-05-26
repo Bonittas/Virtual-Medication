@@ -17,6 +17,8 @@ import Doctor_Dashboard from "./doctor/dashboard/dashboard";
 import Doctor_Signout from "./doctor/dashboard/signout"
 import Complete_Details from "./doctor/dashboard/complete_details"
 import Notification from "./doctor/dashboard/Notification";
+import VideoMeet from "./doctor/dashboard/videoMeeting/videoMeetig";
+import DoctorRoom from "./doctor/dashboard/videoMeeting/videoMeetig"
 import Patient_Signup from "./patient/signup";
 import Patient_Signin from "./patient/signin";
 import Patient_Dashboard from "./patient/dashboard/dashboard";
@@ -122,6 +124,13 @@ const App = () => {
                     path="/complete-details"
                     element={<Complete_Details/>}
                   /> 
+                                                                                           <Route
+                    exact
+                    path="/video"
+                    element={<VideoMeet/>}
+                  /> 
+                          <Route path="/doctor-room/:roomID" component={<DoctorRoom/>} />
+
                                                                          <Route
                     exact
                     path="/doctor-signout"

@@ -1,6 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/Doctor');
+const patient = require('../../models/Patient');
+const Meeting = require('../../models/meeting');
+const Prescription = require('../../models/prescription');
 const path = require('path');
 const fs = require('fs');
 const Notification = require("../../models/doctorNotification")
@@ -325,20 +328,23 @@ exports.getAppointments = async (req, res) => {
 
     // If the authenticated user is a doctor, fetch their appointments
     const doctorId = req.user._id;
-    const appointments = await Appointment.find({ doctor: doctorId }).populate('patient', 'name'); // Assuming 'patient' is the field referencing the patient document
+    const appointments = await Appointment.find({ doctor: doctorId }).populate('patient');
 
     // Map the appointments to include patient name, ID, date, and time
     const formattedAppointments = appointments.map(appointment => ({
       _id: appointment._id,
-      patientName: appointment.patient.name,
-      patientId: appointment.patient._id, // Assuming patient ID is stored in the patient document
+      patient: {
+        _id: appointment.patient._id,
+        name: appointment.patient.name,
+        // Include other patient details as needed
+      },
       date: appointment.date,
       time: appointment.time,
       symptoms: appointment.symptoms,
       status: appointment.status
     }));
 
-    res.status(200).json(formattedAppointments);
+    res.status(200).json({ appointmentRequests: formattedAppointments });
   } catch (error) {
     console.error('Error fetching appointments:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -348,8 +354,22 @@ exports.getAppointments = async (req, res) => {
 
 exports.getAppointmentRequests = async (req, res) => {
   try {
-    const appointmentRequests = await Appointment.find({ status: 'pending' })
-      .populate('patient', 'name email age gender'); // Populate patient data with specified fields
+    if (!req.user) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const doctorId = req.user._id;
+
+    const appointmentRequests = await Appointment.find({ status: 'pending', doctor: doctorId })
+      .populate({
+        path: 'patient',
+        select: 'name email age gender address1 country'
+      })
+      .exec();
+
+    if (!appointmentRequests) {
+      return res.status(404).json({ error: 'No appointment requests found' });
+    }
 
     res.json({ appointmentRequests });
   } catch (error) {
@@ -357,6 +377,7 @@ exports.getAppointmentRequests = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
 
 exports.getApprovedAppointments = async (req, res) => {
   try {
@@ -380,42 +401,82 @@ exports.getRejectedAppointments = async (req, res) => {
 };
 
 
-// Controller method to approve an appointment request
+// Function to generate Google Meet link
+function generateGoogleMeetLink(dateTime) {
+  // Implement logic to generate Google Meet link based on dateTime
+  // Example implementation:
+  const googleMeetLink = `https://meet.google.com/${generateRandomMeetingID()}`;
+  return googleMeetLink;
+}
+
+// Helper function to generate a random meeting ID
+function generateRandomMeetingID() {
+  // Implement logic to generate a random meeting ID
+  // Example implementation:
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  const charactersLength = characters.length;
+  for (let i = 0; i < 10; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+
+exports.getPrescriptions = async (req, res) => {
+  try {
+    const prescriptions = await Prescription.find();
+    res.json(prescriptions);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+exports.getMeetings = async (req, res) => {
+  try {
+    const meetings = await Meeting.find();
+    res.json(meetings);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 exports.approveAppointment = async (req, res) => {
-  const { id } = req.params;
+  const { appointmentId } = req.params;
 
   try {
-    const appointment = await Appointment.findById(id);
+    const appointment = await Appointment.findById(appointmentId);
+
     if (!appointment) {
-      return res.status(404).json({ message: 'Appointment not found' });
+      return res.status(404).json({ error: 'Appointment request not found' });
     }
 
     appointment.status = 'approved';
     await appointment.save();
 
-    res.json({ success: true, message: 'Appointment approved successfully' });
+    res.json({ appointment });
   } catch (error) {
-    console.error('Error approving appointment:', error);
-    res.status(500).json({ success: false, message: 'Server Error' });
+    console.error('Error accepting appointment request:', error);
+    res.status(500).json({ message: 'Server Error' });
   }
 };
 
-// Controller method to reject an appointment request
 exports.rejectAppointment = async (req, res) => {
-  const { id } = req.params;
+  const { appointmentId } = req.params;
 
   try {
-    const appointment = await Appointment.findById(id);
+    const appointment = await Appointment.findById(appointmentId);
+
     if (!appointment) {
-      return res.status(404).json({ message: 'Appointment not found' });
+      return res.status(404).json({ error: 'Appointment request not found' });
     }
 
-    appointment.status = 'rejected';
+    appointment.status = 'declined';
     await appointment.save();
 
-    res.json({ success: true, message: 'Appointment rejected successfully' });
+    res.json({ appointment });
   } catch (error) {
-    console.error('Error rejecting appointment:', error);
-    res.status(500).json({ success: false, message: 'Server Error' });
+    console.error('Error declining appointment request:', error);
+    res.status(500).json({ message: 'Server Error' });
   }
 };

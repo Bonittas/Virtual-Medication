@@ -203,6 +203,13 @@ const Doctors = () => {
                 </p>
                 <p className="text-gray-700">{selectedDoctor.address}</p>
               </div>
+              {/* <div>
+              <img
+                src={`http://localhost:5000/${selectedDoctor.imageUrl}`}
+                alt="Profile"
+                className="rounded-md w-2/3 h-1/2 border-2 border-green-300 mx-auto "
+              />
+            </div> */}
               <p className="text-gray-700 mb-2">Gender: {selectedDoctor.gender}</p>
           <p className="text-gray-700 mb-2">Degree: {selectedDoctor.degree}</p>
           <p className="text-gray-700 mb-2">Registration Number: {selectedDoctor.regNumber}</p>
