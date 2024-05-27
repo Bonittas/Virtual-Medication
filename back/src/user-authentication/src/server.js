@@ -7,6 +7,7 @@ const adminRoutes = require('./routes/admin_route');
 const cors = require('cors');
 const patientRoutes = require('./routes/patient_route');
 const path = require("path");
+const payment = require("./routes/paymentRoute")
 
 const app = express();
 app.use('/images', express.static(path.join(__dirname, 'images')));
@@ -44,6 +45,9 @@ app.use(cors(corsOptions));
 app.use('/api/auth', doctorRoutes);
 app.use('/api/auth', patientRoutes);
 app.use('/api/auth', adminRoutes);
+
+// Routes middleware for payment
+app.use('/api/auth',payment)
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
