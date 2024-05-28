@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const Appointment = require("./appointmetSchema")
 const notificationSchema = new mongoose.Schema({
   recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient' },
   message: String,
@@ -52,8 +52,11 @@ const patientSchema = new mongoose.Schema({
   startTime: String,
   endTime: String,
   imageUrl: String,
-  appointments: [appointmentSchema],
-  notifications: [notificationSchema]
+  appointments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Appointment'
+  }],
+ notifications: [notificationSchema]
 });
 
 module.exports = mongoose.model('Patient', patientSchema);

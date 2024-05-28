@@ -11,7 +11,10 @@ router.post('/appointment/request', verifyToken, authController.requestAppointme
 router.put('/patient/details', verifyToken, upload.single('profilePicture'), authController.completeDetails);
 router.put('/updatePatient', verifyToken, upload.single('profilePicture'), authController.updateUserData);
 router.get('/patient/currentUser',verifyToken,  authController.getCurrentUser);
-router.get('/appointment-requests/:id/status', authController.getStatus);
+// router.get('/appointment-requests/:_id/status', authController.getStatus);
+router.get('/patient/appointments/',verifyToken, authController.getPatientAppointments);
+
+
 
 // Route to approve an appointment request
 

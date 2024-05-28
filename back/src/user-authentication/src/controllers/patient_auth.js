@@ -220,46 +220,43 @@ exports.getAppointments = async (req, res) => {
   }
 };
 
+// Backend Controller to Handle Appointment Requests
 exports.requestAppointment = async (req, res) => {
   try {
-    const { doctorId, date, time, symptoms } = req.body;
+    const { doctorId, modeOfConsultation, preferredDateTime, symptoms } = req.body;
+    const patientId = req.user._id; // Assuming the patient is authenticated
 
-    if (!doctorId || !date || !time || !symptoms) {
-      return res.status(400).json({ error: 'All fields are required' });
+    // Check if the doctor exists
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).json({ message: 'Doctor not found' });
     }
 
-    const patientId = req.user._id;
-
+    // Create a new appointment instance
     const newAppointment = new Appointment({
-      patient: patientId,
       doctor: doctorId,
-      date,
-      time,
-      symptoms,
-      status: 'pending'
+      patient: patientId,
+      modeOfConsultation,
+      preferredDateTime,
+      symptoms
     });
 
+    // Save the appointment to the database
     await newAppointment.save();
 
-    const doctor = await Doctor.findById(doctorId);
+    // Add the appointment to the doctor's appointments
+    doctor.appointments.push(newAppointment);
+    await doctor.save();
 
-    if (doctor) {
-      const notification = new Notification({
-        recipient: doctor._id,
-        message: `You have a new appointment request from ${req.user.name}.`,
-        data: { appointmentId: newAppointment._id },
-        type: 'appointment_request'
-      });
-
-      await notification.save();
-    }
-
-    res.status(201).json({ appointment: newAppointment });
+    res.status(201).json({ success: true, message: 'Appointment request submitted successfully' });
   } catch (error) {
     console.error('Error requesting appointment:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Appointment request failed' });
   }
 };
+
+
+
 exports.getVerifiedDoctors = async (req, res) => {
   try {
     const verifiedDoctors = await Doctor.find({ verified: true });
@@ -269,10 +266,36 @@ exports.getVerifiedDoctors = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
+exports.getPatientAppointments = async (req, res) => {
+  try {
+    const patientId = req.user._id;
+
+    const appointments = await Appointment.find({ patient: patientId })
+      .populate('doctor', 'name') // Populate doctor's name
+      .select('preferredDateTime status'); // Select necessary fields
+
+    const formattedAppointments = appointments.map(appointment => ({
+      _id: appointment._id,
+      doctor: {
+        _id: appointment.doctor._id,
+        name: appointment.doctor.name,
+      },
+      date: appointment.preferredDateTime.toDateString(), // Extract date from preferredDateTime
+      time: appointment.preferredDateTime.toLocaleTimeString(),
+      status: appointment.status
+    }));
+
+    res.status(200).json({ appointments: formattedAppointments });
+  } catch (error) {
+    console.error('Error fetching patient appointments:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 exports.getStatus = async (req, res) => {
   try {
-    const { id } = req.params;
-    const appointment = await Appointment.findById(id);
+    const { _id } = req.params; // Use _id instead of appointmentId
+    const appointment = await Appointment.findById(_id);
 
     if (!appointment) {
       return res.status(404).json({ error: 'Appointment not found' });

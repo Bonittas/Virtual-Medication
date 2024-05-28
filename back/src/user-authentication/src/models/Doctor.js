@@ -49,8 +49,11 @@ const doctorSchema = new mongoose.Schema({
   startTime: String,
   endTime: String,
   imageUrl: String,
-  appointments: [appointmentSchema],
-  notifications: [notificationSchema]
+  appointments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Appointment'
+  }],
+    notifications: [notificationSchema]
 
 });
 

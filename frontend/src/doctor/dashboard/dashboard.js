@@ -94,6 +94,14 @@ Appointments            </Link>
               Complete Profile
             </Link>
           </li>   
+          <li className="mb-2">
+            <Link to="/patients-status" className="flex items-center text-white hover:text-white">
+              <span className="mr-2">
+                <FontAwesomeIcon icon={faUser} size="lg py-3 text-white" />
+              </span>
+              patients
+            </Link>
+          </li> 
           <li className=" mb-2">
             <button onClick={handleSignout} className="flex items-center text-white hover:text-red-600">
               <span className="mr-2">

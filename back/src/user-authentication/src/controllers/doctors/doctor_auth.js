@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/Doctor');
-const patient = require('../../models/Patient');
+const Patient = require('../../models/Patient');
 const Meeting = require('../../models/meeting');
 const Prescription = require('../../models/prescription');
 const path = require('path');
@@ -10,7 +10,7 @@ const Notification = require("../../models/doctorNotification")
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
 const JWT_EXPIRES_IN = '1d'; 
 const Appointment = require("../../models/appointmetSchema")
-
+const { v4: uuidv4 } = require('uuid');
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -351,7 +351,6 @@ exports.getAppointments = async (req, res) => {
   }
 };
 
-
 exports.getAppointmentRequests = async (req, res) => {
   try {
     if (!req.user) {
@@ -367,11 +366,33 @@ exports.getAppointmentRequests = async (req, res) => {
       })
       .exec();
 
-    if (!appointmentRequests) {
+    if (!appointmentRequests || appointmentRequests.length === 0) {
       return res.status(404).json({ error: 'No appointment requests found' });
     }
 
-    res.json({ appointmentRequests });
+    // Debugging to check if patient data is populated
+    appointmentRequests.forEach(appointment => {
+      console.log('Appointment Patient:', appointment.patient);
+    });
+
+    // Format appointments to include patient's name and other details
+    const formattedRequests = appointmentRequests.map(appointment => ({
+      _id: appointment._id,
+      patient: appointment.patient ? {
+        _id: appointment.patient._id,
+        name: appointment.patient.name || 'Unknown Patient',
+        email: appointment.patient.email || 'N/A',
+        age: appointment.patient.age || 'N/A',
+        gender: appointment.patient.gender || 'N/A',
+        address1: appointment.patient.address1 || 'N/A',
+        country: appointment.patient.country || 'N/A'
+      } : { _id: null, name: 'Unknown Patient', email: 'N/A', age: 'N/A', gender: 'N/A', address1: 'N/A', country: 'N/A' },
+      preferredDateTime: appointment.preferredDateTime,
+      symptoms: appointment.symptoms || 'N/A',
+      status: appointment.status
+    }));
+
+    res.json({ appointmentRequests: formattedRequests });
   } catch (error) {
     console.error('Error fetching appointment requests:', error);
     res.status(500).json({ message: 'Server Error' });
@@ -379,49 +400,65 @@ exports.getAppointmentRequests = async (req, res) => {
 };
 
 
+
+
 exports.getApprovedAppointments = async (req, res) => {
   try {
-    const approvedAppointments = await Appointment.find({ status: 'approved' })
-      .populate('patient', 'name email age gender'); // Populate patient data with specified fields
-    res.json({ approvedAppointments });
+    const doctorId = req.user._id; // Assuming the authenticated user is a doctor
+    const approvedAppointments = await Appointment.find({ doctor: doctorId, status: 'approved' })
+      .populate('patient', 'name email age gender') // Populate patient data with specified fields
+      .select('preferredDateTime status roomId'); // Select necessary fields
+
+    // Format appointments to include patient's name, date, time, and status
+    const formattedAppointments = approvedAppointments.map(appointment => ({
+      _id: appointment._id,
+      patient: appointment.patient ? {
+        _id: appointment.patient._id,
+        name: appointment.patient.name,
+      } : {
+        _id: null,
+        name: 'Unknown Patient',
+      },
+      date: appointment.preferredDateTime.toDateString(), // Extract date from preferredDateTime
+      time: appointment.preferredDateTime.toLocaleTimeString(), // Format time or display 'N/A' if null
+      status: appointment.status
+    }));
+
+    res.json({ approvedAppointments: formattedAppointments });
   } catch (error) {
     console.error('Error fetching approved appointments:', error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
 exports.getRejectedAppointments = async (req, res) => {
   try {
-    const rejectedAppointments = await Appointment.find({ status: 'rejected' })
-      .populate('patient', 'name email age gender'); // Populate patient data with specified fields
-    res.json({ rejectedAppointments });
+    const doctorId = req.user._id; // Assuming the authenticated user is a doctor
+    const rejectedAppointments = await Appointment.find({ doctor: doctorId, status: 'rejected' })
+      .populate('patient', 'name') // Populate patient data with specified fields
+      .select('preferredDateTime status'); // Select necessary fields
+
+    // Format appointments to include patient's name, date, time, and status
+    const formattedAppointments = rejectedAppointments.map(appointment => ({
+      _id: appointment._id,
+      patient: appointment.patient ? {
+        _id: appointment.patient._id,
+        name: appointment.patient.name,
+      } : {
+        _id: null,
+        name: 'Unknown Patient',
+      },
+      date: appointment.preferredDateTime.toDateString(), // Extract date from preferredDateTime
+      time: appointment.preferredDateTime.toLocaleTimeString(), // Format time or display 'N/A' if null
+      status: appointment.status
+    }));
+
+    res.json({ rejectedAppointments: formattedAppointments });
   } catch (error) {
     console.error('Error fetching rejected appointments:', error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
-
-
-// Function to generate Google Meet link
-function generateGoogleMeetLink(dateTime) {
-  // Implement logic to generate Google Meet link based on dateTime
-  // Example implementation:
-  const googleMeetLink = `https://meet.google.com/${generateRandomMeetingID()}`;
-  return googleMeetLink;
-}
-
-// Helper function to generate a random meeting ID
-function generateRandomMeetingID() {
-  // Implement logic to generate a random meeting ID
-  // Example implementation:
-  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  const charactersLength = characters.length;
-  for (let i = 0; i < 10; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
-
 
 exports.getPrescriptions = async (req, res) => {
   try {
@@ -452,21 +489,20 @@ exports.approveAppointment = async (req, res) => {
 
     // Change status to approved
     appointment.status = 'approved';
-
-    // Generate Google Meet link
-    const googleMeetLink = generateGoogleMeetLink(appointment.preferredDateTime); // Implement this function
-
-    // Save Google Meet link to appointment document
-    appointment.googleMeetLink = googleMeetLink;
+    
+    // Generate and set roomId
+    const roomId = uuidv4(); // Generate unique roomId
+    appointment.roomId = roomId;
 
     await appointment.save();
 
-    res.json({ success: true, message: 'Appointment approved successfully', googleMeetLink });
+    res.json({ success: true, message: 'Appointment approved successfully', roomId: roomId }); // Return roomId
   } catch (error) {
     console.error('Error approving appointment:', error);
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 };
+
 
 
 // Controller method to reject an appointment request
@@ -488,3 +524,19 @@ exports.rejectAppointment = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 };
+
+exports.getPatientById = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const userDetails = await Patient.findById(userId);
+
+    if (!userDetails) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({ user: userDetails });
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+}

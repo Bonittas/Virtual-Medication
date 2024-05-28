@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faUser, faChartBar, faPen,faBell, faCog, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { logout } from "../../actions/doctor_authActions";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import Footer from "../../home/footer"
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -85,7 +85,15 @@ const Navbar = () => {
               </span>
               Complete Profile
             </Link>
-          </li>   
+          </li>  
+          <li className="mb-2">
+          <Link to="/appointment-status" className="flex items-center text-white hover:text-white">
+              <span className="mr-2">
+                <FontAwesomeIcon icon={faUser} size="lg py-3 text-white" />
+              </span>
+              Appointment Status
+            </Link>
+          </li> 
           <li className=" mb-2">
             <button onClick={handleSignout} className="flex items-center text-white hover:text-red-600">
               <span className="mr-2">

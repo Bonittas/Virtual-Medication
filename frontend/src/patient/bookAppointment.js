@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { requestAppointment } from "../actions/patient_authActions";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle,faClose, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
 const AppointmentForm = ({ doctorId, onClose }) => {
-  const dispatch = useDispatch();
   const [modeOfConsultation, setModeOfConsultation] = useState("");
   const [preferredDateTime, setPreferredDateTime] = useState("");
   const [symptoms, setSymptoms] = useState("");
@@ -21,7 +19,16 @@ const AppointmentForm = ({ doctorId, onClose }) => {
       symptoms
     };
     try {
-      await dispatch(requestAppointment(appointmentData));
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/appointment/request",
+        appointmentData,
+        {
+          headers: {
+            "x-auth-token": token
+          }
+        }
+      );
       setSuccessMessage("Appointment requested successfully");
       setTimeout(() => {
         setSuccessMessage(null);
