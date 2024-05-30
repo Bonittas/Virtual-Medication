@@ -2,149 +2,146 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faVideo, faMicrophone, faPhoneSlash, faCompress, faExpand } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
-  padding: 2vw;
+  position: relative;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 100vh;
-  width: 100%;
-  flex-wrap: wrap;
 `;
 
 const StyledVideo = styled.video`
-  height: 80%;
-  width: 50%;
-  margin-left: 5%;
+  width: 100%;
+  height: auto;
 `;
 
-const Video = (props) => {
-  const ref = useRef();
+const IconButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  margin: 5px;
+`;
 
-  useEffect(() => {
-    props.peer.on("stream", (stream) => {
-      ref.current.srcObject = stream;
-    });
-  }, [props.peer]);
+const IconContainer = styled.div`
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+`;
 
-  return <StyledVideo controls playsInline autoPlay ref={ref} />;
-};
-
-const VideoRoom = ({ match }) => {
-  const [peers, setPeers] = useState([]);
-  const [stream, setStream] = useState();
+const VideoRoom = ({ match, role }) => {
+  const roomID = match.params.roomID;
+  const [stream, setStream] = useState(null);
+  const [minimized, setMinimized] = useState(false);
   const socketRef = useRef();
   const userVideo = useRef();
-  const peersRef = useRef([]);
-  const userStream = useRef();
-  const roomID = match.params.roomID;
+  const partnerVideo = useRef();
+  const peerRef = useRef(null);
 
   useEffect(() => {
-    socketRef.current = io.connect("/");
+    socketRef.current = io.connect("/", { query: `roomID=${roomID}` });
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-      .then(stream => {
-        userVideo.current.srcObject = stream;
-        setStream(stream);
-        userStream.current = stream;
+      .then(userMediaStream => {
+        userVideo.current.srcObject = userMediaStream;
+        setStream(userMediaStream);
 
         socketRef.current.emit("join room", roomID);
 
-        socketRef.current.on("all users", users => {
-          const peers = [];
-          users.forEach(userID => {
-            const peer = createPeer(userID, socketRef.current.id, stream);
-            peersRef.current.push({
-              peerID: userID,
-              peer,
-            });
-            peers.push({
-              peerID: userID,
-              peer,
-            });
-          });
-          setPeers(peers);
-        });
-
-        socketRef.current.on("user joined", payload => {
-          const peer = addPeer(payload.signal, payload.callerID, stream);
-          peersRef.current.push({
-            peerID: payload.callerID,
-            peer,
-          });
-
-          const peerObj = {
-            peer,
-            peerID: payload.callerID,
-          };
-
-          setPeers(users => [...users, peerObj]);
+        socketRef.current.on("user joined", userID => {
+          const peer = createPeer(userID, socketRef.current.id, userMediaStream);
+          peerRef.current = peer;
         });
 
         socketRef.current.on("receiving returned signal", payload => {
-          const item = peersRef.current.find(p => p.peerID === payload.id);
-          item.peer.signal(payload.signal);
+          peerRef.current.signal(payload.signal);
         });
 
-        socketRef.current.on("user left", id => {
-          const peerObj = peersRef.current.find(p => p.peerID === id);
-          if (peerObj) {
-            peerObj.peer.destroy();
-          }
-          const peers = peersRef.current.filter(p => p.peerID !== id);
-          peersRef.current = peers;
-          setPeers(peers);
+        socketRef.current.on("user left", userID => {
+          peerRef.current.destroy();
+          peerRef.current = null;
         });
-      });
+      })
+      .catch(error => console.error("Error accessing media devices:", error));
 
     return () => {
       socketRef.current.disconnect();
-      if (userStream.current) {
-        userStream.current.getTracks().forEach(track => track.stop());
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
       }
     };
   }, [roomID]);
 
-  function createPeer(userToSignal, callerID, stream) {
+  const createPeer = (userToSignal, callerID, stream) => {
     const peer = new Peer({
       initiator: true,
       trickle: false,
-      stream,
+      stream: stream,
     });
 
     peer.on("signal", signal => {
-      socketRef.current.emit("sending signal", {
-        userToSignal,
-        callerID,
-        signal,
-      });
+      socketRef.current.emit("sending signal", { userToSignal, callerID, signal });
+    });
+
+    peer.on("stream", stream => {
+      partnerVideo.current.srcObject = stream;
     });
 
     return peer;
-  }
+  };
 
-  function addPeer(incomingSignal, callerID, stream) {
-    const peer = new Peer({
-      initiator: false,
-      trickle: false,
-      stream,
-    });
+  const handleToggleVideo = () => {
+    const videoTrack = stream.getVideoTracks()[0];
+    if (videoTrack) videoTrack.enabled = !videoTrack.enabled;
+  };
 
-    peer.on("signal", signal => {
-      socketRef.current.emit("returning signal", { signal, callerID });
-    });
+  const handleToggleAudio = () => {
+    const audioTrack = stream.getAudioTracks()[0];
+    if (audioTrack) audioTrack.enabled = !audioTrack.enabled;
+  };
 
-    peer.signal(incomingSignal);
+  const handleEndCall = () => {
+    window.location.href = "/";
+  };
 
-    return peer;
-  }
+  const handleToggleMinimize = () => {
+    setMinimized(!minimized);
+  };
 
   return (
-    <Container>
-      <StyledVideo muted ref={userVideo} autoPlay playsInline />
-      {peers.map(peer => {
-        return <Video key={peer.peerID} peer={peer.peer} />;
-      })}
-    </Container>
+    <div className="w-2/3 h-1/2 mt-2 mx-6 rounded-md">
+      <Container className="mb-16 h-1/2">
+        {!minimized && (
+          <>
+            <IconContainer>
+              <IconButton onClick={handleToggleVideo}>
+                <FontAwesomeIcon icon={faVideo} size="2x" color="white" />
+              </IconButton>
+              <IconButton onClick={handleToggleAudio}>
+                <FontAwesomeIcon icon={faMicrophone} size="2x" color="white" />
+              </IconButton>
+              <IconButton onClick={handleEndCall}>
+                <FontAwesomeIcon icon={faPhoneSlash} size="2x" color="white" />
+              </IconButton>
+              <IconButton onClick={handleToggleMinimize}>
+                <FontAwesomeIcon icon={minimized ? faExpand : faCompress} size="2x" color="white" />
+              </IconButton>
+            </IconContainer>
+            <StyledVideo muted ref={userVideo} autoPlay playsInline />
+            <StyledVideo ref={partnerVideo} autoPlay playsInline />
+          </>
+        )}
+      </Container>
+    </div>
   );
 };
 

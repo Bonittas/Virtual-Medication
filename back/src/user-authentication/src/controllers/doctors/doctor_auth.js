@@ -5,6 +5,7 @@ const Patient = require('../../models/Patient');
 const Meeting = require('../../models/meeting');
 const Prescription = require('../../models/prescription');
 const path = require('path');
+const Room = require('../../models/Room')
 const fs = require('fs');
 const Notification = require("../../models/doctorNotification")
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
@@ -479,27 +480,20 @@ exports.getMeetings = async (req, res) => {
 };
 
 exports.approveAppointment = async (req, res) => {
-  const { id } = req.params;
 
   try {
-    const appointment = await Appointment.findById(id);
+    const appointment = await Appointment.findById(req.params.id);
     if (!appointment) {
-      return res.status(404).json({ message: 'Appointment not found' });
+      return res.status(404).send('Appointment not found');
     }
 
-    // Change status to approved
-    appointment.status = 'approved';
-    
-    // Generate and set roomId
-    const roomId = uuidv4(); // Generate unique roomId
-    appointment.roomId = roomId;
-
+    appointment.approved = true;
+    appointment.roomId = uuidv4(); // Generate a unique room ID
     await appointment.save();
 
-    res.json({ success: true, message: 'Appointment approved successfully', roomId: roomId }); // Return roomId
+    res.status(200).send(appointment);
   } catch (error) {
-    console.error('Error approving appointment:', error);
-    res.status(500).json({ success: false, message: 'Server Error' });
+    res.status(500).send(error.message);
   }
 };
 

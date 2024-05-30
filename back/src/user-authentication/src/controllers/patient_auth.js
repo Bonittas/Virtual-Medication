@@ -291,10 +291,9 @@ exports.getPatientAppointments = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 exports.getStatus = async (req, res) => {
   try {
-    const { _id } = req.params; // Use _id instead of appointmentId
+    const { _id } = req.params;
     const appointment = await Appointment.findById(_id);
 
     if (!appointment) {
@@ -302,12 +301,11 @@ exports.getStatus = async (req, res) => {
     }
 
     if (appointment.status === 'approved') {
-      // If appointment is approved, generate join meeting link
       const room = await Room.findOne({ appointment: appointment._id });
       if (!room) {
         return res.status(500).json({ error: 'Room not found' });
       }
-      const joinMeetingLink = `/patient-room/${room._id}`;
+      const joinMeetingLink = `/video-room/${room.roomId}`;
       return res.status(200).json({ message: 'Appointment successfully approved', joinMeetingLink });
     } else if (appointment.status === 'rejected') {
       return res.status(200).json({ message: 'Appointment rejected' });
@@ -319,3 +317,24 @@ exports.getStatus = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+// Controller method to reject an appointment request
+exports.rejectAppointment = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const appointment = await Appointment.findById(id);
+    if (!appointment) {
+      return res.status(404).json({ message: 'Appointment not found' });
+    }
+
+    appointment.status = 'rejected';
+    await appointment.save();
+
+    res.json({ success: true, message: 'Appointment rejected successfully' });
+  } catch (error) {
+    console.error('Error rejecting appointment:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
+

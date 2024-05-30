@@ -4,11 +4,9 @@ const roomSchema = new mongoose.Schema({
   appointment: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Appointment',
-    required: true
   },
   roomName: {
     type: String,
-    required: true
   },
   participants: [{
     type: mongoose.Schema.Types.ObjectId,
