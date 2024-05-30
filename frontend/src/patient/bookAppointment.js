@@ -94,7 +94,7 @@ const AppointmentForm = ({ doctorId, onClose }) => {
           <div className="flex justify-end">
             <button
               type="button"
-              className="bg-red-600 hover:bg-red-400 text-gray-800 px-6 py-2 rounded mr-2"
+              className="bg-red-600 hover:bg-red-400 text-white px-6 py-2 rounded mr-2"
               onClick={onClose}
             >
               Cancel

@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   const handleSignout = () => {
-    dispatch(logout(navigate)); // Pass the navigate function to logout action creator
+    dispatch(logout(navigate));
     handleDrawerClose();
   };
 
@@ -35,7 +35,7 @@ const Navbar = () => {
         >
           <FontAwesomeIcon icon={faBars} size="lg py-3 text-white" />
         </button>
-        <h6 className="text-white text-lg py-3 text-start font-semibold">Medicare (Doctors)</h6>
+        <h6 className="text-white text-lg py-3 text-start font-semibold">Medicare (Patients)</h6>
       </div>
 
       {/* LEFT DRAWER */}
