@@ -480,20 +480,31 @@ exports.getMeetings = async (req, res) => {
 };
 
 exports.approveAppointment = async (req, res) => {
+  const { id } = req.params;
 
   try {
-    const appointment = await Appointment.findById(req.params.id);
+    const appointment = await Appointment.findById(id);
     if (!appointment) {
-      return res.status(404).send('Appointment not found');
+      return res.status(404).json({ message: 'Appointment not found' });
     }
 
-    appointment.approved = true;
-    appointment.roomId = uuidv4(); // Generate a unique room ID
+    // Change status to approved
+    appointment.status = 'approved';
+    
+    // Generate and set roomId
+    const roomId = uuidv4(); // Generate unique roomId
+    appointment.roomId = roomId;
+
     await appointment.save();
 
-    res.status(200).send(appointment);
+    // Save room info
+    const room = new Room({ appointment: appointment._id, roomId });
+    await room.save();
+
+    res.json({ success: true, message: 'Appointment approved successfully', roomId: roomId });
   } catch (error) {
-    res.status(500).send(error.message);
+    console.error('Error approving appointment:', error);
+    res.status(500).json({ success: false, message: 'Server Error' });
   }
 };
 

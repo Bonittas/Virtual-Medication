@@ -22,6 +22,21 @@ const ApprovedPatients = ({ approvedAppointments }) => {
     setCurrentPage(1);
   };
 
+  const renderJoinMeetingLink = (appointment) => {
+    if (appointment.status === "approved" ) {
+      return (
+        <a
+          href={`/video-room/${appointment.roomId}`}
+          className="text-blue-500 hover:text-blue-700"
+        >
+          <FontAwesomeIcon icon={faVideo} size="2x" />
+        </a>
+      );
+    } else {
+      return "Room not available";
+    }
+  };
+
   return (
     <div className="mt-8">
       <h2 className="text-2xl font-semibold mb-4">Approved Appointments</h2>
@@ -45,20 +60,11 @@ const ApprovedPatients = ({ approvedAppointments }) => {
           </thead>
           <tbody>
             {currentAppointments.map((appointment) => (
-              <tr key={appointment._id}>
+              <tr key={appointment._id || appointment.id}>
                 <td className="border border-gray-400 px-4 py-2">{appointment.patient?.name}</td>
-                <td className="border border-gray-400 px-4 py-2">{new Date(appointment.date).toLocaleDateString()}</td>
+                <td className="border border-gray-400 px-4 py-2">{appointment.date}</td>
                 <td className="border border-gray-400 px-4 py-2 text-center">
-                  {appointment.roomId ? (
-                    <a
-                      href={`/video-room/${appointment.roomId}`}
-                      className="text-blue-500 hover:text-blue-700"
-                    >
-                      <FontAwesomeIcon icon={faVideo} size="2x" />
-                    </a>
-                  ) : (
-                    'Room not available'
-                  )}
+                  {renderJoinMeetingLink(appointment)}
                 </td>
               </tr>
             ))}
@@ -66,15 +72,20 @@ const ApprovedPatients = ({ approvedAppointments }) => {
         </table>
       </div>
       <div className="flex justify-center mt-4">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => setCurrentPage(index + 1)}
-            className={`px-4 py-2 mx-1 rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-          >
-            {index + 1}
-          </button>
-        ))}
+        <button
+          onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}
+          className="px-4 py-2 mx-1 border rounded"
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => setCurrentPage(currentPage < totalPages ? currentPage + 1 : totalPages)}
+          className="px-4 py-2 mx-1 border rounded"
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
