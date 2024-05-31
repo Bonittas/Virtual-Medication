@@ -73,4 +73,11 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
+  app.use(
+    '/api/auth/payment/initialize',
+    createProxyMiddleware({
+      target: 'https://localhost:5000',
+      changeOrigin: true,
+    })
+  );
 }

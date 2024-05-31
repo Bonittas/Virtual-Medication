@@ -7,6 +7,9 @@ const Appointment = require("../models/appointmetSchema");
 const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
 const JWT_EXPIRES_IN = '1d'; 
 const Room = require("../models/Room")
+const Payment = require("../models/Payment")
+
+
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -219,8 +222,6 @@ exports.getAppointments = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
-// Backend Controller to Handle Appointment Requests
 exports.requestAppointment = async (req, res) => {
   try {
     const { doctorId, modeOfConsultation, preferredDateTime, symptoms } = req.body;
@@ -232,13 +233,69 @@ exports.requestAppointment = async (req, res) => {
       return res.status(404).json({ message: 'Doctor not found' });
     }
 
+    // Check if the patient has made a successful payment before requesting the appointment
+    const payment = await Payment.findOne({ patient: patientId, status: 'successful' });
+
+    if (!payment) {
+      // Check for pending payments
+      const pendingPayment = await Payment.findOne({ patient: patientId, status: 'pending' });
+
+      if (pendingPayment) {
+        return res.status(200).json({
+          paymentRequired: true,
+          appointmentId: pendingPayment.appointmentId,
+          paymentAmount: pendingPayment.amount
+        });
+      } else {
+        // Create a new appointment with payment status pending
+        const newAppointment = new Appointment({
+          doctor: doctorId,
+          patient: patientId,
+          modeOfConsultation,
+          preferredDateTime,
+          symptoms,
+          paymentStatus: 'pending' // Set payment status to pending for this appointment
+        });
+        const savedAppointment = await newAppointment.save();
+
+        // Determine payment amount based on doctor's type
+        let paymentAmount;
+        switch (doctor.type) {
+          case 'specialist':
+            paymentAmount = 400;
+            break;
+          case 'other':
+            paymentAmount = 500;
+            break;
+          default:
+            paymentAmount = 300;
+        }
+
+        // Create a new pending payment
+        const newPayment = new Payment({
+          patient: patientId,
+          appointmentId: savedAppointment._id,
+          amount: paymentAmount,
+          status: 'pending'
+        });
+        await newPayment.save();
+
+        return res.status(200).json({
+          paymentRequired: true,
+          appointmentId: savedAppointment._id,
+          paymentAmount
+        });
+      }
+    }
+
     // Create a new appointment instance
     const newAppointment = new Appointment({
       doctor: doctorId,
       patient: patientId,
       modeOfConsultation,
       preferredDateTime,
-      symptoms
+      symptoms,
+      paymentStatus: 'successful' // Set payment status to successful
     });
 
     // Save the appointment to the database
@@ -254,9 +311,6 @@ exports.requestAppointment = async (req, res) => {
     res.status(500).json({ success: false, message: 'Appointment request failed' });
   }
 };
-
-
-
 exports.getVerifiedDoctors = async (req, res) => {
   try {
     const verifiedDoctors = await Doctor.find({ verified: true });
@@ -291,9 +345,10 @@ exports.getPatientAppointments = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 exports.getStatus = async (req, res) => {
   try {
-    const { _id } = req.params;
+    const { _id } = req.params; // Use _id instead of appointmentId
     const appointment = await Appointment.findById(_id);
 
     if (!appointment) {
@@ -301,11 +356,12 @@ exports.getStatus = async (req, res) => {
     }
 
     if (appointment.status === 'approved') {
+      // If appointment is approved, generate join meeting link
       const room = await Room.findOne({ appointment: appointment._id });
       if (!room) {
         return res.status(500).json({ error: 'Room not found' });
       }
-      const joinMeetingLink = `/video-room/${room.roomId}`;
+      const joinMeetingLink = `/patient-room/${room._id}`;
       return res.status(200).json({ message: 'Appointment successfully approved', joinMeetingLink });
     } else if (appointment.status === 'rejected') {
       return res.status(200).json({ message: 'Appointment rejected' });
@@ -317,24 +373,3 @@ exports.getStatus = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
-
-// Controller method to reject an appointment request
-exports.rejectAppointment = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const appointment = await Appointment.findById(id);
-    if (!appointment) {
-      return res.status(404).json({ message: 'Appointment not found' });
-    }
-
-    appointment.status = 'rejected';
-    await appointment.save();
-
-    res.json({ success: true, message: 'Appointment rejected successfully' });
-  } catch (error) {
-    console.error('Error rejecting appointment:', error);
-    res.status(500).json({ success: false, message: 'Server Error' });
-  }
-};
-

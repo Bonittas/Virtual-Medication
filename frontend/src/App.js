@@ -36,7 +36,10 @@ import Appointments from "./doctor/dashboard/appointmentRequests"
 import AppointmentStatus from "./patient/dashboard/appointmentStatus"
 import PatientsStatus from "./doctor/dashboard/patients"
 import PatientProfile from "./doctor/dashboard/patientsDetail"
-
+import Payment from "./patient/Payment";
+import VerifyPayment from "./patient/VerifyPayment";
+import BookAppointment from './patient/bookAppointments'
+import ApprovedD from './patient/approvedDoctors'
 const App = () => {
   const [user, setUser] = useState("");
 
@@ -103,6 +106,8 @@ const App = () => {
                 <Route exact path="/" element={<Home/>} />
                 <Route exact path="/option" element={<OptionPage/>} />
                 <Route exact path="/signin-option" element={<SignInOptions/>} />
+                <Route exact path="/payment" element={<Payment/>} />
+                <Route exact path="/payment/verify" element={<VerifyPayment/>} />
 
                 <Route exact path="/doctor-signup" element={<Doctor_Signup/>} />
                 <Route exact path="/doctor-signin" element={<Doctor_Signin/>} />
@@ -172,6 +177,9 @@ const App = () => {
 />
 <Route exact path="/appointment-status" element={<AppointmentStatus />} />
 <Route exact path="/patients-status" element={<PatientsStatus />} />
+<Route exact path="/book-appointment" element={<BookAppointment />} />
+<Route exact path="/doctrsList" element={<ApprovedD />} />
+
 
 <Route
   exact
@@ -215,3 +223,4 @@ const App = () => {
 export default App;
 
 
+       

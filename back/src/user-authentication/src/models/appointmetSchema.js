@@ -33,7 +33,14 @@ const AppointmentSchema = new Schema({
     type: String,
     unique: true
   },
-  
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'completed', 'failed'],
+    default: 'pending'
+  },
+  paymentAmount: {
+    type: Number,
+  }
 });
 
 module.exports = mongoose.model('Appointment', AppointmentSchema);

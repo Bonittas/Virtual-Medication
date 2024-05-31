@@ -8,6 +8,7 @@ const cors = require('cors');
 const path = require("path");
 const http = require('http');
 const socketIo = require('socket.io');
+const payment = require("./routes/paymentRoute")
 
 const app = express();
 const server = http.createServer(app);
@@ -76,6 +77,8 @@ app.use('/api/auth', doctorRoutes);
 app.use('/api/auth', patientRoutes);
 app.use('/api/auth', adminRoutes);
 
+
+app.use('/api/auth',payment)
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
@@ -87,3 +90,6 @@ process.on('SIGINT', async () => {
     process.exit(0);
   });
 });
+
+
+
