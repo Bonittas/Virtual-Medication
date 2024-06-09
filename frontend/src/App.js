@@ -17,7 +17,11 @@ import Doctor_Dashboard from "./doctor/dashboard/dashboard";
 import Doctor_Signout from "./doctor/dashboard/signout"
 import Complete_Details from "./doctor/dashboard/complete_details"
 import Notification from "./doctor/dashboard/Notification";
-import VideoMeet from "./doctor/dashboard/videoMeeting/videoMeetig";
+import VideoMeet from "./doctor/dashboard/videoMeeting/Room/Room";
+import VideoMeets from "./doctor/dashboard/videoMeeting/videoMeetig";
+import Controls from "./doctor/dashboard/videoMeeting/controls";
+import PrescriptionForm from "./doctor/dashboard/videoMeeting/prescrption";
+import PrescriptionList from "./patient/prescription";
 import PatientRoom from "./doctor/dashboard/videoMeeting/videoMeetig";
 import Patient_Signup from "./patient/signup";
 import Patient_Signin from "./patient/signin";
@@ -39,7 +43,11 @@ import PatientProfile from "./doctor/dashboard/patientsDetail"
 import Payment from "./patient/Payment";
 import VerifyPayment from "./patient/VerifyPayment";
 import BookAppointment from './patient/bookAppointments'
+import styled from 'styled-components';
+import Video from './doctor/dashboard/videoMeeting/Main/Main'
 import ApprovedD from './patient/approvedDoctors'
+import PatientPage from "./patient/dashboard/videoMeeting/JoinVideo";
+import DoctorPage from "./doctor/dashboard/Joinvideo";
 const App = () => {
   const [user, setUser] = useState("");
 
@@ -75,6 +83,7 @@ const App = () => {
                 <Route exact path="/doctor-signin" element={<Doctor_Signin/>} />
                 <Route exact path="/admin-signin" element={<Admin_Signin/>} />
                 <Route exact path="/create-post" element={<Create_Post/>} />
+                <Route exact path="/controls" element={<Controls/>} />
 
 
                                  <Route
@@ -88,7 +97,17 @@ const App = () => {
                     path="/patient/dashboard"
                     element={<Patient_Dashboard/>}
                   />
-                
+                                  <Route
+                    exact
+                    path="/prescription-form"
+                    element={<PrescriptionForm/>}
+                  />
+                                                  <Route
+                    exact
+                    path="/prescription-detail"
+                    element={<PrescriptionList/>}
+                  />
+                  
                   
 
                
@@ -102,6 +121,8 @@ const App = () => {
         <>
           <CssBaseline>
             <BrowserRouter>
+            <AppContainer>
+
               <Routes>
                 <Route exact path="/" element={<Home/>} />
                 <Route exact path="/option" element={<OptionPage/>} />
@@ -123,21 +144,44 @@ const App = () => {
                   element={<Patient_Signin/>}
                 />
 
+
                                                        <Route
                     exact
                     path="/complete-detail"
                     element={<Patient_Complete_Details/>}
                   />  
-                                                                         <Route
+                              <Route path="/doctor" element={<DoctorPage />} />
+        <Route path="/patient" element={<PatientPage />} />                                                   <Route
                     exact
                     path="/complete-details"
                     element={<Complete_Details/>}
                   /> 
                           <Route path="/patients/:id" element={<PatientProfile />} />
+
         <Route
-          path="/video-room/:roomID"
-          render={(props) => <VideoMeet {...props} role={user.role} />}
-        />
+          path="/video-call"
+          element={<VideoMeets/>}
+          />
+                  <Route
+          path="/room/:roomId"
+          element={<VideoMeet/>}
+          />
+                  <Route
+          path="/video"
+          element={<Video/>}
+          />
+                                            <Route
+                    exact
+                    path="/prescription-form"
+                    element={<PrescriptionForm/>}
+                  />
+                                                  <Route
+                    exact
+                    path="/prescription-detail"
+                    element={<PrescriptionList/>}
+                  />
+
+                          <Route exact path="/controls" element={<Controls/>} />
 
                                                                          <Route
                     exact
@@ -212,6 +256,8 @@ const App = () => {
                 <Route exact path="/option" element={<OptionPage/>} />
 
               </Routes>
+              </AppContainer>
+
             </BrowserRouter>
           </CssBaseline>
         </>
@@ -223,4 +269,8 @@ const App = () => {
 export default App;
 
 
-       
+const AppContainer = styled.div`
+align-items: center;
+justify-content: center;
+color: black;
+`;

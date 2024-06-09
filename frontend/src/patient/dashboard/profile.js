@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Nav from './dashboard';
 import Footer from '../../home/footer';
 
@@ -18,7 +20,6 @@ const Profile = () => {
             'x-auth-token': localStorage.getItem('token')
           }
         });
-        console.log('User Data:', response.data.user); // Add this line to log user data
         setUser(response.data.user);
         setIsLoading(false);
       } catch (error) {
@@ -32,59 +33,121 @@ const Profile = () => {
   }, []);
   
 
-
   if (isLoading) {
-    return <p>Loading user data...</p>;
+    return (
+      <>
+        <Nav />
+        <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
+          <FontAwesomeIcon icon={faSpinner} spin className="text-4xl text-green-500 mr-2" />
+          <span className="text-lg text-gray-700">Loading user data...</span>
+        </div>
+        <Footer />
+      </>
+    );
   }
 
   if (error) {
-    return <p>Error fetching user data: {error}</p>;
+    return (
+      <>
+        <Nav />
+        <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
+          <p className="text-lg text-red-500">Error fetching user data: {error}</p>
+        </div>
+        <Footer />
+      </>
+    );
   }
 
   if (!user) {
-    return <p>User data not available.</p>;
+    return (
+      <>
+        <Nav />
+        <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
+          <p className="text-lg text-gray-700">User data not available.</p>
+        </div>
+        <Footer />
+      </>
+    );
   }
 
   if (!user._id) {
-    return <p>User ID not found.</p>;
+    return (
+      <>
+        <Nav />
+        <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
+          <p className="text-lg text-gray-700">User ID not found.</p>
+        </div>
+        <Footer />
+      </>
+    );
   }
 
   return (
     <>
       <Nav />
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-4">Welcome, {user.name}</h1>
+      <div className=" mx-auto px-4 my-4 py-8">
         <div className="bg-green-50 p-6 rounded-lg mb-8 shadow-md">
-          <div className="grid grid-cols-3 gap-4 mt-2">
-            <div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+            <div className="md:col-span-1 flex items-center justify-center">
               <img
                 src={`http://localhost:5000/images/${user.imageUrl}`}
                 alt="Profile"
-                className="rounded-md w-2/3 h-1/2 border-2 border-green-300 mx-auto "
+                className="rounded-full w-40 h-40 border-2 border-green-50"
               />
             </div>
+            <div className="md:col-span-2 flex flex-col justify-center">
+              <h1 className="text-2xl font-bold mb-2 text-gray-800">{user.name}</h1>
+              <p className="text-lg text-gray-700">{user.email}</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-            <p className="text-gray-700 font-bold text-gray-700 font-bold py-4">Name: {user.name}</p>
-
-              <p className="text-gray-700 font-bold text-gray-700 font-bold">Email: {user.email}</p>
-              <p className="text-gray-700 font-bold text-gray-700 py-4">Medical Speciality: {user.medicalSpeciality}</p>
-              <p className="text-gray-700 font-bold text-gray-700">Age: {user.age}</p>
-              <p className="text-gray-700 font-bold text-gray-700 py-4">Gender: {user.gender}</p>
-              <p className="text-gray-700 font-bold text-gray-700">Degree: {user.degree}</p>
-              <p className="text-gray-700 font-bold text-gray-700 mt-4">Address: {user.address1}, {user.address2}, {user.city}, {user.state}, {user.country}, {user.pincode}</p>
+              <p className="text-gray-700 font-bold">Father Name:</p>
+              <p className="text-gray-700">{user.medicalSpeciality}</p>
             </div>
             <div>
-              <p className="text-gray-700 font-bold text-gray-700 py-4">Registration Number: {user.regNumber}</p>
-              <p className="text-gray-700 font-bold text-gray-700">Year of Registration: {user.yearOfReg}</p>
-              <p className="text-gray-700 font-bold text-gray-700 py-4">State Medical Council: {user.stateMedicalCouncil}</p>
-              <p className="text-gray-700 font-bold text-gray-700">Experience: {user.experience}</p>
-              <p className="text-gray-700 font-bold text-gray-700 mt-4">Working Hours: {user.startTime} - {user.endTime}</p>
+              <p className="text-gray-700 font-bold">Age:</p>
+              <p className="text-gray-700">{user.age}</p>
+            </div>
+            <div>
+              <p className="text-gray-700 font-bold">Gender:</p>
+              <p className="text-gray-700">{user.gender}</p>
+            </div>
+            <div>
+              <p className="text-gray-700 font-bold">Job:</p>
+              <p className="text-gray-700">{user.degree}</p>
+            </div>
+            <div>
+              <p className="text-gray-700 font-bold">Address:</p>
+              <p className="text-gray-700">{user.address1}, {user.address2}, {user.city}, {user.state}, {user.country}, {user.pincode}</p>
+            </div>
+            <div>
+              <p className="text-gray-700 font-bold">Registration Number:</p>
+              <p className="text-gray-700">{user.regNumber}</p>
+            </div>
+            <div>
+              <p className="text-gray-700 font-bold">Year of Registration:</p>
+              <p className="text-gray-700">{user.yearOfReg}</p>
+            </div>
+            <div>
+              <p className="text-gray-700 font-bold">Home Town:</p>
+              <p className="text-gray-700">{user.stateMedicalCouncil}</p>
+            </div>
+            <div>
+              <p className="text-gray-700 font-bold">Martial Status:</p>
+              <p className="text-gray-700">{user.experience}</p>
+            </div>
+            <div>
+              <p className="text-gray-700 font-bold">Working Hours:</p>
+              <p className="text-gray-700">{user.startTime} - {user.endTime}</p>
             </div>
           </div>
         </div>
       </div>
-      <div className="bg-green-600">
-        <Footer />
+      <div className='bg-green-500'>
+      <Footer />
       </div>
     </>
   );

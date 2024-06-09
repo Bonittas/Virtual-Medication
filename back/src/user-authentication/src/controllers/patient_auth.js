@@ -326,7 +326,7 @@ exports.getPatientAppointments = async (req, res) => {
 
     const appointments = await Appointment.find({ patient: patientId })
       .populate('doctor', 'name') // Populate doctor's name
-      .select('preferredDateTime status'); // Select necessary fields
+      .select('preferredDateTime status roomId' ); // Select necessary fields
 
     const formattedAppointments = appointments.map(appointment => ({
       _id: appointment._id,
@@ -336,7 +336,9 @@ exports.getPatientAppointments = async (req, res) => {
       },
       date: appointment.preferredDateTime.toDateString(), // Extract date from preferredDateTime
       time: appointment.preferredDateTime.toLocaleTimeString(),
-      status: appointment.status
+      status: appointment.status,
+      roomId: appointment.roomId,
+
     }));
 
     res.status(200).json({ appointments: formattedAppointments });
@@ -348,28 +350,30 @@ exports.getPatientAppointments = async (req, res) => {
 
 exports.getStatus = async (req, res) => {
   try {
-    const { _id } = req.params; // Use _id instead of appointmentId
-    const appointment = await Appointment.findById(_id);
+    const { userId } = req.user; // assuming you have user info in req.user
 
-    if (!appointment) {
-      return res.status(404).json({ error: 'Appointment not found' });
-    }
+    // Find all appointments for the user
+    const appointments = await Appointment.find({ patient: userId });
 
-    if (appointment.status === 'approved') {
-      // If appointment is approved, generate join meeting link
-      const room = await Room.findOne({ appointment: appointment._id });
-      if (!room) {
-        return res.status(500).json({ error: 'Room not found' });
-      }
-      const joinMeetingLink = `/patient-room/${room._id}`;
-      return res.status(200).json({ message: 'Appointment successfully approved', joinMeetingLink });
-    } else if (appointment.status === 'rejected') {
-      return res.status(200).json({ message: 'Appointment rejected' });
-    } else {
-      return res.status(200).json({ message: 'Appointment pending approval' });
-    }
+    // Extract appointment information
+    const appointmentsData = await Promise.all(
+      appointments.map(async (appointment) => {
+        const room = await Room.findOne({ appointment: appointment._id });
+        const roomId = room && room.roomId ? room.roomId : null;
+        return {
+          _id: appointment._id,
+          doctor: appointment.doctor,
+          date: appointment.date,
+          status: appointment.status,
+          roomId: roomId,
+          // Add other appointment fields as needed
+        };
+      })
+    );
+
+    res.status(200).json({ appointments: appointmentsData });
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching appointments:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };

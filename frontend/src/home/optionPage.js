@@ -30,13 +30,13 @@ const OptionPage = () => {
     };
 
     return (
-        <div className="min-h-screen mt-1 mb-6 flex flex-col text-black items-center justify-center relative">
+        <div className=" min-h-screen mt-1 m-6 flex flex-col text-black items-center justify-center relative ">
             <img src={headerImage} alt="Background" className="mt-1  w-1/2 h-24 " />
 
-            <div className="bg-gray-300 border rounded-md w-full max-w-lg p-4 flex flex-col items-center">
+            <div className="bg-gray-300 border rounded-md w-full mx-3  p-4 flex flex-col items-center">
 
-                <div className="mb-8">
-                    <p className="text-lg text-center font-bold">Join HealthLink</p>
+                <div className="mb-8 ">
+                    <p className="text-lg text-center font-bold">Joiin HealthLink</p>
                     <p className="text-xl text-center font-bold mb-4">Connecting Care Anywhere</p>
 
                     <img src={backgroundImage} alt="Background" className="mt-4 w-72 h-36" />
@@ -61,23 +61,7 @@ const OptionPage = () => {
                         </label>
                         <label htmlFor="doctorOption" className="cursor-pointer">Join as Doctor</label>
                     </div>
-                    <div className="flex bg-white border rounded-md px-8 py-2 text-black items-center mb-4 ">
-                        <input 
-                            type="radio" 
-                            id="adminOption" 
-                            name="signupOption" 
-                            value="admin" 
-                            checked={selectedOption === 'admin'}
-                            onChange={handleAdminSignin}
-                            className="hidden"
-                        />
-                        <label 
-                            htmlFor="adminOption" 
-                            className={`cursor-pointer rounded-full w-6 h-6 border-2 mr-4 ${selectedOption === 'admin' ? 'border-yellow-900' : 'border-gray-400'}`}
-                        >
-                        </label>
-                        <label htmlFor="adminOption" className="cursor-pointer">{selectedOption === 'admin' ? 'Sign In as Admin' : 'Admin Signin'}</label>
-                    </div>
+
                     <div className="flex bg-white border rounded-md px-8 py-2 text-black items-center ">
                         <input 
                             type="radio" 

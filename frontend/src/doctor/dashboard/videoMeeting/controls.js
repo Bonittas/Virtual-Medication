@@ -1,48 +1,77 @@
+import React, { useEffect, useRef, useState } from "react";
+import { io } from "socket.io-client";
+import SimplePeer from "simple-peer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVideo, faVideoSlash, faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons';
 
-// Modified Controls.js
+const socket = io("http://localhost:5000/room1", { transports: ["websocket"] });
 
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Chat from "./chat";
-import Prescription from "./prescrption";
+let localStream;
+let peer;
 
-const Controls = () => {
-  const [meetings, setMeetings] = useState([]);
-  const [props, setProps] = useState({});
-  const [meetingCode, setMeetingCode] = useState(""); // Define meetingCode
-
-  useEffect(() => {
-    axios.get("/api/meetings").then((response) => {
-      setMeetings(response.data);
-    });
-  }, []);
+function VideoRoom({ roomId }) {
+  const [remoteStream, setRemoteStream] = useState(null);
+  const localVideoRef = useRef(null);
+  const remoteVideoRef = useRef(null);
 
   useEffect(() => {
-    meetings.forEach((meeting) => {
-      if (meeting.meetingID === meetingCode) {
-        setProps({
-          meetingID: meeting.meetingID,
-          doctorUID: meeting.doctorUID,
-          patientUID: meeting.patientUID,
+    const initLocalStream = async () => {
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true,
         });
+        localVideoRef.current.srcObject = localStream;
+      } catch (error) {
+        console.error("Error accessing local media devices:", error);
       }
+    };
+
+    initLocalStream();
+
+    socket.emit("join room", roomId);
+
+    socket.on("user joined", ({ signal }) => {
+      peer = new SimplePeer({
+        initiator: false,
+        trickle: false,
+        stream: localStream,
+      });
+
+      peer.on("signal", (data) => {
+        socket.emit("sending signal", { userToSignal: peer.id, callerID: socket.id, signal: data });
+      });
+
+      peer.on("stream", (stream) => {
+        setRemoteStream(stream);
+        remoteVideoRef.current.srcObject = stream;
+      });
+
+      peer.signal(signal);
     });
-  }, [meetings, meetingCode]);
+
+    socket.on("user left", () => {
+      setRemoteStream(null);
+      remoteVideoRef.current.srcObject = null;
+    });
+
+    return () => {
+      if (peer) {
+        peer.destroy();
+      }
+      if (localStream) {
+        localStream.getTracks().forEach((track) => track.stop());
+      }
+      socket.disconnect();
+    };
+  }, [roomId]);
 
   return (
-    <>
-      {meetings.map((meeting) => {
-        if (meeting.meetingID === meetingCode)
-          return (
-            <>
-              <Chat {...props} />
-              <Prescription {...props} />
-              {/* Include other components here */}
-            </>
-          );
-      })}
-    </>
+    <div className="video-container">
+      <video ref={localVideoRef} autoPlay muted className="local-video" />
+      <video ref={remoteVideoRef} autoPlay className="remote-video" />
+    </div>
   );
-};
+}
 
-export default Controls;
+export default VideoRoom;

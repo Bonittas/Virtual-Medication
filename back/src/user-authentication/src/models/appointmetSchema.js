@@ -1,46 +1,42 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
 const AppointmentSchema = new Schema({
   doctor: {
     type: Schema.Types.ObjectId,
     ref: 'Doctor',
-    required: true
+    required: true,
   },
   patient: {
     type: Schema.Types.ObjectId,
-    ref: 'Patient', // Ensure this matches the Patient model name
-    required: true
+    ref: 'Patient',
+    required: true,
   },
   modeOfConsultation: {
     type: String,
-    required: true
+    required: true,
   },
   preferredDateTime: {
     type: Date,
-    required: true
+    required: true,
   },
   symptoms: {
     type: String,
-    required: true
+    required: true,
   },
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected'],
-    default: 'pending'
+    default: 'pending',
   },
   roomId: {
     type: String,
-    unique: true
+    unique: true,
   },
   paymentStatus: {
     type: String,
     enum: ['pending', 'completed', 'failed'],
-    default: 'pending'
+    default: 'pending',
   },
-  paymentAmount: {
-    type: Number,
-  }
 });
 
 module.exports = mongoose.model('Appointment', AppointmentSchema);

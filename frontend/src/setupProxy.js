@@ -74,6 +74,14 @@ module.exports = function (app) {
     })
   );
   app.use(
+    '/socket.io',
+    createProxyMiddleware({
+      target: 'https://localhost:5000',
+      changeOrigin: true,
+      ws: true, // Enable WebSocket proxying
+    })
+  );
+  app.use(
     '/api/auth/payment/initialize',
     createProxyMiddleware({
       target: 'https://localhost:5000',

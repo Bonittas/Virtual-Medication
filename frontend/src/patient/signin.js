@@ -51,7 +51,7 @@ const Patient_Signin = () => {
 
   return (
     <div className="my-3  flex justify-center items-center" >
-      <div className="border bg-gray-300 w-80 p-3 rounded-md">
+      <div className="border bg-gray-300 w-fit p-3 rounded-md">
       <div className="flex justify-center items-center">
       <img src={doctorSignInImage} alt="Doctor Sign In" className="w-fit h-32" />
       </div>

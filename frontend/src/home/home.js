@@ -12,7 +12,7 @@ const LandingPage = () => {
   return (
     <>
       <Header />
-      <section className="relative mb-10">
+      <section className="relative ">
         <div
           className="flex items-center justify-center"
           style={{
@@ -23,8 +23,8 @@ const LandingPage = () => {
           }}
         >
           <div className="px-4 lg:flex items-center justify-center">
-            <div className="lg:w-2/6 lg:text-left ">
-              <h1 className="text-4xl lg:text-5xl text-blue-950 font-thin mb-4">
+            <div className="lg:w-2/6 lg:text-left my-20">
+              <h1 className="text-4xl lg:text-5xl sm:mt-12 text-blue-950 font-thin my-4">
                 We're <span className="font-bold">determined</span> for your{" "}
                 <span className="font-bold">better life.</span>
               </h1>

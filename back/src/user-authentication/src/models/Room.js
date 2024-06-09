@@ -1,23 +1,16 @@
 const mongoose = require('mongoose');
 
-const roomSchema = new mongoose.Schema({
+const RoomSchema = new mongoose.Schema({
   appointment: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Appointment',
+    required: true,
   },
-  roomName: {
+  roomId: {
     type: String,
+    required: true,
+    unique: true,
   },
-  participants: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User' // Assuming User schema for participants
-  }],
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
 });
 
-const Room = mongoose.model('Room', roomSchema);
-
-module.exports = Room;
+module.exports = mongoose.model('Room', RoomSchema);

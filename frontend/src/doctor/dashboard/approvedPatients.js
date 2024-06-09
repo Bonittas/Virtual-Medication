@@ -1,94 +1,70 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVideo } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ApprovedPatients = ({ approvedAppointments }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+const ApprovedUsers = () => {
+  const [approvedUsers, setApprovedUsers] = useState([]);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const filteredAppointments = approvedAppointments.filter(appointment =>
-    appointment.patient?.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  useEffect(() => {
+    fetchApprovedUsers();
+  }, []);
 
-  const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage);
-  const currentAppointments = filteredAppointments.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-    setCurrentPage(1);
+  const fetchApprovedUsers = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('Unauthorized: No token found');
+      return;
+    }
+    fetch(`http://localhost:5000/api/auth/approved-appointments`, {
+      headers: {
+        'x-auth-token': token,
+      },
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json(); // Parse response data as JSON
+      }
+      throw new Error('Failed to fetch approved users');
+    })
+    .then(data => {
+      // Assuming data is an array of approved users, set it in the state
+      const approvedUsersWithData = data.map(user => ({
+        ...user,
+        roomId: user.roomId || null, // Ensure roomId is included, or set to null if undefined
+      }));
+      setApprovedUsers(approvedUsersWithData);
+    })
+    .catch(error => {
+      console.error('Error fetching approved users:', error);
+      setError('Error fetching approved users');
+    });
   };
 
-  const renderJoinMeetingLink = (appointment) => {
-    if (appointment.status === "approved" ) {
-      return (
-        <a
-          href={`/video-room/${appointment.roomId}`}
-          className="text-blue-500 hover:text-blue-700"
-        >
-          <FontAwesomeIcon icon={faVideo} size="2x" />
-        </a>
-      );
+  const handleJoinVideo = roomId => {
+    if (roomId) {
+      navigate('/doctor'); 
     } else {
-      return "Room not available";
+      console.error('Room ID is undefined');
     }
   };
 
   return (
-    <div className="mt-8">
-      <h2 className="text-2xl font-semibold mb-4">Approved Appointments</h2>
-      <div className="mb-4 flex justify-center items-center w-full">
-        <input
-          type="text"
-          placeholder="Search by patient name..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-          className="px-4 py-2 border rounded w-1/2"
-        />
-      </div>
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full border-collapse border border-gray-400">
-          <thead>
-            <tr>
-              <th className="border border-gray-400 px-4 py-2">Patient Name</th>
-              <th className="border border-gray-400 px-4 py-2">Appointment Date</th>
-              <th className="border border-gray-400 px-4 py-2">Join Video Conference</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentAppointments.map((appointment) => (
-              <tr key={appointment._id || appointment.id}>
-                <td className="border border-gray-400 px-4 py-2">{appointment.patient?.name}</td>
-                <td className="border border-gray-400 px-4 py-2">{appointment.date}</td>
-                <td className="border border-gray-400 px-4 py-2 text-center">
-                  {renderJoinMeetingLink(appointment)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex justify-center mt-4">
-        <button
-          onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}
-          className="px-4 py-2 mx-1 border rounded"
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        <button
-          onClick={() => setCurrentPage(currentPage < totalPages ? currentPage + 1 : totalPages)}
-          className="px-4 py-2 mx-1 border rounded"
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold mb-4">Approved Users</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {approvedUsers.map(user => (
+          <div key={user._id} className="bg-white p-4 shadow-md rounded-md">
+            <h2 className="text-lg font-semibold">{user.name}</h2>
+            <p className="text-gray-500 mb-2">{user.email}</p>
+            <button onClick={() => handleJoinVideo(user.roomId)} className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+              Join Video
+            </button>
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
-export default ApprovedPatients;
+export default ApprovedUsers;

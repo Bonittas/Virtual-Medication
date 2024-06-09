@@ -30,7 +30,7 @@ const OptionPage = () => {
     };
 
     return (
-        <div className="min-h-screen mt-1 mb-6 flex flex-col text-black items-center justify-center relative">
+        <div className="min-h-screen mx-4 mt-1 mb-6 flex flex-col text-black items-center justify-center relative">
             <img src={headerImage} alt="Background" className="mt-1  w-1/2 h-24 " />
 
             <div className="bg-gray-300 border rounded-md w-full max-w-lg p-4 flex flex-col items-center">

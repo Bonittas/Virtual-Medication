@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { thunk } from 'redux-thunk'; // Import the named export directly
 import rootReducer from './reducers';
+import * as serviceWorker from "./serviceWorker";
 
 const store = configureStore({
   reducer: rootReducer,
@@ -19,5 +20,6 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
+serviceWorker.unregister();
 
 reportWebVitals();

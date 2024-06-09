@@ -399,35 +399,23 @@ exports.getAppointmentRequests = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 };
-
-
-
-
 exports.getApprovedAppointments = async (req, res) => {
   try {
-    const doctorId = req.user._id; // Assuming the authenticated user is a doctor
-    const approvedAppointments = await Appointment.find({ doctor: doctorId, status: 'approved' })
-      .populate('patient', 'name email age gender') // Populate patient data with specified fields
-      .select('preferredDateTime status roomId'); // Select necessary fields
+    // Fetch appointments with status 'approved' and populate the 'patient' field
+    const approvedAppointments = await Appointment.find({ status: 'approved' }).populate('patient');
 
-    // Format appointments to include patient's name, date, time, and status
-    const formattedAppointments = approvedAppointments.map(appointment => ({
-      _id: appointment._id,
-      patient: appointment.patient ? {
-        _id: appointment.patient._id,
-        name: appointment.patient.name,
-      } : {
-        _id: null,
-        name: 'Unknown Patient',
-      },
-      date: appointment.preferredDateTime.toDateString(), // Extract date from preferredDateTime
-      time: appointment.preferredDateTime.toLocaleTimeString(), // Format time or display 'N/A' if null
-      status: appointment.status
+    // Extract user information from each appointment
+    const approvedUsers = approvedAppointments.map(appointment => ({
+      _id: appointment.patient._id,
+      name: appointment.patient.name,
+      email: appointment.patient.email,
+      roomId: appointment.roomId, // Include roomId in the response data
+      // Add other user fields as needed
     }));
 
-    res.json({ approvedAppointments: formattedAppointments });
+    res.json(approvedUsers);
   } catch (error) {
-    console.error('Error fetching approved appointments:', error);
+    console.error('Error fetching approved users:', error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
@@ -478,7 +466,6 @@ exports.getMeetings = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
 exports.approveAppointment = async (req, res) => {
   const { id } = req.params;
 
@@ -488,25 +475,21 @@ exports.approveAppointment = async (req, res) => {
       return res.status(404).json({ message: 'Appointment not found' });
     }
 
-    // Change status to approved
-    appointment.status = 'approved';
-    
-    // Generate and set roomId
-    const roomId = uuidv4(); // Generate unique roomId
+    // Generate a unique room ID (you can use uuidv4 or any other method)
+    const roomId = uuidv4();
     appointment.roomId = roomId;
+    appointment.status = 'approved';
 
     await appointment.save();
 
-    // Save room info
-    const room = new Room({ appointment: appointment._id, roomId });
-    await room.save();
-
-    res.json({ success: true, message: 'Appointment approved successfully', roomId: roomId });
+    res.json({ success: true, message: 'Appointment approved successfully', roomId });
   } catch (error) {
     console.error('Error approving appointment:', error);
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 };
+
+
 
 
 
