@@ -233,12 +233,13 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-      <main className="w-full max-w-5xl mx-auto bg-white shadow-xl rounded-lg p-6">
+    <div className="min-h-screen flex flex-col items-center w-full justify-center bg-gray-50">
+      <main className="w-full w-full shadow-xl rounded-lg p-6">
+        <p className="font-bold text-2xl text-green-500 text-center my-4"> Video Chat</p>
         <div className="flex justify-between mb-6">
           <video
             ref={localVideo}
-            className="w-1/2 h-auto rounded-lg shadow-md border-2 border-gray-200"
+            className="w-1/2 h-auto mx-4 rounded-lg shadow-md border-2 border-gray-200"
             autoPlay
             playsInline
             muted

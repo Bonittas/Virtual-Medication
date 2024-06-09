@@ -185,7 +185,7 @@ Job                </label>
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">
-Home Town                </label>
+Nationlaity               </label>
                 <input
                   type="text"
                   value={stateMedicalCouncil}
@@ -198,7 +198,7 @@ Home Town                </label>
             <div className="w-1/3 ml-5">
               <div>
                 <label className="block text-sm font-semibold mb-1">
-Martial Status                </label>
+Current Address               </label>
                 <input
                   type="text"
                   value={experience}
@@ -231,7 +231,7 @@ Martial Status                </label>
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1">City</label>
+                <label className="block text-sm font-semibold mb-1">Home Town</label>
                 <input
                   type="text"
                   value={city}
@@ -241,7 +241,7 @@ Martial Status                </label>
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1">State</label>
+                <label className="block text-sm font-semibold mb-1">Martial Status  </label>
                 <input
                   type="text"
                   value={state}

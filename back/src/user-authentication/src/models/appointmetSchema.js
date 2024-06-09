@@ -28,10 +28,7 @@ const AppointmentSchema = new Schema({
     enum: ['pending', 'approved', 'rejected'],
     default: 'pending',
   },
-  roomId: {
-    type: String,
-    unique: true,
-  },
+
   paymentStatus: {
     type: String,
     enum: ['pending', 'completed', 'failed'],

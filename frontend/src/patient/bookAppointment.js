@@ -27,7 +27,7 @@ const AppointmentForm = ({ doctorId, onClose }) => {
           headers: {
             "x-auth-token": token
           }
-        }
+        } 
       );
       setSuccessMessage("Appointment requested successfully");
       setTimeout(() => {

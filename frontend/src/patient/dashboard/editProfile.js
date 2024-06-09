@@ -105,7 +105,7 @@ const EditProfile = () => {
           </div>
           <div className="mb-2">
             <label className="block text-gray-600 font-bold mb-2" htmlFor="medicalSpeciality">
-              Medical Speciality
+              Father Name
             </label>
             <input
               type="text"
@@ -148,7 +148,7 @@ const EditProfile = () => {
           </div>
           <div className="mb-2">
             <label className="block text-gray-600 font-bold mb-2" htmlFor="degree">
-              Degree
+              Job
             </label>
             <input
               type="text"
@@ -187,8 +187,7 @@ const EditProfile = () => {
           </div>
           <div className="mb-2">
             <label className="block text-gray-600 font-bold mb-2" htmlFor="stateMedicalCouncil">
-              State Medical Council
-            </label>
+Nationlaity            </label>
             <input
               type="text"
               id="stateMedicalCouncil"
@@ -200,8 +199,7 @@ const EditProfile = () => {
           </div>
           <div className="mb-2">
             <label className="block text-gray-600 font-bold mb-2" htmlFor="experience">
-              Experience
-            </label>
+Current Address           </label>
             <input
               type="text"
               id="experience"
@@ -239,8 +237,7 @@ const EditProfile = () => {
           </div>
           <div className="mb-2">
             <label className="block text-gray-600 font-bold mb-2" htmlFor="city">
-              City
-            </label>
+Home Town</label>
             <input
               type="text"
               id="city"
@@ -252,8 +249,7 @@ const EditProfile = () => {
           </div>
           <div className="mb-2">
             <label className="block text-gray-600 font-bold mb-2" htmlFor="state">
-              State
-            </label>
+Martial Status            </label>
             <input
               type="text"
               id="state"

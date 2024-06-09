@@ -117,11 +117,11 @@ const Profile = () => {
             </div>
             <div>
               <p className="text-gray-700 font-bold">Job:</p>
-              <p className="text-gray-700">{user.degree}</p>
+              <p className="text-gray-700">{user.address2}, </p>
             </div>
             <div>
               <p className="text-gray-700 font-bold">Address:</p>
-              <p className="text-gray-700">{user.address1}, {user.address2}, {user.city}, {user.state}, {user.country}, {user.pincode}</p>
+              <p className="text-gray-700">{user.address1}, {user.city}, {user.country}, {user.pincode}</p>
             </div>
             <div>
               <p className="text-gray-700 font-bold">Registration Number:</p>
@@ -133,11 +133,11 @@ const Profile = () => {
             </div>
             <div>
               <p className="text-gray-700 font-bold">Home Town:</p>
-              <p className="text-gray-700">{user.stateMedicalCouncil}</p>
+              <p className="text-gray-700">{user.city}</p>
             </div>
             <div>
               <p className="text-gray-700 font-bold">Martial Status:</p>
-              <p className="text-gray-700">{user.experience}</p>
+              <p className="text-gray-700"> {user.state},</p>
             </div>
             <div>
               <p className="text-gray-700 font-bold">Working Hours:</p>

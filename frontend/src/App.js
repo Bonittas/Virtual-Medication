@@ -42,7 +42,7 @@ import PatientsStatus from "./doctor/dashboard/patients"
 import PatientProfile from "./doctor/dashboard/patientsDetail"
 import Payment from "./patient/Payment";
 import VerifyPayment from "./patient/VerifyPayment";
-import BookAppointment from './patient/bookAppointments'
+import BookAppointment from './patient/bookAppointment'
 import styled from 'styled-components';
 import Video from './doctor/dashboard/videoMeeting/Main/Main'
 import ApprovedD from './patient/approvedDoctors'
