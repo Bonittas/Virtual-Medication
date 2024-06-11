@@ -88,4 +88,11 @@ module.exports = function (app) {
       changeOrigin: true,
     })
   );
+  app.use(
+    '/api/auth/add',
+    createProxyMiddleware({
+      target: 'https://localhost:5000',
+      changeOrigin: true,
+    })
+  );
 }

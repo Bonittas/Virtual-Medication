@@ -2,6 +2,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/Doctor');
 const Patient = require('../../models/Patient');
+const Users= require('../../models/pastAPpointments');
+const Doctor = require('../../models/Doctor'); 
+
 const Meeting = require('../../models/meeting');
 const Prescription = require('../../models/prescription');
 const path = require('path');
@@ -528,3 +531,128 @@ exports.getPatientById = async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 }
+// controllers/pastAppointmentController.js
+
+exports.addPastAppointment = async (req, res) => {
+  const { fullName, bloodType, bloodPressure, disease, medication } = req.body;
+  try {
+      const newUser = new Users({
+          fullName,
+          bloodType,
+          bloodPressure,
+          disease,
+          medication,
+      });
+      const savedUser = await newUser.save();
+      res.status(201).json(savedUser);
+  } catch (err) {
+      res.status(400).json({ error: err.message });
+  }
+}
+
+exports.getPastAppointments = async (req, res) => {
+    try {
+        const pastAppointments = await Users.find();
+        res.status(200).json(pastAppointments);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.getPastAppointmentById = async (req, res) => {
+    try {
+        const appointmentId = req.params.id;
+        const pastAppointmentDetails = await Users.findById(appointmentId);
+
+        if (!pastAppointmentDetails) {
+            return res.status(404).json({ message: 'Appointment not found' });
+        }
+
+        res.json({ appointment: pastAppointmentDetails });
+    } catch (error) {
+        console.error('Error fetching appointment details:', error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
+
+exports.createPrescription = async (req, res) => {
+  try {
+    const { patientName, date, time, disease, medications } = req.body;
+    const doctorId = req.user._id; // Assuming req.user contains the authenticated doctor's details
+    const prescription = new Prescription({ patientName, date, time, disease, medications, doctor: doctorId });
+    await prescription.save();
+    
+    // Optionally, update the doctor's document to include this prescription
+    await Doctor.findByIdAndUpdate(doctorId, { $push: { prescriptions: prescription._id } });
+    
+    res.status(201).json(prescription);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// Get all Prescriptions for the logged-in doctor
+exports.getAllPrescriptions = async (req, res) => {
+  try {
+    const doctorId = req.user._id; // Assuming req.user contains the authenticated doctor's details
+    const prescriptions = await Prescription.find({ doctor: doctorId });
+    res.json(prescriptions);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get Prescription by ID (only if it belongs to the logged-in doctor)
+exports.getPrescriptionById = async (req, res) => {
+  try {
+    const doctorId = req.user._id; // Assuming req.user contains the authenticated doctor's details
+    const prescription = await Prescription.findOne({ _id: req.params.id, doctor: doctorId });
+    if (prescription) {
+      res.json(prescription);
+    } else {
+      res.status(404).json({ message: 'Prescription not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Update Prescription (only if it belongs to the logged-in doctor)
+exports.updatePrescription = async (req, res) => {
+  try {
+    const { patientName, date, time, disease, medications } = req.body;
+    const doctorId = req.user._id; // Assuming req.user contains the authenticated doctor's details
+    const prescription = await Prescription.findOne({ _id: req.params.id, doctor: doctorId });
+    if (prescription) {
+      prescription.patientName = patientName;
+      prescription.date = date;
+      prescription.time = time;
+      prescription.disease = disease;
+      prescription.medications = medications;
+      await prescription.save();
+      res.json(prescription);
+    } else {
+      res.status(404).json({ message: 'Prescription not found' });
+    }
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+// Delete Prescription (only if it belongs to the logged-in doctor)
+exports.deletePrescription = async (req, res) => {
+  try {
+    const doctorId = req.user._id; // Assuming req.user contains the authenticated doctor's details
+    const prescription = await Prescription.findOne({ _id: req.params.id, doctor: doctorId });
+    if (prescription) {
+      await prescription.remove();
+      // Optionally, update the doctor's document to remove this prescription
+      await Doctor.findByIdAndUpdate(doctorId, { $pull: { prescriptions: req.params.id } });
+      res.json({ message: 'Prescription deleted' });
+    } else {
+      res.status(404).json({ message: 'Prescription not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

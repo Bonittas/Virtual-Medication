@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Nav from "./dashboard";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const PatientAppointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -109,12 +110,13 @@ const PatientAppointments = () => {
                   </td>
                   <td className="border border-gray-400 px-4 py-2">
                     {appointment.status === 'approved' && (
+                           <Link to ='/patient'> 
                       <button
-                        onClick={() => handleJoinVideoChat(appointment.roomId, appointment._id || appointment.id)}
                         className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
                       >
                         Join Video Conference
                       </button>
+                      </Link>
                     )}
                   </td>
                 </tr>

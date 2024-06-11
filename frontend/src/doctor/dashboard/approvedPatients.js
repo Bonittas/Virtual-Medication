@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const ApprovedUsers = () => {
   const [approvedUsers, setApprovedUsers] = useState([]);
@@ -57,9 +58,10 @@ const ApprovedUsers = () => {
           <div key={user._id} className="bg-white p-4 shadow-md rounded-md">
             <h2 className="text-lg font-semibold">{user.name}</h2>
             <p className="text-gray-500 mb-2">{user.email}</p>
-            <button onClick={() => handleJoinVideo(user.roomId)} className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">
+          <Link to ='/doctor'>  <button className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600">
               Join Video
             </button>
+            </Link>
           </div>
         ))}
       </div>

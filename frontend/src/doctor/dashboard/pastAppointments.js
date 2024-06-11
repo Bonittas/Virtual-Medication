@@ -43,7 +43,7 @@ const PrescriptionList = () => {
   React.useEffect(() => {
     const fetchPrescriptions = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/api/prescriptions');
+        const response = await axios.get('http://localhost:5000/api/prescriptions');
         setPrescriptions(response.data);
       } catch (err) {
         console.error('Error fetching prescriptions:', err);
@@ -55,7 +55,7 @@ const PrescriptionList = () => {
 
   return (
     <div className="max-w-md my-4 border-b border-gray-200 border border-black  mx-auto bg-white shadow-lg rounded-lg p-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Prescription</h2>
+      <h2 className="text-2xl font-bold mb-4 text-gray-800">Past Appointments </h2>
       <ul className="space-y-4">
         {prescriptions.map((prescription, index) => (
             

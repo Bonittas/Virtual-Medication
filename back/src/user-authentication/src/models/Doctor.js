@@ -7,6 +7,7 @@ const notificationSchema = new mongoose.Schema({
   type: String,
   timestamp: { type: Date, default: Date.now }
 });
+
 const appointmentSchema = new Schema({
   patient: { type: Schema.Types.ObjectId, ref: 'Patient' },
   modeOfConsultation: String,
@@ -14,24 +15,12 @@ const appointmentSchema = new Schema({
   symptoms: String,
   status: { type: String, default: 'pending' } // status can be 'pending', 'accepted', 'rejected', etc.
 });
+
 const doctorSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    unique: true,
-    required: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  verified: {
-    type: Boolean,
-    default: false,
-  },
+  name: { type: String, required: true },
+  email: { type: String, unique: true, required: true },
+  password: { type: String, required: true },
+  verified: { type: Boolean, default: false },
   medicalSpeciality: String,
   age: Number,
   gender: String,
@@ -49,12 +38,9 @@ const doctorSchema = new mongoose.Schema({
   startTime: String,
   endTime: String,
   imageUrl: String,
-  appointments: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Appointment'
-  }],
-    notifications: [notificationSchema]
-
+  appointments: [{ type: Schema.Types.ObjectId, ref: 'Appointment' }],
+  notifications: [notificationSchema],
+  prescriptions: [{ type: Schema.Types.ObjectId, ref: 'Prescription' }] // Added prescriptions relationship
 });
 
 module.exports = mongoose.model('Doctor', doctorSchema);

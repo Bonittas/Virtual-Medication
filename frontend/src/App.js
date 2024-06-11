@@ -48,6 +48,8 @@ import Video from './doctor/dashboard/videoMeeting/Main/Main'
 import ApprovedD from './patient/approvedDoctors'
 import PatientPage from "./patient/dashboard/videoMeeting/JoinVideo";
 import DoctorPage from "./doctor/dashboard/Joinvideo";
+import AddPatientsData from "./doctor/dashboard/addPatientsData"
+import PastAppointments from "./doctor/dashboard/pastAppointments"
 const App = () => {
   const [user, setUser] = useState("");
 
@@ -151,6 +153,10 @@ const App = () => {
                     element={<Patient_Complete_Details/>}
                   />  
                               <Route path="/doctor" element={<DoctorPage />} />
+                              <Route path="/past-appointments" element={<PastAppointments />} />
+                              <Route path="/add-data" element={<AddPatientsData/>} />
+
+
         <Route path="/patient" element={<PatientPage />} />                                                   <Route
                     exact
                     path="/complete-details"

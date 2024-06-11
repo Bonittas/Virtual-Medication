@@ -23,7 +23,8 @@ router.get('/notifications', verifyToken, authController.getNotifications);
 router.get('/approved-appointments',verifyToken, authController.getApprovedAppointments);
 router.get('/rejected-appointments',verifyToken, authController.getRejectedAppointments);
 
-router.get('/patients/:id',verifyToken, authController.getPatientById);
+router.get('/get',verifyToken, authController.getPastAppointments);
+router.get('/add',verifyToken, authController.addPastAppointment);
 
 // router.post('/doctor/uploadFile', verifyToken, upload.single('file'), authController.uploadFile);
 // router.post('/doctor/uploadImage', verifyToken, upload.single('profilePicture'), authController.uploadImage);

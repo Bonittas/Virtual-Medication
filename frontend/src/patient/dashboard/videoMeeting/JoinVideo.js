@@ -9,7 +9,7 @@ function PatientPage() {
   const navigate = useNavigate();
 
   const handleNext = () => {
-    navigate(`/video-call?name=${doctorName}`);
+    navigate(`/video-call?doctor=${doctorName}`);
   };
 
   return (

@@ -1,12 +1,10 @@
-// controllers/prescriptionController.js
-
 const Prescription = require('../model/prescription');
-
-// Create Prescription
+// const Doctor = require('../../../user-authentication/src/models/Doctor'); 
 exports.createPrescription = async (req, res) => {
   try {
     const { patientName, date, time, disease, medications } = req.body;
-    const prescription = new Prescription({ patientName, date, time, disease, medications });
+    const doctorId = req.user._id; // Assuming req.user contains the authenticated doctor's details
+    const prescription = new Prescription({ patientName, date, time, disease, medications, doctor: doctorId });
     await prescription.save();
     res.status(201).json(prescription);
   } catch (err) {
@@ -14,20 +12,22 @@ exports.createPrescription = async (req, res) => {
   }
 };
 
-// Get all Prescriptions
+// Get all Prescriptions for the logged-in doctor
 exports.getAllPrescriptions = async (req, res) => {
   try {
-    const prescriptions = await Prescription.find();
+    const doctorId = req.user._id; // Assuming req.user contains the authenticated doctor's details
+    const prescriptions = await Prescription.find({ doctor: doctorId });
     res.json(prescriptions);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-// Get Prescription by ID
+// Get Prescription by ID (only if it belongs to the logged-in doctor)
 exports.getPrescriptionById = async (req, res) => {
   try {
-    const prescription = await Prescription.findById(req.params.id);
+    const doctorId = req.user._id; // Assuming req.user contains the authenticated doctor's details
+    const prescription = await Prescription.findOne({ _id: req.params.id, doctor: doctorId });
     if (prescription) {
       res.json(prescription);
     } else {
@@ -38,11 +38,12 @@ exports.getPrescriptionById = async (req, res) => {
   }
 };
 
-// Update Prescription
+// Update Prescription (only if it belongs to the logged-in doctor)
 exports.updatePrescription = async (req, res) => {
   try {
     const { patientName, date, time, disease, medications } = req.body;
-    const prescription = await Prescription.findById(req.params.id);
+    const doctorId = req.user._id; // Assuming req.user contains the authenticated doctor's details
+    const prescription = await Prescription.findOne({ _id: req.params.id, doctor: doctorId });
     if (prescription) {
       prescription.patientName = patientName;
       prescription.date = date;
@@ -59,10 +60,11 @@ exports.updatePrescription = async (req, res) => {
   }
 };
 
-// Delete Prescription
+// Delete Prescription (only if it belongs to the logged-in doctor)
 exports.deletePrescription = async (req, res) => {
   try {
-    const prescription = await Prescription.findById(req.params.id);
+    const doctorId = req.user._id; // Assuming req.user contains the authenticated doctor's details
+    const prescription = await Prescription.findOne({ _id: req.params.id, doctor: doctorId });
     if (prescription) {
       await prescription.remove();
       res.json({ message: 'Prescription deleted' });
