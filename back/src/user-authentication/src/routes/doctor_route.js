@@ -25,6 +25,18 @@ router.get('/rejected-appointments',verifyToken, authController.getRejectedAppoi
 
 router.get('/get',verifyToken, authController.getPastAppointments);
 router.get('/add',verifyToken, authController.addPastAppointment);
+// routes/prescriptionRoutes.js
+
+
+
+// Routes
+router.post('/prescriptions',verifyToken, authController.createPrescription);
+router.get('/prescriptions',verifyToken,  authController.getAllPrescriptions);
+router.get('/prescriptions/:id', authController.getPrescriptionById);
+router.put('/prescriptions/:id', authController.updatePrescription);
+router.delete('/prescriptions/:id', authController.deletePrescription);
+
+module.exports = router;
 
 // router.post('/doctor/uploadFile', verifyToken, upload.single('file'), authController.uploadFile);
 // router.post('/doctor/uploadImage', verifyToken, upload.single('profilePicture'), authController.uploadImage);

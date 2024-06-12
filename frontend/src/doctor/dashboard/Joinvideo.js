@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Nav from "./dashboard";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVideo, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 function DoctorPage() {
   const [doctorName, setDoctorName] = useState('');
@@ -8,6 +10,10 @@ function DoctorPage() {
 
   const handleNext = () => {
     navigate(`/video-call?doctor=${doctorName}`);
+  };
+
+  const handleAddPatientDetail = () => {
+    navigate('/add-data');
   };
 
   return (
@@ -25,9 +31,17 @@ function DoctorPage() {
           />
           <button
             onClick={handleNext}
-            className="bg-green-500 text-white py-3 px-6 rounded-lg w-full hover:bg-green-600 transition duration-300"
+            className="bg-green-500 text-white py-3 px-6 rounded-lg w-full mb-4 flex items-center justify-center space-x-2 hover:bg-green-600 transition duration-300"
           >
-            Join Room
+            <FontAwesomeIcon icon={faVideo} className="text-lg" />
+            <span>Join Room</span>
+          </button>
+          <button
+            onClick={handleAddPatientDetail}
+            className="bg-blue-500 text-white py-3 px-6 rounded-lg w-full flex items-center justify-center space-x-2 hover:bg-blue-600 transition duration-300"
+          >
+            <FontAwesomeIcon icon={faUserPlus} className="text-lg" />
+            <span>Add Patient Detail</span>
           </button>
         </div>
       </div>

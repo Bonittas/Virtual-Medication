@@ -1,140 +1,130 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import Nav from './dashboard'
+const ViewPrescriptions = () => {
+    const [prescriptions, setPrescriptions] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(5); // Change this value as needed
 
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'column',
-    padding: 20,
-  },
-  section: {
-    marginBottom: 10,
-  },
-  header: {
-    fontSize: 20,
-    marginBottom: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    textDecoration: 'underline',
-  },
-  subHeader: {
-    fontSize: 14,
-    marginBottom: 10,
-    fontWeight: 'bold',
-  },
-  text: {
-    fontSize: 12,
-    marginBottom: 5,
-  },
-  prescriptionItem: {
-    marginBottom: 10,
-  },
-  border: {
-    border: 1,
-    borderColor: '#000',
-    marginBottom: 20,
-    padding: 10,
-  },
-});
+    useEffect(() => {
+        const fetchPrescriptions = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    setError("Unauthorized: No token found");
+                    setLoading(false);
+                    return;
+                }
+                const res = await axios.get('http://localhost:5000/api/auth/prescriptions', {
+                    headers: {
+                        'x-auth-token': token
+                    }
+                });
+                setPrescriptions(res.data);
+            } catch (err) {
+                console.error('Error fetching prescriptions:', err);
+            }
+        };
 
-const PrescriptionList = () => {
-  const [prescriptions, setPrescriptions] = React.useState([]);
+        fetchPrescriptions();
+    }, []);
 
-  React.useEffect(() => {
-    const fetchPrescriptions = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/prescriptions');
-        setPrescriptions(response.data);
-      } catch (err) {
-        console.error('Error fetching prescriptions:', err);
-      }
+    // Function to perform pagination
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
+    // Function to filter prescriptions based on search term
+    const filteredPrescriptions = prescriptions.filter(prescription =>
+        prescription.patientName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Get current prescriptions based on pagination
+    const indexOfLastPrescription = currentPage * itemsPerPage;
+    const indexOfFirstPrescription = indexOfLastPrescription - itemsPerPage;
+    const currentPrescriptions = filteredPrescriptions.slice(indexOfFirstPrescription, indexOfLastPrescription);
+
+    // Function to generate a random role number
+    const generateRoleNumber = () => {
+        const min = 100000;
+        const max = 999999;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    fetchPrescriptions();
-  }, []);
-
-  return (
-    <div className="max-w-md my-4 border-b border-gray-200 border border-black  mx-auto bg-white shadow-lg rounded-lg p-6">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Past Appointments </h2>
-      <ul className="space-y-4">
-        {prescriptions.map((prescription, index) => (
-            
-          <li key={index} className="pb-4">
-            <div className="mb-5 p-4 bg-gray-300 border ">
-  {/* <h3 className="font-bold mb-2">Hospital Information</h3> */}
-  <p className="mb-1"><span className="font-bold"></span> HealthCare</p>
-  {/* <p className="mb-1"><span className="font-bold">Address:</span> 123 Main Street, City, Country</p>
-  <p className="mb-1"><span className="font-bold">Contact:</span> +123-456-7890</p> */}
-</div>
-<div className='flex '>
-    <div>
-            <p className="text-lg font-semibold mb-2 text-gray-800">Patient Full Name: {prescription.patientName}</p>
-            <p className="text-gray-600 mb-1">Appointment Date: {new Date(prescription.date).toLocaleDateString()}</p>
-            <p className="text-gray-600 mb-1">TAppointment Time: {prescription.time}</p>
-            <p className="text-gray-600 mb-1">Disease: {prescription.disease}</p>
-            <p className="text-gray-600 mb-1">Instructions: {prescription.instructions}</p>
-          
-            <p className="text-gray-600 mb-1">Hospital: {prescription.hospital}</p>
+    return (
+      <><Nav/>
+        <div className="relative top-32 container mx-auto p-4">
+            <h2 className="text-xl font-semibold mb-4">Prescriptions</h2>
+            <div className="mb-4 flex items-center">
+                <input
+                    type="text"
+                    placeholder="Search by Name"
+                    value={searchTerm}
+                    onChange={e => setSearchTerm(e.target.value)}
+                    className="border border-gray-300 px-4 py-2 w-64 mr-4 focus:outline-none focus:ring-2 focus:ring-green-500"
+                />
+                <button className="bg-green-500 text-white px-4 py-2 rounded" onClick={() => setSearchTerm('')}>
+                    Clear
+                </button>
             </div>
-            <div className='mx-4 ml-12 mb-6'>
-            <p className="text-gray-600  ml-4 font-bold mb-4">Medications:</p>
-         
-            <ul className="ml-4 space-y-2">
-              {prescription.medications.map((medication, medIndex) => (
-                <li key={medIndex} className="bg-gray-100 p-2 rounded-md">
-                  <p className="font-semibold text-gray-800 mb-1"> Medication Name: {medication.name}</p>
-                  <p className="text-gray-600 mb-1">Dosage: {medication.dosage}</p>
-                  <p className="text-gray-600 mb-1">Frequency: {medication.frequency}</p>
-                 
-                  <p className="text-gray-600">Instructions: {medication.instructions}</p>
-
-                </li>
-              ))}
-            </ul>
+            <table className="table-auto w-full">
+                <thead>
+                    <tr className="bg-gray-200">
+                        {/* <th className="border px-4 py-2">Role Number</th> */}
+                        <th className="border px-4 py-2">Patient Name</th>
+                        <th className="border px-4 py-2">Date</th>
+                        <th className="border px-4 py-2">Time</th>
+                        <th className="border px-4 py-2">Disease</th>
+                        <th className="border px-4 py-2">Blood Pressure</th>
+                        <th className="border px-4 py-2">Medications</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {currentPrescriptions.map((prescription) => (
+                        <tr key={prescription._id}>
+                            {/* <td className="border px-4 py-2">{prescription.roleNumber}</td> */}
+                            <td className="border px-4 py-2">{prescription.patientName}</td>
+                            <td className="border px-4 py-2">{new Date(prescription.date).toLocaleDateString()}</td>
+                            <td className="border px-4 py-2">{prescription.time}</td>
+                            <td className="border px-4 py-2">{prescription.disease}</td>
+                            <td className="border px-4 py-2">{prescription.bloodPressure}</td>
+                            <td className="border px-4 py-2">
+                                <ul>
+                                    {prescription.medications.map(med => (
+                                        <li key={med.name}>{med.name} ({med.dosage}, {med.frequency})</li>
+                                    ))}
+                                </ul>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            {filteredPrescriptions.length === 0 && <p className="mt-4">No prescriptions found.</p>}
+            <div className="mt-4 flex justify-between items-center">
+                <div>
+                    <button
+                        className={`bg-green-500 text-white px-4 py-2 rounded mr-2 ${currentPage === 1 && 'opacity-50 cursor-not-allowed'}`}
+                        onClick={() => paginate(currentPage - 1)}
+                        disabled={currentPage === 1}
+                    >
+                        Prev
+                    </button>
+                    <button
+                        className={`bg-green-500 text-white px-4 py-2 rounded ${currentPrescriptions.length < itemsPerPage && 'opacity-50 cursor-not-allowed'}`}
+                        onClick={() => paginate(currentPage + 1)}
+                        disabled={currentPrescriptions.length < itemsPerPage}
+                    >
+                        Next
+                    </button>
+                </div>
+                <span className="text-green-500">Page {currentPage}</span>
             </div>
-            </div>
-            <div className="mt-4">
-              <PDFDownloadLink document={<PrescriptionPDF prescription={prescription} />} fileName={`prescription_${index}.pdf`} className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
-                {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download PDF')}
-              </PDFDownloadLink>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+        </div>
+        </>
+    );
 };
 
-const PrescriptionPDF = ({ prescription }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <View style={styles.border}>
-          <Text style={styles.header}>Hospital Information</Text>
-          <Text style={styles.text}>Name: Sample Hospital</Text>
-          <Text style={styles.text}>Address: 123 Main Street, City, Country</Text>
-          <Text style={styles.text}>Contact: +123-456-7890</Text>
-        </View>
-        <Text style={styles.header}>Prescription</Text>
-        <Text style={styles.subHeader}>Patient: {prescription.patientName}</Text>
-        <Text style={styles.text}>Date: {new Date(prescription.date).toLocaleDateString()}</Text>
-        <Text style={styles.text}>Time: {prescription.time}</Text>
-        <Text style={styles.text}>Disease: {prescription.disease}</Text>
-        <Text style={styles.text}>Instructions: {prescription.instructions}</Text>
-        <Text style={styles.text}>Hospital: {prescription.hospital}</Text>
-        <Text style={[styles.text, styles.prescriptionItem]}>Medications:</Text>
-        {prescription.medications.map((medication, index) => (
-          <View key={index} style={styles.section}>
-            <Text style={styles.subHeader}>Medication {index + 1}</Text>
-            <Text style={styles.text}>Name: {medication.name}</Text>
-            <Text style={styles.text}>Dosage: {medication.dosage}</Text>
-            <Text style={styles.text}>Frequency: {medication.frequency}</Text>
-            <Text style={styles.text}>Instructions: {medication.instructions}</Text>
-          </View>
-        ))}
-      </View>
-    </Page>
-  </Document>
-);
-
-export default PrescriptionList;
+export default ViewPrescriptions;

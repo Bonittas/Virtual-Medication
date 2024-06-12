@@ -43,7 +43,7 @@ const PrescriptionList = () => {
   React.useEffect(() => {
     const fetchPrescriptions = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/api/prescriptions');
+        const response = await axios.get('http://localhost:5000/api/auth/prescriptions');
         setPrescriptions(response.data);
       } catch (err) {
         console.error('Error fetching prescriptions:', err);

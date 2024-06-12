@@ -87,6 +87,14 @@ Appointments            </Link>
             </Link>
           </li>
           <li className="mb-2">
+            <Link to="/past-appointments" className="flex items-center text-white hover:text-white">
+              <span className="mr-2">
+              <FontAwesomeIcon icon={faCalendarCheck} size="lg py-3 text-white" />
+              </span>
+              Past Appointments
+            </Link>
+          </li>  
+          <li className="mb-2">
             <Link to="/complete-details" className="flex items-center text-white hover:text-white">
               <span className="mr-2">
                 <FontAwesomeIcon icon={faUser} size="lg py-3 text-white" />

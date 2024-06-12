@@ -2,18 +2,20 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const mongoose = require('mongoose');
+const http = require('http');
+const socketIo = require('socket.io');
 const app = express();
-app.use(cors());
-app.use(express.json());
-const server = require("http").createServer(app);
-const io = require("socket.io")(server, {
+const server = http.createServer(app);
+const io = socketIo(server, {
   cors: { origin: "http://localhost:3000" },
 });
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI, {
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-});
+// MongoDB connection
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const connection = mongoose.connection;
 connection.once('open', () => {
@@ -26,24 +28,21 @@ app.use('/api', prescriptionRoutes);
 
 // Socket.io setup
 io.on("connection", (socket) => {
-  // console.log("Socket connected");
-
   socket.on("message", (message) => {
     socket.broadcast.emit("message", message);
   });
 
   socket.on("disconnect", () => {
-    // console.log("Socket disconnected");
+    console.log("Socket disconnected");
   });
 });
 
 // Error handler middleware
-function error(err, req, res, next) {
-  if (!test) console.error(err.stack);
-  res.status(500);
-  res.send("Internal Server Error");
+function errorHandler(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Internal Server Error' });
 }
-app.use(error);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5002;
 server.listen(PORT, () => {

@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'tailwindcss/tailwind.css';
+import { useNavigate } from "react-router-dom";
 
 const configuration = {
   iceServers: [
@@ -154,12 +155,14 @@ async function hangup() {
 }
 
 function App() {
+
   startButton = useRef(null);
   hangupButton = useRef(null);
   muteAudButton = useRef(null);
   toggleVidButton = useRef(null);
   localVideo = useRef(null);
   remoteVideo = useRef(null);
+  const navigate = useNavigate();
 
   const location = useLocation();
   const [audiostate, setAudio] = useState(true);
@@ -220,6 +223,10 @@ function App() {
   const hangB = async () => {
     hangup();
     socket.emit("message", { type: "bye" });
+
+    // localStream.getTracks().forEach(track => track.enabled = false);
+    
+    window.history.go(-1);
   };
 
   function muteAudio() {
