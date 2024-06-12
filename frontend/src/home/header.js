@@ -24,7 +24,7 @@ function Header() {
     >
       <div className="flex w-4/5 mx-auto bg-transparent justify-between items-center h-16">
         <div className="logo">
-          <h4 className="text-xl  font-cursive text-blue-900">HealthCare</h4>
+          <h4 className="text-xl  font-cursive text-blue-900">HealthLink</h4>
         </div>
         <ul className="flex space-x-4 justify-between items-center">
 

@@ -15,7 +15,7 @@ const Profile = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await axios.get("http://localhost:5000/api/auth/patient/currentUser", {
+        const response = await axios.get("https://medicare-auth.onrender.com/api/auth/patient/currentUser", {
           headers: {
             'x-auth-token': localStorage.getItem('token')
           }
@@ -90,7 +90,7 @@ const Profile = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
             <div className="md:col-span-1 flex items-center justify-center">
               <img
-                src={`http://localhost:5000/images/${user.imageUrl}`}
+                src={`https://medicare-auth.onrender.com/images/${user.imageUrl}`}
                 alt="Profile"
                 className="rounded-full w-40 h-40 border-2 border-green-50"
               />
@@ -103,10 +103,7 @@ const Profile = () => {
         </div>
         <div className="bg-white p-6 rounded-lg shadow-md">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-gray-700 font-bold">Father Name:</p>
-              <p className="text-gray-700">{user.medicalSpeciality}</p>
-            </div>
+          
             <div>
               <p className="text-gray-700 font-bold">Age:</p>
               <p className="text-gray-700">{user.age}</p>
@@ -115,34 +112,26 @@ const Profile = () => {
               <p className="text-gray-700 font-bold">Gender:</p>
               <p className="text-gray-700">{user.gender}</p>
             </div>
+  
             <div>
-              <p className="text-gray-700 font-bold">Job:</p>
+              <p className="text-gray-700 font-bold">Address:</p>
+              <p className="text-gray-700">{user.address1}</p>
+            </div>
+            <div>
+              <p className="text-gray-700 font-bold">Address2</p>
               <p className="text-gray-700">{user.address2}, </p>
             </div>
             <div>
-              <p className="text-gray-700 font-bold">Address:</p>
-              <p className="text-gray-700">{user.address1}, {user.city}, {user.country}, {user.pincode}</p>
+              <p className="text-gray-700 font-bold">Country</p>
+              <p className="text-gray-700">{user.country}</p>
             </div>
-            <div>
-              <p className="text-gray-700 font-bold">Registration Number:</p>
-              <p className="text-gray-700">{user.regNumber}</p>
-            </div>
-            <div>
-              <p className="text-gray-700 font-bold">Year of Registration:</p>
-              <p className="text-gray-700">{user.yearOfReg}</p>
-            </div>
+
             <div>
               <p className="text-gray-700 font-bold">Home Town:</p>
               <p className="text-gray-700">{user.city}</p>
             </div>
-            <div>
-              <p className="text-gray-700 font-bold">Martial Status:</p>
-              <p className="text-gray-700"> {user.state},</p>
-            </div>
-            <div>
-              <p className="text-gray-700 font-bold">Working Hours:</p>
-              <p className="text-gray-700">{user.startTime} - {user.endTime}</p>
-            </div>
+ 
+ 
           </div>
         </div>
       </div>

@@ -46,15 +46,13 @@ const CompleteDetails = (props) => {
         age,
         gender,
         degree,
-        regNumber,
-        yearOfReg,
+
         stateMedicalCouncil,
         experience,
         address1,
         address2,
         city,
         state,
-        pincode,
         country,
         startTime,
         endTime,
@@ -164,30 +162,6 @@ const CompleteDetails = (props) => {
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">
-                  Registration Number
-                </label>
-                <input
-                  type="text"
-                  value={regNumber}
-                  onChange={(e) => setRegNumber(e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Year of Registration
-                </label>
-                <input
-                  type="text"
-                  value={yearOfReg}
-                  onChange={(e) => setYearOfReg(e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">
                   State Medical Council
                 </label>
                 <input
@@ -251,16 +225,6 @@ const CompleteDetails = (props) => {
                   type="text"
                   value={state}
                   onChange={(e) => setState(e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">Pincode</label>
-                <input
-                  type="text"
-                  value={pincode}
-                  onChange={(e) => setPincode(e.target.value)}
                   className="border border-gray-300 rounded-md p-2 w-full"
                   required
                 />

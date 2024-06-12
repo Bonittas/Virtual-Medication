@@ -22,7 +22,7 @@ const PrescriptionForm = () => {
     e.preventDefault();
     try {
       const prescriptionData = { patientName, date, time, disease, medications };
-      const response = await axios.post('http://localhost:5002/api/prescriptions', prescriptionData); // API call to submit prescription
+      const response = await axios.post('https://medicare-video.onrender.com/api/prescriptions', prescriptionData); // API call to submit prescription
       console.log('Prescription submitted:', response.data);
       // Optionally, you can redirect to another page after successful submission
     } catch (err) {

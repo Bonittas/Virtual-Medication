@@ -126,7 +126,7 @@ export const logout = (navigate) => { // Accept navigate function as argument
     try {
       await axios.post("https://medicare-auth.onrender.com/api/auth/doctor/signout");
       dispatch({ type: 'LOGOUT' }); // Dispatch action to clear user state
-      navigate('/'); // Navigate to '/' after successful logout
+      navigate('/signup-option'); // Navigate to '/' after successful logout
     } catch (error) {
       console.error('Error during logout:', error);
       // Handle error if needed

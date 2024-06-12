@@ -97,7 +97,7 @@ const Doctors = () => {
                     <div className="text-sm text-gray-500">Experience: {doctor.experience}</div>
                     <div className="text-sm text-gray-500">Address: {doctor.address1}, {doctor.address2}, {doctor.city}, {doctor.state}, {doctor.pincode}, {doctor.country}</div>
                     <div className="text-sm text-gray-500">Working Hours: {doctor.startTime} - {doctor.endTime}</div>
-                    <div><img src={`http://localhost:5001/${doctor.imageUrl}`} alt={doctor.name} className="w-20 h-20 rounded-full mx-auto" />
+                    <div><img src={`https://medicare-admin.onrender.com/${doctor.imageUrl}`} alt={doctor.name} className="w-20 h-20 rounded-full mx-auto" />
                     </div>
                 </div>
                   <div>

@@ -21,7 +21,7 @@ const Doctors = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/auth/doctors/verified', {
+        const response = await axios.get('https://medicare-auth.onrender.com/api/auth/doctors/verified', {
           headers: {
             'x-auth-token': token
           }
@@ -56,7 +56,7 @@ const Doctors = () => {
   const handleAppointmentSubmission = async (doctorId, modeOfConsultation, preferredDateTime, symptoms) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/auth/book-appointment', {
+      await axios.post('https://medicare-auth.onrender.com/api/auth/book-appointment', {
         doctorId,
         modeOfConsultation,
         preferredDateTime,
@@ -205,7 +205,7 @@ const Doctors = () => {
               </div>
               {/* <div>
               <img
-                src={`http://localhost:5000/${selectedDoctor.imageUrl}`}
+                src={`https://medicare-auth.onrender.com/${selectedDoctor.imageUrl}`}
                 alt="Profile"
                 className="rounded-md w-2/3 h-1/2 border-2 border-green-300 mx-auto "
               />

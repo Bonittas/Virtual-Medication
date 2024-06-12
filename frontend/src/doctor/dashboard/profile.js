@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Nav from './dashboard';
 import Footer from '../../home/footer';
 
@@ -13,7 +15,7 @@ const Profile = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await axios.get("http://localhost:5000/api/auth/currentUser", {
+        const response = await axios.get("https://medicare-auth.onrender.com/api/auth/currentUser", {
           headers: {
             'x-auth-token': localStorage.getItem('token')
           }
@@ -31,59 +33,87 @@ const Profile = () => {
     fetchUserData();
   }, []);
   
-
-
   if (isLoading) {
-    return <p>Loading user data...</p>;
+    return (
+      <>
+        <Nav />
+        <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
+          <FontAwesomeIcon icon={faSpinner} spin className="text-4xl text-green-500 mr-2" />
+          <span className="text-lg text-gray-800">Loading user data...</span>
+        </div>
+        <Footer />
+      </>
+    );
   }
 
   if (error) {
-    return <p>Error fetching user data: {error}</p>;
+    return (
+      <>
+        <Nav />
+        <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
+          <p className="text-lg text-red-500">Error fetching user data: {error}</p>
+        </div>
+        <Footer />
+      </>
+    );
   }
 
   if (!user) {
-    return <p>User data not available.</p>;
+    return (
+      <>
+        <Nav />
+        <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
+          <p className="text-lg text-gray-800">User data not available.</p>
+        </div>
+        <Footer />
+      </>
+    );
   }
 
   if (!user._id) {
-    return <p>User ID not found.</p>;
+    return (
+      <>
+        <Nav />
+        <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
+          <p className="text-lg text-gray-800">User ID not found.</p>
+        </div>
+        <Footer />
+      </>
+    );
   }
 
   return (
     <>
       <Nav />
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-4">Welcome, {user.name}</h1>
-        <div className="bg-green-50 p-6 rounded-lg mb-8 shadow-md">
-          <div className="grid grid-cols-3 gap-4 mt-2">
-            <div>
-              <img
-                src={`http://localhost:5000/images/${user.imageUrl}`}
-                alt="Profile"
-                className="rounded-md w-2/3 h-1/2 border-2 border-green-300 mx-auto "
-              />
+      <div className="container mx-auto mt-32 px-4 my-4 py-8">
+        <div className="p-6 mb-8  flex flex-col md:flex-row items-center md:items-start">
+          <div className="border-gray-900 border flex mr-10 justify-center w-full md:justify-start md:w-1/4">
+            <img
+              src={`https://medicare-auth.onrender.com/images/${user.imageUrl}`}
+              alt="Profile"
+              className="rounded-sm w-full h-64 border-2 border-green-50"
+            />
+          </div>
+          <div className="mt-4 md:mt-0 mt-6 md:ml-6 flex  md:w-3/4">
+            <div className='mx-10'>
+            <h1 className="text-2xl font-bold mb-7 text-gray-800">{user.name}</h1>
+            <p className="text-lg text-gray-800 mb-7">Email: {user.email}</p>
+            <p className="text-lg text-gray-800 mb-7">Medical Specialty: {user.medicalSpeciality}</p>
+            <p className="text-lg text-gray-800 mb-7">Degree: {user.degree}</p>
+            <p className="text-lg text-gray-800 mb-7">Experience: {user.experience}</p>
             </div>
-            <div>
-            <p className="text-gray-700 font-bold text-gray-700 font-bold py-4">Name: {user.name}</p>
+            <div className='ml-10'> 
+            <p className="text-lg text-gray-800 mb-7">Age: {user.age}</p>
+            <p className="text-lg text-gray-800 mb-7">Gender: {user.gender}</p>
+            <p className="text-lg text-gray-800 mb-7">State Medical Council: {user.stateMedicalCouncil}</p>
 
-              <p className="text-gray-700 font-bold text-gray-700 font-bold">Email: {user.email}</p>
-              <p className="text-gray-700 font-bold text-gray-700 py-4">Medical Speciality: {user.medicalSpeciality}</p>
-              <p className="text-gray-700 font-bold text-gray-700">Age: {user.age}</p>
-              <p className="text-gray-700 font-bold text-gray-700 py-4">Gender: {user.gender}</p>
-              <p className="text-gray-700 font-bold text-gray-700">Degree: {user.degree}</p>
-              <p className="text-gray-700 font-bold text-gray-700 mt-4">Address: {user.address1}, {user.address2}, {user.city}, {user.state}, {user.country}, {user.pincode}</p>
-            </div>
-            <div>
-              <p className="text-gray-700 font-bold text-gray-700 py-4">Registration Number: {user.regNumber}</p>
-              <p className="text-gray-700 font-bold text-gray-700">Year of Registration: {user.yearOfReg}</p>
-              <p className="text-gray-700 font-bold text-gray-700 py-4">State Medical Council: {user.stateMedicalCouncil}</p>
-              <p className="text-gray-700 font-bold text-gray-700">Experience: {user.experience}</p>
-              <p className="text-gray-700 font-bold text-gray-700 mt-4">Working Hours: {user.startTime} - {user.endTime}</p>
+            <p className="text-lg text-gray-800 mb-7">Working Hours: {user.startTime} - {user.endTime}</p>
+            <p className="text-lg text-gray-800 mb-7">Address: {user.address1}, {user.address2}, {user.city}, {user.state}, {user.country}, {user.pincode}</p>
             </div>
           </div>
         </div>
       </div>
-      <div className="bg-green-600">
+      <div className="bg-green-500">
         <Footer />
       </div>
     </>

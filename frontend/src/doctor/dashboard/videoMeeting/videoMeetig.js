@@ -13,7 +13,7 @@ const configuration = {
   ],
   iceCandidatePoolSize: 10,
 };
-const socket = io("http://localhost:5002", { transports: ["websocket"] });
+const socket = io("https://medicare-video.onrender.com", { transports: ["websocket"] });
 
 let pc;
 let localStream;

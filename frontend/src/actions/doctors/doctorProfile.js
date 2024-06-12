@@ -16,7 +16,7 @@ export const fetchDoctorProfile = createAsyncThunk(
         }
       };
 
-      const response = await axios.get(`http://localhost:5000/api/auth/doctor/profile/${doctorId}`, config);
+      const response = await axios.get(`https://medicare-auth.onrender.com/api/auth/doctor/profile/${doctorId}`, config);
       return response.data.doctor;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);

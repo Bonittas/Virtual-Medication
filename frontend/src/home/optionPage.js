@@ -30,13 +30,14 @@ const OptionPage = () => {
     };
 
     return (
-        <div className=" min-h-screen mt-1 m-6 flex flex-col text-black items-center justify-center relative ">
+        <div className='w-full flex flex-col text-black items-center justify-center '>
+        <div className=" min-h-screen w-96 mt-1 m-6 flex flex-col text-black items-center justify-center relative ">
             <img src={headerImage} alt="Background" className="mt-1  w-1/2 h-24 " />
 
-            <div className="bg-gray-300 border rounded-md w-full mx-3  p-4 flex flex-col items-center">
+            <div className="bg-gray-300  border rounded-md w-full mx-3  p-4 flex flex-col items-center">
 
                 <div className="mb-8 ">
-                    <p className="text-lg text-center font-bold">Joiin HealthLink</p>
+                    <p className="text-lg text-center font-bold">Join HealthLink</p>
                     <p className="text-xl text-center font-bold mb-4">Connecting Care Anywhere</p>
 
                     <img src={backgroundImage} alt="Background" className="mt-4 w-72 h-36" />
@@ -88,6 +89,7 @@ const OptionPage = () => {
                     {selectedOption === 'admin' ? 'Sign In' : 'Sign Up'}
                 </button>
             </div>
+        </div>
         </div>
     );
 };

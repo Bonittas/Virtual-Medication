@@ -72,7 +72,7 @@ const Posts = () => {
           {currentPosts.map((post) => (
             <div key={post._id} className="border bg-blue-50">
               <img
-                src={`http://localhost:5001/${post.image}`}
+                src={`https://medicare-admin.onrender.com/${post.image}`}
                 alt={post.title}
                 className="w-full h-56 rounded-y-md"
               />

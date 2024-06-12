@@ -32,7 +32,7 @@ export const viewDoctors = () => {
   return async (dispatch) => {
     dispatch(viewDoctorsRequest());
     try {
-      const response = await axios.get('http://localhost:5001/api/admin/doctors');
+      const response = await axios.get('https://medicare-admin.onrender.com/api/admin/doctors');
       dispatch(viewDoctorsSuccess(response.data.doctors));
     } catch (error) {
       dispatch(viewDoctorsFailure(error.message));
@@ -53,7 +53,7 @@ export const verifyDoctorFailure = (error) => ({
 export const verifyDoctor = (doctorId) => {
   return async (dispatch) => {
     try {
-      await axios.put(`http://localhost:5001/api/admin/doctors/verify/${doctorId}`);
+      await axios.put(`https://medicare-admin.onrender.com/api/admin/doctors/verify/${doctorId}`);
       dispatch(verifyDoctorSuccess(doctorId));
       // You may want to dispatch the viewDoctors action again to refresh the doctor list
     } catch (error) {
@@ -76,7 +76,7 @@ export const unverifyDoctorFailure = (error) => ({
 export const unverifyDoctor = (doctorId) => {
   return async (dispatch) => {
     try {
-      await axios.put(`http://localhost:5001/api/admin/doctors/unverify/${doctorId}`);
+      await axios.put(`https://medicare-admin.onrender.com/api/admin/doctors/unverify/${doctorId}`);
       dispatch(unverifyDoctorSuccess(doctorId));
       // You may want to dispatch the viewDoctors action again to refresh the doctor list
     } catch (error) {

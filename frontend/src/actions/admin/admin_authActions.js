@@ -3,7 +3,7 @@ import axios from 'axios'; // Import axios
 export const signIn = (email, password) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/admin/signin", { email, password });
+      const response = await axios.post("https://medicare-auth.onrender.com/api/auth/admin/signin", { email, password });
       dispatch({ type: 'SIGN_IN', payload: response.data });
     } catch (error) {
       console.error('Error during signin:', error);
@@ -16,7 +16,7 @@ export const signIn = (email, password) => {
 export const logout = (navigate) => { // Accept navigate function as argument
   return async (dispatch) => {
     try {
-      await axios.post("http://localhost:5000/api/auth/admin/signout");
+      await axios.post("https://medicare-auth.onrender.com/api/auth/admin/signout");
       dispatch({ type: 'LOGOUT' }); // Dispatch action to clear user state
       navigate('/'); // Navigate to '/' after successful logout
     } catch (error) {
@@ -28,7 +28,7 @@ export const logout = (navigate) => { // Accept navigate function as argument
 export const signUp = (name, email, password) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/admin/signup", { name, email, password });
+      const response = await axios.post("https://medicare-auth.onrender.com/api/auth/admin/signup", { name, email, password });
       dispatch({ type: 'SIGN_UP', payload: response.data }); 
     } catch (error) {
       console.error('Error during signup:', error); 

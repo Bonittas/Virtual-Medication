@@ -117,7 +117,7 @@ const Patients = () => {
                     <div className="text-sm text-gray-500">Experience: {patient.experience}</div>
                     <div className="text-sm text-gray-500">Address: {patient.address1}, {patient.address2}, {patient.city}, {patient.state}, {patient.pincode}, {patient.country}</div>
                     <div className="text-sm text-gray-500">Working Hours: {patient.startTime} - {patient.endTime}</div>
-                    <div><img src={`http://localhost:5000/uploads/${patient.imageUrl}`} alt={patient.name} className="w-20 h-20 rounded-full mx-auto" />
+                    <div><img src={`https://medicare-auth.onrender.com/uploads/${patient.imageUrl}`} alt={patient.name} className="w-20 h-20 rounded-full mx-auto" />
                     </div>
                     </div>
                   <div>

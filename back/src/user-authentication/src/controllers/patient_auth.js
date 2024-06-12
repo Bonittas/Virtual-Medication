@@ -42,10 +42,10 @@ exports.completeDetails = async (req, res) => {
     }
 
     const details = JSON.parse(req.body.details);
-    const { name, age, gender, address1, address2, city, state, pincode, country } = details; 
+    const { name, age, gender, address1, address2, city,  country } = details; 
 
     const userId = req.user._id;
-    const updatedUserFields = { name, age, gender, address1, address2, city, state, pincode, country };
+    const updatedUserFields = { name, age, gender, address1, address2, city,  country };
 
     if (req.file) {
       updatedUserFields.imageUrl = req.file.filename;

@@ -20,7 +20,7 @@ const ViewPrescriptions = () => {
                     setLoading(false);
                     return;
                 }
-                const res = await axios.get('http://localhost:5000/api/auth/prescriptions', {
+                const res = await axios.get('https://medicare-auth.onrender.com/api/auth/prescriptions', {
                     headers: {
                         'x-auth-token': token
                     }
@@ -57,7 +57,7 @@ const ViewPrescriptions = () => {
     return (
       <><Nav/>
         <div className="relative top-32 container mx-auto p-4">
-            <h2 className="text-xl font-semibold mb-4">Prescriptions</h2>
+            <h2 className="text-xl font-semibold mb-4">PAst Appointments</h2>
             <div className="mb-4 flex items-center">
                 <input
                     type="text"
@@ -102,7 +102,7 @@ const ViewPrescriptions = () => {
                     ))}
                 </tbody>
             </table>
-            {filteredPrescriptions.length === 0 && <p className="mt-4">No prescriptions found.</p>}
+            {filteredPrescriptions.length === 0 && <p className="mt-4">No past appointment found.</p>}
             <div className="mt-4 flex justify-between items-center">
                 <div>
                     <button

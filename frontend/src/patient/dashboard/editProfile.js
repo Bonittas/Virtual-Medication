@@ -12,22 +12,13 @@ const EditProfile = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    medicalSpeciality: '',
     age: '',
     gender: '',
-    degree: '',
-    regNumber: '',
-    yearOfReg: '',
-    stateMedicalCouncil: '',
-    experience: '',
     address1: '',
     address2: '',
     city: '',
-    state: '',
-    pincode: '',
     country: '',
-    startTime: '',
-    endTime: '',
+
   });
 
   useEffect(() => {
@@ -35,22 +26,12 @@ const EditProfile = () => {
       setFormData({
         name: user.name,
         email: user.email,
-        medicalSpeciality: user.medicalSpeciality,
         age: user.age,
         gender: user.gender,
-        degree: user.degree,
-        regNumber: user.regNumber,
-        yearOfReg: user.yearOfReg,
-        stateMedicalCouncil: user.stateMedicalCouncil,
-        experience: user.experience,
         address1: user.address1,
         address2: user.address2,
         city: user.city,
-        state: user.state,
-        pincode: user.pincode,
         country: user.country,
-        startTime: user.startTime,
-        endTime: user.endTime,
       });
     }
   }, [user]);
@@ -79,7 +60,7 @@ const EditProfile = () => {
         <div className="grid grid-cols-3 gap-10">
           <div className="mb-2">
             <label className="block text-gray-600 font-bold mb-2" htmlFor="name">
-              Name
+              Full Name
             </label>
             <input
               type="text"
@@ -99,19 +80,6 @@ const EditProfile = () => {
               id="email"
               name="email"
               value={formData.email}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-gray-600 font-bold mb-2" htmlFor="medicalSpeciality">
-              Father Name
-            </label>
-            <input
-              type="text"
-              id="medicalSpeciality"
-              name="medicalSpeciality"
-              value={formData.medicalSpeciality}
               onChange={handleChange}
               className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -147,69 +115,6 @@ const EditProfile = () => {
             </select>
           </div>
           <div className="mb-2">
-            <label className="block text-gray-600 font-bold mb-2" htmlFor="degree">
-              Job
-            </label>
-            <input
-              type="text"
-              id="degree"
-              name="degree"
-              value={formData.degree}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-gray-600 font-bold mb-2" htmlFor="regNumber">
-              Registration Number
-            </label>
-            <input
-              type="text"
-              id="regNumber"
-              name="regNumber"
-              value={formData.regNumber}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-gray-600 font-bold mb-2" htmlFor="yearOfReg">
-              Year of Registration
-            </label>
-            <input
-              type="text"
-              id="yearOfReg"
-              name="yearOfReg"
-              value={formData.yearOfReg}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-gray-600 font-bold mb-2" htmlFor="stateMedicalCouncil">
-Nationlaity            </label>
-            <input
-              type="text"
-              id="stateMedicalCouncil"
-              name="stateMedicalCouncil"
-              value={formData.stateMedicalCouncil}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-gray-600 font-bold mb-2" htmlFor="experience">
-Current Address           </label>
-            <input
-              type="text"
-              id="experience"
-              name="experience"
-              value={formData.experience}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-2">
             <label className="block text-gray-600 font-bold mb-2" htmlFor="address1">
               Address Line 1
             </label>
@@ -237,37 +142,13 @@ Current Address           </label>
           </div>
           <div className="mb-2">
             <label className="block text-gray-600 font-bold mb-2" htmlFor="city">
-Home Town</label>
+Home Town
+</label>
             <input
               type="text"
               id="city"
               name="city"
               value={formData.city}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-gray-600 font-bold mb-2" htmlFor="state">
-Martial Status            </label>
-            <input
-              type="text"
-              id="state"
-              name="state"
-              value={formData.state}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-gray-600 font-bold mb-2" htmlFor="pincode">
-              Pincode
-            </label>
-            <input
-              type="text"
-              id="pincode"
-              name="pincode"
-              value={formData.pincode}
               onChange={handleChange}
               className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
             />
@@ -281,32 +162,6 @@ Martial Status            </label>
               id="country"
               name="country"
               value={formData.country}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-gray-600 font-bold mb-2" htmlFor="startTime">
-              Start Time
-            </label>
-            <input
-              type="time"
-              id="startTime"
-              name="startTime"
-              value={formData.startTime}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-2">
-            <label className="block text-gray-600 font-bold mb-2" htmlFor="endTime">
-              End Time
-            </label>
-            <input
-              type="time"
-              id="endTime"
-              name="endTime"
-              value={formData.endTime}
               onChange={handleChange}
               className="shadow appearance-none border rounded w-full py-5 px-3 text-gray-600 leading-tight focus:outline-none focus:shadow-outline"
             />

@@ -9,19 +9,10 @@ const CompleteDetails = (props) => {
   const [medicalSpeciality, setMedicalSpeciality] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
-  const [degree, setDegree] = useState("");
-  const [regNumber, setRegNumber] = useState("");
-  const [yearOfReg, setYearOfReg] = useState("");
-  const [stateMedicalCouncil, setStateMedicalCouncil] = useState("");
-  const [experience, setExperience] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [pincode, setPincode] = useState("");
   const [country, setCountry] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
   const [image, setImage] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -40,22 +31,13 @@ const CompleteDetails = (props) => {
       "details",
       JSON.stringify({
         name,
-        medicalSpeciality,
         age,
         gender,
-        degree,
-        regNumber,
-        yearOfReg,
-        stateMedicalCouncil,
-        experience,
         address1,
         address2,
         city,
-        state,
-        pincode,
         country,
-        startTime,
-        endTime,
+
       })
     );
     try {
@@ -79,7 +61,7 @@ const CompleteDetails = (props) => {
       <div className="mt-20">
         <div className="mx-6">
           
-          <h6 className="text-xl font-semibold">Complete Details</h6>
+          <h6 className="text-xl font-semibold">Edit Details</h6>
           <p className="text-sm text-right text-green-600 mb-4">
             Be careful while editing the important details!
           </p>
@@ -100,7 +82,7 @@ const CompleteDetails = (props) => {
                 />
               </div>
               <label className="block text-sm font-semibold my-1">
-                Name
+               Full Name
                 </label>
               <input
   type="text"
@@ -110,18 +92,7 @@ const CompleteDetails = (props) => {
   required
   autoComplete="name"
 />
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-                 Father Name
-                </label>
-                <input
-                  type="text"
-                  value={medicalSpeciality}
-                  onChange={(e) => setMedicalSpeciality(e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
-                  required
-                />
-              </div>
+
               <div>
                 <label className="block text-sm font-semibold mb-1">Age</label>
                 <input
@@ -148,65 +119,7 @@ const CompleteDetails = (props) => {
                   <option value="other">Other</option>
                 </select>
               </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-Job                </label>
-                <input
-                  type="text"
-                  value={degree}
-                  onChange={(e) => setDegree(e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Registration Number
-                </label>
-                <input
-                  type="text"
-                  value={regNumber}
-                  onChange={(e) => setRegNumber(e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Year of Registration
-                </label>
-                <input
-                  type="text"
-                  value={yearOfReg}
-                  onChange={(e) => setYearOfReg(e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-Nationlaity               </label>
-                <input
-                  type="text"
-                  value={stateMedicalCouncil}
-                  onChange={(e) => setStateMedicalCouncil(e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
-                  required
-                />
-              </div>
-            </div>
-            <div className="w-1/3 ml-5">
-              <div>
-                <label className="block text-sm font-semibold mb-1">
-Current Address               </label>
-                <input
-                  type="text"
-                  value={experience}
-                  onChange={(e) => setExperience(e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
-                  required
-                />
-              </div>
+ 
               <div>
                 <label className="block text-sm font-semibold mb-1">
                   Address Line 1
@@ -240,26 +153,7 @@ Current Address               </label>
                   required
                 />
               </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">Martial Status  </label>
-                <input
-                  type="text"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">Pincode</label>
-                <input
-                  type="text"
-                  value={pincode}
-                  onChange={(e) => setPincode(e.target.value)}
-                  className="border border-gray-300 rounded-md p-2 w-full"
-                  required
-                />
-              </div>
+ 
               <div>
                 <label className="block text-sm font-semibold mb-1">Country</label>
                 <input
@@ -269,32 +163,6 @@ Current Address               </label>
                   className="border border-gray-300 rounded-md p-2 w-full"
                   required
                 />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-semibold mb-1">
-                    Start-Time
-                  </label>
-                  <input
-                    type="time"
-                    value={startTime}
-                    onChange={(e) => setStartTime(e.target.value)}
-                    className="border border-gray-300 rounded-md p-2 w-full"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm text-black font-semibold mb-1">
-                    End-Time
-                  </label>
-                  <input
-                    type="time"
-                    value={endTime}
-                    onChange={(e) => setEndTime(e.target.value)}
-                    className="border text-black border-gray-300 rounded-md p-2 w-full"
-                    required
-                  />
-                </div>
               </div>
             </div>
           </div>

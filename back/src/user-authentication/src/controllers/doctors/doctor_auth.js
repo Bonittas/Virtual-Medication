@@ -15,30 +15,42 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
 const JWT_EXPIRES_IN = '1d'; 
 const Appointment = require("../../models/appointmetSchema")
 const { v4: uuidv4 } = require('uuid');
+
 exports.signup = async (req, res) => {
-  const { name, email, password } = req.body;
-
   try {
-    let user = await User.findOne({ email });
+    const { name, email, password } = req.body;
 
-    if (user) {
-      return res.status(400).json({ message: 'User already exists', field: 'email' });
+    // Validate input
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'All fields are required' });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    // Check if email is already in use
+    const existingDoctor = await Doctor.findOne({ email });
+    if (existingDoctor) {
+      return res.status(400).json({ message: 'Email is already in use' });
+    }
 
-    user = await User.create({ name, email, password: hashedPassword, verified: false });
+    // Get file paths
+    // const documentPaths = req.files.map(file => file.path);
 
-    const payload = { user: { _id: user._id } };
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+    // Create new doctor
+    const newDoctor = new Doctor({
+      name,
+      email,
+      password,
+      // documents: documentPaths
+    });
 
-    res.json({ user: { _id: user._id }, token });
+    await newDoctor.save();
+
+    res.status(201).json({ message: 'Doctor registered successfully' });
   } catch (error) {
     console.error('Error during signup:', error);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
-};
+}
+
 // Modify the completeDetails controller
 exports.completeDetails = async (req, res) => {
   try {
@@ -245,15 +257,12 @@ exports.updateProfile = async (req, res) => {
       age,
       gender,
       degree,
-      regNumber,
-      yearOfReg,
       stateMedicalCouncil,
       experience,
       address1,
       address2,
       city,
       state,
-      pincode,
       country,
       startTime,
       endTime
@@ -274,15 +283,12 @@ exports.updateProfile = async (req, res) => {
     user.age = age;
     user.gender = gender;
     user.degree = degree;
-    user.regNumber = regNumber;
-    user.yearOfReg = yearOfReg;
     user.stateMedicalCouncil = stateMedicalCouncil;
     user.experience = experience;
     user.address1 = address1;
     user.address2 = address2;
     user.city = city;
     user.state = state;
-    user.pincode = pincode;
     user.country = country;
     user.startTime = startTime;
     user.endTime = endTime;
@@ -404,24 +410,40 @@ exports.getAppointmentRequests = async (req, res) => {
 };
 exports.getApprovedAppointments = async (req, res) => {
   try {
-    // Fetch appointments with status 'approved' and populate the 'patient' field
-    const approvedAppointments = await Appointment.find({ status: 'approved' }).populate('patient');
+    // Check if the user making the request is authenticated
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Get the authenticated doctor's ID
+    const doctorId = req.user._id;
+
+    // Fetch approved appointments for the authenticated doctor and populate the 'patient' field
+    const approvedAppointments = await Appointment.find({ status: 'approved', doctor: doctorId }).populate('patient');
 
     // Extract user information from each appointment
     const approvedUsers = approvedAppointments.map(appointment => ({
-      _id: appointment.patient._id,
-      name: appointment.patient.name,
-      email: appointment.patient.email,
+      _id: appointment._id,
+      patient: {
+        _id: appointment.patient._id,
+        name: appointment.patient.name,
+        email: appointment.patient.email,
+        // Add other patient details as needed
+      },
+      date: appointment.date,
+      time: appointment.time,
+      symptoms: appointment.symptoms,
+      status: appointment.status,
       roomId: appointment.roomId, // Include roomId in the response data
-      // Add other user fields as needed
     }));
 
     res.json(approvedUsers);
   } catch (error) {
-    console.error('Error fetching approved users:', error);
+    console.error('Error fetching approved appointments:', error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
 
 exports.getRejectedAppointments = async (req, res) => {
   try {

@@ -10,7 +10,7 @@ const Notification = () => {
     // Fetch notifications when the component mounts
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/auth/patient/notifications',{headers: {
+        const response = await axios.get('https://medicare-auth.onrender.com/api/auth/patient/notifications',{headers: {
             'x-auth-token': localStorage.getItem('token')
           }});
         setNotifications(response.data.notifications);
