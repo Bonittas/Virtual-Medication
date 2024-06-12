@@ -17,7 +17,7 @@ const ApprovedUsers = () => {
       setError('Unauthorized: No token found');
       return;
     }
-    fetch(`http://localhost:5000/api/auth/approved-appointments`, {
+    fetch(`https://medicare-auth.onrender.com/api/auth/approved-appointments`, {
       headers: {
         'x-auth-token': token,
       },
