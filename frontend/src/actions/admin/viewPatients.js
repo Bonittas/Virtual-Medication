@@ -50,7 +50,7 @@ export const unverifyPatientFailure = (error) => ({
 export const fetchPatients = () => async (dispatch) => {
   dispatch(viewPatientsRequest());
   try {
-    const response = await axios.get('https://medicare-admin.onrender.com/api/admin/patients');
+    const response = await axios.get('http://localhost:5001/api/admin/patients');
     dispatch(viewPatientsSuccess(response.data));
   } catch (error) {
     dispatch(viewPatientsFailure(error.message));
@@ -59,7 +59,7 @@ export const fetchPatients = () => async (dispatch) => {
 
 export const verifyPatient = (patientId) => async (dispatch) => {
   try {
-    await axios.put(`https://medicare-admin.onrender.com/api/admin/patients/verify/${patientId}`);
+    await axios.put(`http://localhost:5001/api/admin/patients/verify/${patientId}`);
     dispatch(verifyPatientSuccess(patientId));
   } catch (error) {
     dispatch(verifyPatientFailure(error.message));
@@ -68,7 +68,7 @@ export const verifyPatient = (patientId) => async (dispatch) => {
 
 export const unverifyPatient = (patientId) => async (dispatch) => {
   try {
-    await axios.put(`https://medicare-admin.onrender.com/api/admin/patients/unverify/${patientId}`);
+    await axios.put(`http://localhost:5001/api/admin/patients/unverify/${patientId}`);
     dispatch(unverifyPatientSuccess(patientId));
   } catch (error) {
     dispatch(unverifyPatientFailure(error.message));
