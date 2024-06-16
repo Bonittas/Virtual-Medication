@@ -11,47 +11,62 @@ const path = require('path');
 const Room = require('../../models/Room')
 const fs = require('fs');
 const Notification = require("../../models/doctorNotification")
-const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
-const JWT_EXPIRES_IN = '1d'; 
+
 const Appointment = require("../../models/appointmetSchema")
 const { v4: uuidv4 } = require('uuid');
+const JWT_SECRET = process.env.JWT_SECRET || '122####7';
+const JWT_EXPIRES_IN = '1d'; 
 
 exports.signup = async (req, res) => {
+  const { name, email, password } = req.body;
+
   try {
-    const { name, email, password } = req.body;
+    let user = await User.findOne({ email });
 
-    // Validate input
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'All fields are required' });
+    if (user) {
+      return res.status(400).json({ message: 'User already exists', field: 'email' });
     }
 
-    // Check if email is already in use
-    const existingDoctor = await Doctor.findOne({ email });
-    if (existingDoctor) {
-      return res.status(400).json({ message: 'Email is already in use' });
-    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Get file paths
-    // const documentPaths = req.files.map(file => file.path);
+    user = await User.create({ name, email, password: hashedPassword });
 
-    // Create new doctor
-    const newDoctor = new Doctor({
-      name,
-      email,
-      password,
-      // documents: documentPaths
-    });
+    const payload = { user: { _id: user._id } };
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
-    await newDoctor.save();
-
-    res.status(201).json({ message: 'Doctor registered successfully' });
+    res.json({ user: { _id: user._id }, token });
   } catch (error) {
     console.error('Error during signup:', error);
-    res.status(500).json({ message: 'Server Error', error: error.message });
+    res.status(500).json({ message: 'Server Error' });
   }
-}
+};
 
-// Modify the completeDetails controller
+exports.signin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid Credentials', field: 'email' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid Credentials', field: 'password' });
+    }
+
+    const payload = { user: { _id: user._id } };
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+
+    res.json({ token, user });
+  } catch (error) {
+    console.error('Error during signin:', error);
+    res.status(500).send('Server Error');
+  }
+};
 exports.completeDetails = async (req, res) => {
   try {
     // Check if details are provided in the request body
@@ -67,15 +82,13 @@ exports.completeDetails = async (req, res) => {
       age, 
       gender, 
       degree, 
-      regNumber, 
-      yearOfReg, 
+
       stateMedicalCouncil, 
       experience, 
       address1, 
       address2, 
       city, 
-      state, 
-      pincode, 
+
       country, 
       startTime, 
       endTime 
@@ -89,24 +102,26 @@ exports.completeDetails = async (req, res) => {
       age, 
       gender, 
       degree, 
-      regNumber, 
-      yearOfReg, 
+ 
       stateMedicalCouncil, 
       experience, 
       address1, 
       address2, 
       city, 
-      state, 
-      pincode, 
+
       country, 
       startTime, 
       endTime 
     };
 
     // If profile picture uploaded, update imageUrl field in user document
-    if (req.file) {
-      // Extract the file name from req.file.path and store it in imageUrl
-      updatedUserFields.imageUrl = req.file.filename;
+    if (req.files && req.files.profilePicture) {
+      updatedUserFields.imageUrl = req.files.profilePicture[0].filename;
+    }
+
+    // If CV uploaded, update cvUrl field in user document
+    if (req.files && req.files.cvFile) {
+      updatedUserFields.cvUrl = req.files.cvFile[0].filename;
     }
 
     const updatedUser = await User.findByIdAndUpdate(userId, updatedUserFields, { new: true });
@@ -162,31 +177,7 @@ exports.getUserData = async (req, res) => {
   }
 };
 
-exports.signin = async (req, res) => {
-  const { email, password } = req.body;
 
-  try {
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid Credentials', field: 'email' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid Credentials', field: 'password' });
-    }
-
-    const payload = { user: { _id: user._id } };
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-
-    res.json({ token, user });
-  } catch (error) {
-    console.error('Error during signin:', error);
-    res.status(500).send('Server Error');
-  }
-};
 
 
 exports.verifyToken = (req, res, next) => {
@@ -410,39 +401,41 @@ exports.getAppointmentRequests = async (req, res) => {
 };
 exports.getApprovedAppointments = async (req, res) => {
   try {
-    // Check if the user making the request is authenticated
-    if (!req.user || !req.user._id) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
+    // Fetch appointments with status 'approved'
+    const approvedAppointments = await Appointment.find({ status: 'approved' });
 
-    // Get the authenticated doctor's ID
-    const doctorId = req.user._id;
+    // Log raw appointments before population
+    console.log('Raw approved appointments:', approvedAppointments);
 
-    // Fetch approved appointments for the authenticated doctor and populate the 'patient' field
-    const approvedAppointments = await Appointment.find({ status: 'approved', doctor: doctorId }).populate('patient');
+    // Populate the 'patient' field
+    await Appointment.populate(approvedAppointments, { path: 'patient' });
 
-    // Extract user information from each appointment
-    const approvedUsers = approvedAppointments.map(appointment => ({
-      _id: appointment._id,
-      patient: {
-        _id: appointment.patient._id,
-        name: appointment.patient.name,
-        email: appointment.patient.email,
-        // Add other patient details as needed
-      },
-      date: appointment.date,
-      time: appointment.time,
-      symptoms: appointment.symptoms,
-      status: appointment.status,
-      roomId: appointment.roomId, // Include roomId in the response data
-    }));
+    // Log appointments after population
+    console.log('Populated approved appointments:', approvedAppointments);
+
+    // Extract user information from each appointment, ensuring patient is not null
+    const approvedUsers = approvedAppointments.map(appointment => {
+      if (appointment.patient) {
+        return {
+          _id: appointment.patient._id,
+          name: appointment.patient.name,
+          email: appointment.patient.email,
+          roomId: appointment.roomId, // Include roomId in the response data
+          // Add other user fields as needed
+        };
+      } else {
+        console.warn(`Appointment ${appointment._id} has no associated patient.`);
+        return null;
+      }
+    }).filter(user => user !== null); // Filter out any null values
 
     res.json(approvedUsers);
   } catch (error) {
-    console.error('Error fetching approved appointments:', error);
+    console.error('Error fetching approved users:', error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
+
 
 
 exports.getRejectedAppointments = async (req, res) => {

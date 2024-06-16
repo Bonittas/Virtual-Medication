@@ -4,7 +4,7 @@ const User = require('../models/Patient');
 const Doctor = require('../models/Doctor');
 const Notification = require("../models/patientNotification");
 const Appointment = require("../models/appointmetSchema");
-const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_here';
+const JWT_SECRET = process.env.JWT_SECRET || '122####7';
 const JWT_EXPIRES_IN = '1d'; 
 const Room = require("../models/Room")
 const Payment = require("../models/Payment")
@@ -35,6 +35,31 @@ exports.signup = async (req, res) => {
   }
 };
 
+exports.signin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid Credentials', field: 'email' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid Credentials', field: 'password' });
+    }
+
+    const payload = { user: { _id: user._id } };
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+
+    res.json({ token, user });
+  } catch (error) {
+    console.error('Error during signin:', error);
+    res.status(500).send('Server Error');
+  }
+};
 exports.completeDetails = async (req, res) => {
   try {
     if (!req.body.details) {
@@ -98,31 +123,6 @@ exports.getUserData = async (req, res) => {
   }
 };
 
-exports.signin = async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid Credentials', field: 'email' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid Credentials', field: 'password' });
-    }
-
-    const payload = { user: { _id: user._id } };
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-
-    res.json({ token, user });
-  } catch (error) {
-    console.error('Error during signin:', error);
-    res.status(500).send('Server Error');
-  }
-};
 
 exports.verifyToken = (req, res, next) => {
   const token = req.header('x-auth-token');
@@ -233,61 +233,6 @@ exports.requestAppointment = async (req, res) => {
       return res.status(404).json({ message: 'Doctor not found' });
     }
 
-    // Check if the patient has made a successful payment before requesting the appointment
-    const payment = await Payment.findOne({ patient: patientId, status: 'successful' });
-
-    if (!payment) {
-      // Check for pending payments
-      const pendingPayment = await Payment.findOne({ patient: patientId, status: 'pending' });
-
-      if (pendingPayment) {
-        return res.status(200).json({
-          paymentRequired: true,
-          appointmentId: pendingPayment.appointmentId,
-          paymentAmount: pendingPayment.amount
-        });
-      } else {
-        // Create a new appointment with payment status pending
-        const newAppointment = new Appointment({
-          doctor: doctorId,
-          patient: patientId,
-          modeOfConsultation,
-          preferredDateTime,
-          symptoms,
-          paymentStatus: 'pending' // Set payment status to pending for this appointment
-        });
-        const savedAppointment = await newAppointment.save();
-
-        // Determine payment amount based on doctor's type
-        let paymentAmount;
-        switch (doctor.type) {
-          case 'specialist':
-            paymentAmount = 400;
-            break;
-          case 'other':
-            paymentAmount = 500;
-            break;
-          default:
-            paymentAmount = 300;
-        }
-
-        // Create a new pending payment
-        const newPayment = new Payment({
-          patient: patientId,
-          appointmentId: savedAppointment._id,
-          amount: paymentAmount,
-          status: 'pending'
-        });
-        await newPayment.save();
-
-        return res.status(200).json({
-          paymentRequired: true,
-          appointmentId: savedAppointment._id,
-          paymentAmount
-        });
-      }
-    }
-
     // Create a new appointment instance
     const newAppointment = new Appointment({
       doctor: doctorId,
@@ -295,17 +240,39 @@ exports.requestAppointment = async (req, res) => {
       modeOfConsultation,
       preferredDateTime,
       symptoms,
-      paymentStatus: 'successful' // Set payment status to successful
+      paymentStatus: 'pending' // Set payment status to pending
     });
 
     // Save the appointment to the database
-    await newAppointment.save();
+    const savedAppointment = await newAppointment.save();
 
-    // Add the appointment to the doctor's appointments
-    doctor.appointments.push(newAppointment);
-    await doctor.save();
+    // Determine payment amount based on doctor's type (this can be customized as per your logic)
+    let paymentAmount;
+    switch (doctor.type) {
+      case 'specialist':
+        paymentAmount = 400;
+        break;
+      case 'other':
+        paymentAmount = 500;
+        break;
+      default:
+        paymentAmount = 300;
+    }
 
-    res.status(201).json({ success: true, message: 'Appointment request submitted successfully' });
+    // Create a new pending payment
+    const newPayment = new Payment({
+      patient: patientId,
+      appointmentId: savedAppointment._id,
+      amount: paymentAmount,
+      status: 'pending'
+    });
+    await newPayment.save();
+
+    res.status(200).json({
+      success: true,
+      appointmentId: savedAppointment._id,
+      paymentAmount
+    });
   } catch (error) {
     console.error('Error requesting appointment:', error);
     res.status(500).json({ success: false, message: 'Appointment request failed' });
@@ -375,5 +342,14 @@ exports.getStatus = async (req, res) => {
   } catch (error) {
     console.error('Error fetching appointments:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+exports.logout = async (req, res) => {
+  try {
+    res.clearCookie('jwt'); 
+    res.json({ message: 'Logout successful' });
+  } catch (error) {
+    console.error('Error during logout:', error);
+    res.status(500).json({ message: 'Server Error' });
   }
 };

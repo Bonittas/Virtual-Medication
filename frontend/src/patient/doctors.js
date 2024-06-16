@@ -5,7 +5,6 @@ import axios from 'axios';
 import AppointmentForm from "./bookAppointment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faBriefcaseMedical,faPlusCircle,faLocation, faCalendarAlt, faClock, faMapMarkerAlt, faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 
 const Doctors = () => {
   const [verifiedDoctors, setVerifiedDoctors] = useState([]);
@@ -22,7 +21,7 @@ const Doctors = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('https://medicare-auth.onrender.com/api/auth/doctors/verified', {
+        const response = await axios.get('http://localhost:5000/api/auth/doctors/verified', {
           headers: {
             'x-auth-token': token
           }
@@ -57,7 +56,7 @@ const Doctors = () => {
   const handleAppointmentSubmission = async (doctorId, modeOfConsultation, preferredDateTime, symptoms) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post('https://medicare-auth.onrender.com/api/auth/book-appointment', {
+      await axios.post('http://localhost:5000/api/auth/book-appointment', {
         doctorId,
         modeOfConsultation,
         preferredDateTime,
@@ -206,7 +205,7 @@ const Doctors = () => {
               </div>
               {/* <div>
               <img
-                src={`https://medicare-auth.onrender.com/${selectedDoctor.imageUrl}`}
+                src={`http://localhost:5000/${selectedDoctor.imageUrl}`}
                 alt="Profile"
                 className="rounded-md w-2/3 h-1/2 border-2 border-green-300 mx-auto "
               />
@@ -221,13 +220,13 @@ const Doctors = () => {
           <p className="text-gray-700 mb-2">Working Hours: {selectedDoctor.startTime} - {selectedDoctor.endTime}</p>
                       </div>
             <div className="flex justify-end mt-4">
-<Link to='/payment'>
+
               <button
                 className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded "
+                onClick={() => handleBookAppointment()}
               >
                 Book Appointment
               </button>
-              </Link>
               <button
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 ml-2 rounded"
                 onClick={() => setSelectedDoctor(null)}

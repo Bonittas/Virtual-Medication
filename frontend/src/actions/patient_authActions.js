@@ -6,7 +6,7 @@ import {  FETCH_VERIFIED_DOCTORS_REQUEST,
 export const signIn = (email, password) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post('https://medicare-auth.onrender.com/api/auth/patient/signin', { email, password });
+      const response = await axios.post('http://localhost:5000/api/auth/patient/signin', { email, password });
       dispatch({ type: 'SIGN_IN_SUCCESS', payload: response.data });
       localStorage.setItem('token', response.data.token); // Ensure correct key used here
     } catch (error) {
@@ -23,7 +23,7 @@ export const signIn = (email, password) => {
 export const signUp = (name, email, password) => {
   return async (dispatch) => {
     try {
-      const response = await axios.post("https://medicare-auth.onrender.com/api/auth/patient/signup", { name, email, password });
+      const response = await axios.post("http://localhost:5000/api/auth/patient/signup", { name, email, password });
 
       dispatch({ type: 'SIGN_UP', payload: response.data });
       
@@ -51,7 +51,7 @@ export const completeDetails = (formData) => {
         }
       };
 
-      const response = await axios.put("https://medicare-auth.onrender.com/api/auth/patient/details", formData, config);
+      const response = await axios.put("http://localhost:5000/api/auth/patient/details", formData, config);
 
       dispatch({ type: 'COMPLETE_DETAILS_SUCCESS', payload: response.data });
     } catch (error) {
@@ -80,7 +80,7 @@ export const fetchPatientData = () => {
   return async (dispatch) => {
     dispatch(fetchPatientDataRequest());
     try {
-      const response = await axios.get("https://medicare-auth.onrender.com/api/auth/patient/currentUser", {
+      const response = await axios.get("http://localhost:5000/api/auth/patient/currentUser", {
         headers: {
           'x-auth-token': localStorage.getItem('token')
         }
@@ -96,7 +96,7 @@ export const updateUserData = (formData) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put("https://medicare-auth.onrender.com/api/auth/updatePatient", formData, {
+      const response = await axios.put("http://localhost:5000/api/auth/updatePatient", formData, {
         headers: {
           'Content-Type': 'application/json',
           'x-auth-token': token
@@ -109,6 +109,18 @@ export const updateUserData = (formData) => {
     }
   };
 };
+export const logout = (navigate) => { // Accept navigate function as argument
+  return async (dispatch) => {
+    try {
+      await axios.post("http://localhost:5000/api/auth/patient/signout");
+      dispatch({ type: 'LOGOUT' }); // Dispatch action to clear user state
+      navigate('/signin-option'); // Navigate to '/' after successful logout
+    } catch (error) {
+      console.error('Error during logout:', error);
+      // Handle error if needed
+    }
+  };
+};
 export const fetchVerifiedDoctors = () => {
   return async (dispatch) => {
     dispatch(fetchVerifiedDoctorsRequest());
@@ -116,7 +128,7 @@ export const fetchVerifiedDoctors = () => {
     try {
       const token = localStorage.getItem('token');
 
-      const response = await axios.get('https://medicare-auth.onrender.com/api/auth/doctors/verified',{
+      const response = await axios.get('http://localhost:5000/api/auth/doctors/verified',{
       headers: {
         'x-auth-token': token
       }
@@ -147,7 +159,7 @@ export const fetchVerifiedDoctorsFailure = (error) => ({
 export const requestAppointment = (appointmentData) => {
   return (dispatch) => {
     const token = localStorage.getItem('token');
-    axios.post('https://medicare-auth.onrender.com/api/auth/appointment/request', appointmentData, {
+    axios.post('http://localhost:5000/api/auth/appointment/request', appointmentData, {
       headers: {
         'x-auth-token': token
       }

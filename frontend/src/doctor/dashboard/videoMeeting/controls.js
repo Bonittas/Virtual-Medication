@@ -4,7 +4,7 @@ import SimplePeer from "simple-peer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo, faVideoSlash, faMicrophone, faMicrophoneSlash } from '@fortawesome/free-solid-svg-icons';
 
-const socket = io("https://medicare-auth.onrender.com/room1", { transports: ["websocket"] });
+const socket = io("http://localhost:5000/room1", { transports: ["websocket"] });
 
 let localStream;
 let peer;

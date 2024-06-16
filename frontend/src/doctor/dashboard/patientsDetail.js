@@ -13,7 +13,7 @@ const PatientProfile = () => {
       try {
         const token = localStorage.getItem('token');
 
-        const response = await axios.get(`https://medicare-auth.onrender.com/api/auth/patients/${id}` ,
+        const response = await axios.get(`http://localhost:5000/api/auth/patients/${id}` ,
         {
           headers: {
             'x-auth-token': token,

@@ -3,63 +3,65 @@ import { FETCH_USER_DATA_SUCCESS, FETCH_VERIFIED_DOCTORS_REQUEST,
   FETCH_VERIFIED_DOCTORS_SUCCESS,
   FETCH_VERIFIED_DOCTORS_FAILURE, FETCH_USER_DATA_ERROR, UPDATE_USER_DATA_SUCCESS, UPDATE_USER_DATA_ERROR } from './actionTypes';
 
-export const signUp = (name, email, password) => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.post("https://medicare-auth.onrender.com/api/auth/doctor/signup", { name, email, password });
-
-      dispatch({ type: 'SIGN_UP', payload: response.data });
-      
-      localStorage.setItem('userId', response.data.user._id);
-    } catch (error) {
-      console.error('Error during signup:', error); 
-      dispatch({ type: 'SIGN_UP_ERROR', payload: error.message }); 
-      throw error;
-    }
-  };
-};
-// Redux action for sign in
-export const signIn = (email, password) => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.post("https://medicare-auth.onrender.com/api/auth/doctor/signin", { email, password });
-      dispatch({ type: 'SIGN_IN', payload: response.data });
-      // Store user token in local storage
-      localStorage.setItem('token', response.data.token); // Change 'userId' to 'token'
-    } catch (error) {
-      console.error('Error during signin:', error);
-      dispatch({ type: 'SIGN_IN_ERROR', payload: error.message }); 
-      throw error; // Re-throw the error for the component to handle
-    }
-  };
-};
-
-export const completeDetails = (formData) => {
-  return async (dispatch) => {
-    try {
-      const token = localStorage.getItem('token');
-
-      if (!token) {
-        throw new Error('Token not found in local storage');
-      }
-
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'x-auth-token': token
+  export const signIn = (email, password) => {
+    return async (dispatch) => {
+      try {
+        const response = await axios.post('http://localhost:5000/api/auth/doctor/signin', { email, password });
+        dispatch({ type: 'SIGN_IN_SUCCESS', payload: response.data });
+        localStorage.setItem('token', response.data.token); // Ensure correct key used here
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          dispatch({ type: 'SIGN_IN_ERROR', payload: 'Invalid email or password. Please try again.' });
+        } else {
+          dispatch({ type: 'SIGN_IN_ERROR', payload: 'An error occurred during login. Please try again later.' });
         }
-      };
-
-      const response = await axios.put("https://medicare-auth.onrender.com/api/auth/doctor/details", formData, config);
-
-      dispatch({ type: 'COMPLETE_DETAILS_SUCCESS', payload: response.data });
-    } catch (error) {
-      console.error('Error completing details:', error); 
-      dispatch({ type: 'DETAILS_ERROR', payload: error.message }); 
-      throw error;
-    }
+        throw error;
+      }
+    };
   };
-};
+  
+  export const signUp = (name, email, password) => {
+    return async (dispatch) => {
+      try {
+        const response = await axios.post("http://localhost:5000/api/auth/doctor/signup", { name, email, password });
+  
+        dispatch({ type: 'SIGN_UP', payload: response.data });
+        
+        localStorage.setItem('userId', response.data.user._id);
+      } catch (error) {
+        console.error('Error during signup:', error); 
+        dispatch({ type: 'SIGN_UP_ERROR', payload: error.message }); 
+        throw error;
+      }
+    };
+  };
+  export const completeDetails = (formData) => {
+    return async (dispatch) => {
+      try {
+        const token = localStorage.getItem('token');
+  
+        if (!token) {
+          throw new Error('Token not found in local storage');
+        }
+  
+        const config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'x-auth-token': token
+          }
+        };
+  
+        const response = await axios.put("http://localhost:5000/api/auth/doctor/details", formData, config);
+  
+        dispatch({ type: 'COMPLETE_DETAILS_SUCCESS', payload: response.data });
+      } catch (error) {
+        console.error('Error completing details:', error); 
+        dispatch({ type: 'DETAILS_ERROR', payload: error.message }); 
+        throw error;
+      }
+    };
+  };
+  
 export const updateDoctorData = (updatedData) => {
   return async (dispatch) => {
     try {
@@ -75,7 +77,7 @@ export const fetchUserData = () => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get("https://medicare-auth.onrender.com/api/auth/currentUser", {
+      const response = await axios.get("http://localhost:5000/api/auth/currentUser", {
         headers: {
           'x-auth-token': token
         }
@@ -91,7 +93,7 @@ export const updateUserData = (formData) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put("https://medicare-auth.onrender.com/api/auth/updateDoctor", formData, {
+      const response = await axios.put("http://localhost:5000/api/auth/updateDoctor", formData, {
         headers: {
           'Content-Type': 'application/json',
           'x-auth-token': token
@@ -108,7 +110,7 @@ export const fetchNotifications = () => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get("https://medicare-auth.onrender.com/api/auth/notifications", {
+      const response = await axios.get("http://localhost:5000/api/auth/notifications", {
         headers: {
           'x-auth-token': token
         }
@@ -124,9 +126,9 @@ export const fetchNotifications = () => {
 export const logout = (navigate) => { // Accept navigate function as argument
   return async (dispatch) => {
     try {
-      await axios.post("https://medicare-auth.onrender.com/api/auth/doctor/signout");
+      await axios.post("http://localhost:5000/api/auth/doctor/signout");
       dispatch({ type: 'LOGOUT' }); // Dispatch action to clear user state
-      navigate('/signup-option'); // Navigate to '/' after successful logout
+      navigate('/signin-option'); // Navigate to '/' after successful logout
     } catch (error) {
       console.error('Error during logout:', error);
       // Handle error if needed
@@ -140,7 +142,7 @@ export const fetchVerifiedDoctors = () => {
     try {
       const token = localStorage.getItem('token');
 
-      const response = await axios.get('https://medicare-auth.onrender.com/api/auth/doctors/verified',{
+      const response = await axios.get('http://localhost:5000/api/auth/doctors/verified',{
       headers: {
         'x-auth-token': token
       }

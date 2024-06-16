@@ -9,7 +9,7 @@ const ViewUser = ({ userId, onClose }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`https://medicare-auth.onrender.com/api/auth/users/${userId}`);
+        const response = await axios.get(`http://localhost:5000/api/auth/users/${userId}`);
         setUser(response.data.user);
         setLoading(false);
       } catch (error) {

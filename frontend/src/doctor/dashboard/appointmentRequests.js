@@ -31,7 +31,7 @@ const DoctorDashboard = () => {
 
     try {
       // Approve appointment and get the room ID
-      const response = await axios.put(`https://medicare-auth.onrender.com/api/auth/appointment-requests/${appointmentId}/approve`, null, {
+      const response = await axios.put(`http://localhost:5000/api/auth/appointment-requests/${appointmentId}/approve`, null, {
         headers: {
           'x-auth-token': token,
         },
@@ -61,7 +61,7 @@ const DoctorDashboard = () => {
       }
 
       try {
-        const response = await axios.get("https://medicare-auth.onrender.com/api/auth/appointment-requests", {
+        const response = await axios.get("http://localhost:5000/api/auth/appointment-requests", {
           headers: {
             'x-auth-token': token
           }
@@ -91,7 +91,7 @@ const DoctorDashboard = () => {
     }
 
     try {
-      await axios.put(`https://medicare-auth.onrender.com/api/auth/appointment-requests/${appointmentId}/reject`, null, {
+      await axios.put(`http://localhost:5000/api/auth/appointment-requests/${appointmentId}/reject`, null, {
         headers: {
           'x-auth-token': token
         }
@@ -172,14 +172,14 @@ const DoctorDashboard = () => {
                       </button>
                     </>
                   )}
-                  {/* {appointment.status === 'approved' && (
+                  {appointment.status === 'approved' && (
                     <button
                       onClick={() => handleJoinVideoChat(appointment.roomId)}
                       className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
                     >
                       Join Video Conference
                     </button>
-                  )} */}
+                  )}
                 </div>
               </div>
             ))}

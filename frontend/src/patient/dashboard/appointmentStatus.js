@@ -17,7 +17,7 @@ const PatientAppointments = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "https://medicare-auth.onrender.com/api/auth/patient/appointments",
+          "http://localhost:5000/api/auth/patient/appointments",
           {
             headers: {
               "x-auth-token": token,

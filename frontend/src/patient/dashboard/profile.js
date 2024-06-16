@@ -15,7 +15,7 @@ const Profile = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await axios.get("https://medicare-auth.onrender.com/api/auth/patient/currentUser", {
+        const response = await axios.get("http://localhost:5000/api/auth/patient/currentUser", {
           headers: {
             'x-auth-token': localStorage.getItem('token')
           }
@@ -90,7 +90,7 @@ const Profile = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
             <div className="md:col-span-1 flex items-center justify-center">
               <img
-                src={`https://medicare-auth.onrender.com/images/${user.imageUrl}`}
+                src={`http://localhost:5000/images/${user.imageUrl}`}
                 alt="Profile"
                 className="rounded-full w-40 h-40 border-2 border-green-50"
               />

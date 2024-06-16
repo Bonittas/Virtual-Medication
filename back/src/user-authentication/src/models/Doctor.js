@@ -30,15 +30,12 @@ const doctorSchema = new mongoose.Schema({
   address1: String,
   address2: String,
   city: String,
-  state: String,
   country: String,
   startTime: String,
   endTime: String,
   imageUrl: String,
-  // documents: {
-  //   type: String,
-  //   required: false,
-  // },
+  cvUrl: String,
+            
   appointments: [{ type: Schema.Types.ObjectId, ref: 'Appointment' }],
   notifications: [notificationSchema],
   prescriptions: [{ type: Schema.Types.ObjectId, ref: 'Prescription' }] // Added prescriptions relationship

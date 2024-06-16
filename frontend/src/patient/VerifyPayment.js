@@ -15,7 +15,7 @@ function VerifyPayment() {
 
     try {
       const response = await axios.get(
-        `https://medicare-auth.onrender.com/api/auth/payment/verify/${txRef}`
+        `http://localhost:5000/api/auth/payment/verify/${txRef}`
       );
       setResult(response.data);
     } catch (error) {

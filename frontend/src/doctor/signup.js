@@ -10,7 +10,6 @@ import {
   Alert,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios"; 
@@ -82,6 +81,7 @@ const Doctor_Signup = () => {
       }, 2000);
     } catch (error) {
       console.error("Error during signup:", error);
+      // Show signup failed error message
       setSuccessMessage("");
       setNameError("Signup failed. Please try again later.");
     }

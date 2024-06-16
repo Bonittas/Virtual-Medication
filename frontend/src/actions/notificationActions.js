@@ -24,7 +24,7 @@ export const fetchNotifications = () => {
     dispatch(fetchNotificationsRequest());
     try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('https://medicare-auth.onrender.com/api/auth/notifications', {
+        const response = await axios.get('http://localhost:5000/api/auth/notifications', {
           headers: {
             'x-auth-token': token
           }

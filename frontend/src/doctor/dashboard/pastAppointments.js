@@ -20,7 +20,7 @@ const ViewPrescriptions = () => {
                     setLoading(false);
                     return;
                 }
-                const res = await axios.get('https://medicare-auth.onrender.com/api/auth/prescriptions', {
+                const res = await axios.get('http://localhost:5000/api/auth/prescriptions', {
                     headers: {
                         'x-auth-token': token
                     }

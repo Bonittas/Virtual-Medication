@@ -35,7 +35,7 @@ const Payment = () => {
 
       // Initialize payment
       const response = await axios.post(
-        "https://medicare-auth.onrender.com/api/auth/payment/initialize",
+        "http://localhost:5000/api/auth/payment/initialize",
         {
           first_name: formData.fname,
           last_name: formData.lname,
@@ -55,7 +55,6 @@ const Payment = () => {
       );
       window.location.href = response.data.data.checkout_url;
     } catch (error) {
-
       console.error("Error processing payment:", error);
       setErrorMessage("Error processing payment. Please try again.");
     } finally {
@@ -97,14 +96,8 @@ const Payment = () => {
   return (
     <>
     <Nav/>
-    <div className=" w-full flex justify-center ">
-      <div className="border mt-24 mb-6 w-1/2">
-    <div className=" mw-full flex justify-center ">
-          <p className="text bg-green-100 w-full border p-4 text-center black">Notice - Card payment for first time appointment is <p className="text-green-600 font-bold">200 Birr</p> </p>
-        </div>
-      <div className="  p-4 w-full md:max-w-2xl mx-auto  my-4 flex rounded-md ">
-
-        <div className=" bg-white p-1 mb-10 w-full mx-auto rounded mt-4 ">
+      <div className=" relative top-24 bg-slate-100 p-4 w-full md:max-w-3xl mx-auto my-4 flex rounded-md shadow-md">
+        <div className="bg-white p-4 w-full md:w-1/2 mx-auto rounded shadow-md">
           <h2 className="text-xl font-semibold text-center mb-4">
             Patient Payment Form
           </h2>
@@ -273,8 +266,6 @@ const Payment = () => {
             </button>
           </form>
         </div>
-      </div>
-      </div>
       </div>
     </>
   );

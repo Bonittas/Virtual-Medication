@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { completeDetails,fetchPatientData } from "../../actions/patient_authActions";
-import Nav from "./dashboard"
+import { completeDetails, fetchPatientData } from "../../actions/patient_authActions";
+import Nav from "./dashboard";
+
 const CompleteDetails = (props) => {
   const userData = useSelector((state) => state.userData);
+  const dispatch = useDispatch();
 
+  // State variables for form fields
   const [name, setName] = useState(userData ? userData.name : "");
   const [medicalSpeciality, setMedicalSpeciality] = useState("");
   const [age, setAge] = useState("");
@@ -14,33 +17,40 @@ const CompleteDetails = (props) => {
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
   const [image, setImage] = useState(null);
+  const [cvFile, setCvFile] = useState(null); // State for CV file
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchPatientData());
   }, [dispatch]);
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("profilePicture", image);
 
+    // Create FormData object
+    const formData = new FormData();
+    formData.append("profilePicture", image); // Append profile picture file
+    formData.append("cvFile", cvFile); // Append CV file
+
+    // Append other details as JSON string
     formData.append(
       "details",
       JSON.stringify({
         name,
+        medicalSpeciality,
         age,
         gender,
         address1,
         address2,
         city,
         country,
-
       })
     );
+
     try {
+      // Dispatch action to complete details
       await dispatch(completeDetails(formData));
       setSuccessMessage('Profile successfully updated.');
       setErrorMessage('');
@@ -50,49 +60,60 @@ const CompleteDetails = (props) => {
     }
   };
 
+  // Handle profile picture file change
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
   };
 
+  // Handle CV file change
+  const handleCvFileChange = (e) => {
+    const file = e.target.files[0];
+    setCvFile(file);
+  };
+
   return (
-    <><Nav/>
-    <form onSubmit={handleSubmit}>
-      <div className="mt-20">
-        <div className="mx-6">
-          
+    <>
+      <Nav />
+      <form onSubmit={handleSubmit}>
+        <div className="mt-20 mx-6">
           <h6 className="text-xl font-semibold">Edit Details</h6>
           <p className="text-sm text-right text-green-600 mb-4">
             Be careful while editing the important details!
           </p>
           {successMessage && <p className="text-black w-1/4 text-center bg-green-300 p-4 mb-4">{successMessage}</p>}
-      {errorMessage && <p className="text-red-500 bg-red-100 mb-4">{errorMessage}</p>}
-  
-          <div className=" flex justify-center rounded-md bg-green-100 p-4">
+          {errorMessage && <p className="text-red-500 bg-red-100 mb-4">{errorMessage}</p>}
+          <div className="flex justify-center rounded-md bg-green-100 p-4">
             <div className="w-1/3">
               <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Profile Image
-                </label>
+                <label className="block text-sm font-semibold mb-1">Profile Image</label>
                 <input
                   type="file"
                   name="profilePicture"
                   onChange={handleImageChange}
                   className="border border-gray-300 rounded-md p-2 w-full"
+                  accept="image/*"
                 />
               </div>
-              <label className="block text-sm font-semibold my-1">
-               Full Name
-                </label>
+              <div>
+                <label className="block text-sm font-semibold mb-1">CV File</label>
+                <input
+                  type="file"
+                  name="cvFile"
+                  onChange={handleCvFileChange}
+                  className="border border-gray-300 rounded-md p-2 w-full"
+                  accept=".pdf,.doc,.docx"
+                />
+              </div>
+              <label className="block text-sm font-semibold my-1">Full Name</label>
               <input
-  type="text"
-  value={name}
-  onChange={(e) => setName(e.target.value)}
-  className="border border-gray-300 rounded-md p-2 w-full"
-  required
-  autoComplete="name"
-/>
-
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="border border-gray-300 rounded-md p-2 w-full"
+                required
+                autoComplete="name"
+              />
               <div>
                 <label className="block text-sm font-semibold mb-1">Age</label>
                 <input
@@ -104,9 +125,7 @@ const CompleteDetails = (props) => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Gender
-                </label>
+                <label className="block text-sm font-semibold mb-1">Gender</label>
                 <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
@@ -119,11 +138,8 @@ const CompleteDetails = (props) => {
                   <option value="other">Other</option>
                 </select>
               </div>
- 
               <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Address Line 1
-                </label>
+                <label className="block text-sm font-semibold mb-1">Address Line 1</label>
                 <input
                   type="text"
                   value={address1}
@@ -133,9 +149,7 @@ const CompleteDetails = (props) => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold mb-1">
-                  Address Line 2
-                </label>
+                <label className="block text-sm font-semibold mb-1">Address Line 2</label>
                 <input
                   type="text"
                   value={address2}
@@ -153,7 +167,6 @@ const CompleteDetails = (props) => {
                   required
                 />
               </div>
- 
               <div>
                 <label className="block text-sm font-semibold mb-1">Country</label>
                 <input
@@ -175,8 +188,7 @@ const CompleteDetails = (props) => {
             </button>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
     </>
   );
 };

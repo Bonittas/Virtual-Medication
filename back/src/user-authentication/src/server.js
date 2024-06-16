@@ -19,15 +19,15 @@ const users = {};
 
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/upload', express.static(path.join(__dirname, 'upload')));
+app.use('/cvs', express.static(path.join(__dirname, 'cvs')));
 app.get('/test', (req, res) => {
   console.log('Test route hit');
   res.send('Server is working');
 });
 
-app.get("/", (req, res) => {
-  res.send("Welcome to the backend of the user authentication system");
-});
+// app.get("/", (req, res) => {
+//   res.send("Welcome to the backend of the user authentication system");
+// });
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI);

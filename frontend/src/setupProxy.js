@@ -5,7 +5,7 @@ module.exports = function (app) {
   app.use(
     '/api/auth/admin/signin',
     createProxyMiddleware({
-      target: 'https://medicare-auth.onrender.com/',
+      target: 'http://localhost:5000/',
       changeOrigin: true,
     })
   );
@@ -13,21 +13,21 @@ module.exports = function (app) {
   app.use(
     '/api/auth/doctor/signin',
     createProxyMiddleware({
-      target: 'https://medicare-auth.onrender.com/',
+      target: 'http://localhost:5000/',
       changeOrigin: true,
     })
   );
   app.use(
     '/api/auth/doctor/details',
     createProxyMiddleware({
-      target: 'https://medicare-auth.onrender.com/',
+      target: 'http://localhost:5000/',
       changeOrigin: true,
     })
   );
   app.use(
     '/api/auth/doctor/signup',
     createProxyMiddleware({
-      target: 'https://medicare-auth.onrender.com/',
+      target: 'http://localhost:5000/',
       changeOrigin: true,
     })
   );
@@ -35,35 +35,35 @@ module.exports = function (app) {
   app.use(
     '/api/auth/patient/signin',
     createProxyMiddleware({
-      target: 'https://medicare-auth.onrender.com/',
+      target: 'http://localhost:5000/',
       changeOrigin: true,
     })
   );
   app.use(
     '/api/auth/patient/signup',
     createProxyMiddleware({
-      target: 'https://medicare-auth.onrender.com/',
+      target: 'http://localhost:5000/',
       changeOrigin: true,
     })
   );
   // app.use(
   //   '/api/auth/currentUser',
   //   createProxyMiddleware({
-  //     target: 'https://medicare-auth.onrender.com/',
+  //     target: 'http://localhost:5000/',
   //     changeOrigin: true,
   //   })
   // );
     app.use(
     '/api/auth/patient/currentUser',
     createProxyMiddleware({
-      target: 'https://medicare-auth.onrender.com/',
+      target: 'http://localhost:5000/',
       changeOrigin: true,
     })
   );
   app.use(
     '/api/auth/admin/signup',
     createProxyMiddleware({
-      target: 'https://medicare-auth.onrender.com/',
+      target: 'http://localhost:5000/',
       changeOrigin: true,
     })
   );  app.use(
@@ -76,7 +76,7 @@ module.exports = function (app) {
   app.use(
     '/socket.io',
     createProxyMiddleware({
-      target: 'https://medicare-auth.onrender.com/',
+      target: 'http://localhost:5000/',
       changeOrigin: true,
       ws: true, // Enable WebSocket proxying
     })
@@ -84,14 +84,14 @@ module.exports = function (app) {
   app.use(
     '/api/auth/payment/initialize',
     createProxyMiddleware({
-      target: 'https://medicare-auth.onrender.com/',
+      target: 'http://localhost:5000/',
       changeOrigin: true,
     })
   );
   app.use(
     '/api/auth/add',
     createProxyMiddleware({
-      target: 'https://medicare-auth.onrender.com/',
+      target: 'http://localhost:5000/',
       changeOrigin: true,
     })
   );
