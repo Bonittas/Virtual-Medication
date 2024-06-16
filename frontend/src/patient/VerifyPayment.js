@@ -15,7 +15,7 @@ function VerifyPayment() {
 
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/auth/payment/verify/${txRef}`
+        `https://healt-link-v36m.onrender.com/api/auth/payment/verify/${txRef}`
       );
       setResult(response.data);
     } catch (error) {

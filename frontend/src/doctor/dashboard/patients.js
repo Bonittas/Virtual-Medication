@@ -16,12 +16,12 @@ const Patients = () => {
     const fetchAppointments = async () => {
       try {
         const token = localStorage.getItem('token');
-        const responseApproved = await axios.get('http://localhost:5000/api/auth/approved-appointments', {
+        const responseApproved = await axios.get('https://healt-link-v36m.onrender.com/api/auth/approved-appointments', {
           headers: {
             'x-auth-token': token
           }
         });
-        const responseRejected = await axios.get('http://localhost:5000/api/auth/rejected-appointments', {
+        const responseRejected = await axios.get('https://healt-link-v36m.onrender.com/api/auth/rejected-appointments', {
           headers: {
             'x-auth-token': token
           }

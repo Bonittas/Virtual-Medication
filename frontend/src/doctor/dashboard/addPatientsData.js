@@ -43,7 +43,7 @@ const PostPrescription = () => {
                 setLoading(false);
                 return;
             }
-            const res = await axios.post('http://localhost:5000/api/auth/prescriptions', form, {
+            const res = await axios.post('https://healt-link-v36m.onrender.com/api/auth/prescriptions', form, {
                 headers: {
                     'x-auth-token': token
                 }

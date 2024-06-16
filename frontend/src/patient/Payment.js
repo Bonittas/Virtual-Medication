@@ -35,7 +35,7 @@ const Payment = () => {
 
       // Initialize payment
       const response = await axios.post(
-        "http://localhost:5000/api/auth/payment/initialize",
+        "https://healt-link-v36m.onrender.com/api/auth/payment/initialize",
         {
           first_name: formData.fname,
           last_name: formData.lname,

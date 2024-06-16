@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faUser, faChartBar, faPen, faBell, faAddressCard, faCalendarCheck, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import { logout } from "../../actions/doctor_authActions";
+import { logout } from "../../actions/patient_authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../home/footer";

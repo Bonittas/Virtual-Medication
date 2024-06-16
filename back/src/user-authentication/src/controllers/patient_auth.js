@@ -85,6 +85,7 @@ exports.completeDetails = async (req, res) => {
   }
 };
 
+
 exports.uploadFile = async (req, res) => {
   try {
     const filePath = req.file.path;

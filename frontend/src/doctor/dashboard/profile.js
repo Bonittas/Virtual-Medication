@@ -15,7 +15,7 @@ const Profile = () => {
       try {
         setIsLoading(true);
         setError(null);
-        const response = await axios.get("http://localhost:5000/api/auth/currentUser", {
+        const response = await axios.get("https://healt-link-v36m.onrender.com/api/auth/currentUser", {
           headers: {
             'x-auth-token': localStorage.getItem('token')
           }
@@ -77,7 +77,6 @@ const Profile = () => {
         <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-screen">
           <p className="text-lg text-gray-800">User ID not found.</p>
         </div>
-        <Footer />
       </>
     );
   }
@@ -89,7 +88,7 @@ const Profile = () => {
         <div className="p-6 mb-8  flex flex-col md:flex-row items-center md:items-start">
         <div className="border-gray-900 border flex mr-10 justify-center w-full md:justify-start md:w-1/4">
             <img
-              src={`http://localhost:5000/images/profilePictures/${user.imageUrl}`}
+              src={`https://healt-link-v36m.onrender.com/images/profilePictures/${user.imageUrl}`}
               alt="Profile"
               className="rounded-sm w-full h-64 border-2 border-green-50"
             />
@@ -117,7 +116,7 @@ const Profile = () => {
     <div className="px-3 py-2">
       {user.cvUrl ? (
         <a
-          href={`http://localhost:5000/cvs/${user.cvUrl}`}
+          href={`https://healt-link-v36m.onrender.com/cvs/${user.cvUrl}`}
           target="_blank"
           rel="noopener noreferrer"
           className="block text-green-500 hover:text-green-700 transition-colors duration-200"

@@ -94,7 +94,7 @@ const Doctors = () => {
                 <li key={doctor._id} className="p-6 flex flex-col space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <img src={`http://localhost:5000/images/profilePictures/${doctor.imageUrl}`} alt={doctor.name} className="w-20 h-20 rounded-full mr-4" />
+                      <img src={`https://healt-link-v36m.onrender.com/images/profilePictures/${doctor.imageUrl}`} alt={doctor.name} className="w-20 h-20 rounded-full mr-4" />
                       <div>
                         <div className="text-lg font-semibold text-blue-900">{doctor.name}</div>
                         <div className="text-gray-600 py-2">Medical Speciality: {doctor.medicalSpeciality}</div>
@@ -146,7 +146,7 @@ const Doctors = () => {
                         <div className="px-3 py-2">
                           {doctor.cvUrl ? (
                             <a
-                              href={`http://localhost:5000/cvs/${doctor.cvUrl}`}
+                              href={`https://healt-link-v36m.onrender.com/cvs/${doctor.cvUrl}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="block text-green-500 hover:text-green-700 transition-colors duration-200"

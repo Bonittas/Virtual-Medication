@@ -17,7 +17,7 @@ const PatientAppointments = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          "http://localhost:5000/api/auth/patient/appointments",
+          "https://healt-link-v36m.onrender.com/api/auth/patient/appointments",
           {
             headers: {
               "x-auth-token": token,
