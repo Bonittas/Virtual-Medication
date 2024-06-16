@@ -12,7 +12,7 @@ router.put('/patient/details', verifyToken, upload, authController.completeDetai
 router.put('/updatePatient', verifyToken, upload, authController.updateUserData);
 router.get('/patient/currentUser',verifyToken,  authController.getCurrentUser);
 // router.get('/appointment-requests/:_id/status', authController.getStatus);
-router.get('/patient/appointments/',verifyToken, authController.getPatientAppointments);
+router.get('/patient/appointments',verifyToken, authController.getPatientAppointments);
 
 router.post('/doctor/signout', authController.logout);   
 

@@ -21,7 +21,7 @@ const AppointmentForm = ({ doctorId, onClose }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "https://medicare-auth.onrender.com/api/auth/appointment/request",
+        "http://localhost:5000/api/auth/appointment/request",
         appointmentData,
         {
           headers: {
