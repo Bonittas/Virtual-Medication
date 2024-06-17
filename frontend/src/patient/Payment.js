@@ -98,8 +98,10 @@ const Payment = () => {
   return (
     <>
     <Nav/>
-      <div className=" relative top-24 bg-slate-100 p-4 w-full md:max-w-3xl mx-auto my-4 flex rounded-md shadow-md">
+      <div className="  mt-24  p-4 w-full md:max-w-3xl mx-auto my-4 flex rounded-md shadow-md">
         <div className="bg-white p-4 w-full md:w-1/2 mx-auto rounded shadow-md">
+        <h2 className="text-xl font-semibold bg-green-200 border p-4 my-6 text-center mb-4">
+Payment for one appointment is 200 Birr          </h2>
           <h2 className="text-xl font-semibold text-center mb-4">
             Patient Payment Form
           </h2>
