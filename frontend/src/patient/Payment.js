@@ -33,7 +33,7 @@ const Payment = () => {
     try {
       setLoading(true);
       const callbackUrl = process.env.REACT_APP_CALLBACK_URL || "https://example.com/callback";
-      const returnUrl = process.env.REACT_APP_RETURN_URL || "https://healthlink-6f8rhy04n-biftu-shibbires-projects.vercel.app/doctrsList";
+      const returnUrl = process.env.REACT_APP_RETURN_URL || "https://healthlink-biftu-shibbires-projects.vercel.app/";
     
       // Initialize payment
       const response = await axios.post(
