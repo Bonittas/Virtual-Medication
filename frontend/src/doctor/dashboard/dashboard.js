@@ -35,7 +35,7 @@ const Navbar = () => {
           >
             <FontAwesomeIcon icon={faBars} size="lg" className="py-4 text-white" />
           </button>
-          <h6 className="text-white text-lg py-4 text-start font-semibold">Medicare (Doctors)</h6>
+          <h6 className="text-white text-lg py-4 text-start font-semibold">Health-Link (Doctors)</h6>
         </div>
 
         {/* LEFT DRAWER */}

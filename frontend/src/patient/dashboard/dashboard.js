@@ -35,7 +35,7 @@ const Navbar = () => {
           >
             <FontAwesomeIcon icon={faBars} size="lg" className="py-4 text-white" />
           </button>
-          <h6 className="text-white text-lg py-4 text-start font-semibold">Medicare (Patients)</h6>
+          <h6 className="text-white text-lg py-4 text-start font-semibold">Health-Link (Patients)</h6>
         </div>
 
         <nav className={`bg-green-600 w-56 min-h-screen py-4 text-white ${open ? "translate-x-0" : "-translate-x-full"} fixed top-0 left-0 transition-all ease-in-out duration-300 z-50`}>

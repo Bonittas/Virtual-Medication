@@ -77,7 +77,7 @@ const Navbar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Medicare (Patients)
+            Health-Link (Patients)
           </Typography>
         </Toolbar>
       </AppBar>

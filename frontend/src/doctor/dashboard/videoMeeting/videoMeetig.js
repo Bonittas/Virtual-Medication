@@ -13,7 +13,7 @@ const configuration = {
   ],
   iceCandidatePoolSize: 10,
 };
-const socket = io("https://medicare-video.onrender.com", { transports: ["websocket"] });
+const socket = io("https://Health-Link-video.onrender.com", { transports: ["websocket"] });
 
 let pc;
 let localStream;

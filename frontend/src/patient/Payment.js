@@ -46,7 +46,7 @@ const Payment = () => {
           ...formData,
           tx_ref: `TX${Math.floor(100000 + Math.random() * 900000)}`,
           callback_url: "https://example.com/callback",
-          return_url: "/book-appointment",
+          return_url: "http://localhost:3000/doctrsList",
           customization: {
             title: "Patient Payment",
             description: formData.symptoms,
