@@ -32,7 +32,9 @@ const Payment = () => {
     if (!validateForm()) return;
     try {
       setLoading(true);
-
+      const callbackUrl = process.env.REACT_APP_CALLBACK_URL || "https://example.com/callback";
+      const returnUrl = process.env.REACT_APP_RETURN_URL || "https://healthlink-6f8rhy04n-biftu-shibbires-projects.vercel.app/doctrsList";
+    
       // Initialize payment
       const response = await axios.post(
         "https://healt-link-v36m.onrender.com/api/auth/payment/initialize",
@@ -45,8 +47,8 @@ const Payment = () => {
           currency: currency,
           ...formData,
           tx_ref: `TX${Math.floor(100000 + Math.random() * 900000)}`,
-          callback_url: "https://example.com/callback",
-          return_url: "http://localhost:3000/doctrsList",
+        callback_url: callbackUrl,
+        return_url: returnUrl,
           customization: {
             title: "Patient Payment",
             description: formData.symptoms,
