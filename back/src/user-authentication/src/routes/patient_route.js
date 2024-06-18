@@ -14,7 +14,7 @@ router.get('/patient/currentUser',verifyToken,  authController.getCurrentUser);
 // router.get('/appointment-requests/:_id/status', authController.getStatus);
 router.get('/patient/appointments',verifyToken, authController.getPatientAppointments);
 
-router.post('/doctor/signout', authController.logout);   
+router.post('/patient/signout', authController.logout);   
 
 
 // Route to approve an appointment request

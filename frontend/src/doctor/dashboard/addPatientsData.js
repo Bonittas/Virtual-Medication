@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-
+import Nav from '../dashboard/dashboard'
 const PostPrescription = () => {
     const [form, setForm] = useState({
         patientName: '',
@@ -70,7 +70,8 @@ const PostPrescription = () => {
     };
 
     return (
-        <div className="container w-1/2 mx-auto my-2 p-4">
+        <><Nav/>
+        <div className="mt-32 bg-green-50 shadow-md container w-1/2 mx-auto my-2 p-4">
             <h1 className="text-2xl font-bold mb-4">Fill patient's data after appointment</h1>
             {notification && <div className="bg-green-100 w-1/2 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">{notification}</div>}
             <form onSubmit={handleSubmit} className="mb-4">
@@ -202,6 +203,7 @@ const PostPrescription = () => {
                 </button>
             </form>
         </div>
+        </>
     );
 };
 
