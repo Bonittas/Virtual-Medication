@@ -19,6 +19,8 @@ const users = {};
 
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/image', express.static('image'));
+
 app.use('/cvs', express.static(path.join(__dirname, 'cvs')));
 app.get('/test', (req, res) => {
   console.log('Test route hit');

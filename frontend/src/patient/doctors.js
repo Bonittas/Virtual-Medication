@@ -141,12 +141,16 @@ const Doctors = () => {
                Location: {doctor.address1},  {doctor.country}
               </p>
               <div className="flex justify-end">
+              <Link to='/payment'>
+
                 <button
                   className="bg-green-500 hover:bg-green-600 text-white  pl-2 w-10 h-10 rounded-full"
                   onClick={() => handleShowMoreDetails(doctor)}
                 >
                 <FontAwesomeIcon icon={faPlusCircle} className="mr-2 w-7 h-7" />
                 </button>
+                </Link>
+
               </div>
             </li>
           ))}
@@ -221,13 +225,11 @@ const Doctors = () => {
           <p className="text-gray-700 mb-2">Working Hours: {selectedDoctor.startTime} - {selectedDoctor.endTime}</p>
                       </div>
             <div className="flex justify-end mt-4">
-<Link to='/payment'>
               <button
                 className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded "
               >
                 Book Appointment
               </button>
-              </Link>
               <button
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 ml-2 rounded"
                 onClick={() => setSelectedDoctor(null)}

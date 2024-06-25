@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController= require('../controllers/patient_auth');
 const { verifyToken } = require('../controllers/patient_auth');
-const upload = require('../middlewares/upload')
+const upload = require('../middlewares/fileUpload')
 
 router.post('/patient/signup', authController.signup);
 router.post('/patient/signin', authController.signin);

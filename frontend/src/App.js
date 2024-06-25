@@ -5,6 +5,8 @@ import { CssBaseline } from "@mui/material";
 import './index.css';
 import Footer from "./home/footer"
 import Home from "./home/home";
+import Help from "./home/help"
+import Contact from "./home/contact"
 import LoggedIn from "./home/loggedIn";
 import OptionPage from "./home/optionPage"
 import SignInOptions from "./home/signinOptions"
@@ -65,6 +67,10 @@ const App = () => {
 
               
                   <Route exact path="/" element={<Home/>} />
+                  <Route exact path="/help" element={<Help/>} />
+
+                  <Route exact path="/contact" element={<Contact/>} />
+
 
                                   <Route
                   exact
@@ -127,6 +133,9 @@ const App = () => {
 
               <Routes>
                 <Route exact path="/" element={<Home/>} />
+                <Route exact path="/help" element={<Help/>} />
+
+<Route exact path="/contact" element={<Contact/>} />
                 <Route exact path="/option" element={<OptionPage/>} />
                 <Route exact path="/signin-option" element={<SignInOptions/>} />
                 <Route exact path="/payment" element={<Payment/>} />

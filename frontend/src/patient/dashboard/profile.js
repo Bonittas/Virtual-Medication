@@ -88,14 +88,13 @@ const Profile = () => {
       <div className=" mx-auto px-4 my-4 py-8">
         <div className="bg-green-50 p-6 rounded-lg mb-8 shadow-md">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
-            <div className="md:col-span-1 flex items-center justify-center">
-              <img
-                src={`/images/profilePictures/${user.imageUrl}`}
-                alt="Profile"
-                className="rounded-full w-40 h-40 border-2 border-green-50"
-                onError={(e) => { e.target.onerror = null; e.target.src = 'path/to/default/image.jpg'; }}
-              />
-            </div>
+          <div className="border-gray-900 border flex mr-10 justify-center w-full md:justify-start md:w-1/4">
+            <img
+              src={`https://healt-link-v36m.onrender.com/images/profilePictures/${user.imgUrl}`}
+              alt="Profile"
+              className="rounded-sm w-full h-64 border-2 border-green-50"
+            />
+          </div>
             <div className="md:col-span-2 flex flex-col justify-center">
               <h1 className="text-2xl font-bold mb-2 text-gray-800">{user.name}</h1>
               <p className="text-lg text-gray-700">{user.email}</p>

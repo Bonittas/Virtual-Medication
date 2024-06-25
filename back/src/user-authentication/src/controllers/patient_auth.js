@@ -72,8 +72,9 @@ exports.completeDetails = async (req, res) => {
     const userId = req.user._id;
     const updatedUserFields = { name, age, gender, address1, address2, city,  country };
 
-    if (req.file) {
-      updatedUserFields.imageUrl = req.file.filename;
+    // If profile picture uploaded, update imageUrl field in user document
+    if (req.files && req.files.profilePicture) {
+      updatedUserFields.imageUrl = req.files.profilePicture[0].filename;
     }
 
     const updatedUser = await User.findByIdAndUpdate(userId, updatedUserFields, { new: true });
@@ -141,7 +142,6 @@ exports.verifyToken = (req, res, next) => {
     return res.status(401).json({ message: 'Authorization denied. Invalid token.' });
   }
 };
-
 exports.getCurrentUser = async (req, res) => {
   try {
     const userId = req.user._id;
