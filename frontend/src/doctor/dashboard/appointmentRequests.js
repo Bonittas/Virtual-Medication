@@ -175,7 +175,7 @@ const DoctorDashboard = () => {
                   {appointment.status === 'approved' && (
                     <button
                       onClick={() => handleJoinVideoChat(appointment.roomId)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                      className="bg-blue-500 hover:bg-blue-400 text-white px-3 py-1 rounded"
                     >
                       Join Video Conference
                     </button>

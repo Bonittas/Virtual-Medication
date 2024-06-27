@@ -13,7 +13,7 @@ const configuration = {
   ],
   iceCandidatePoolSize: 10,
 };
-const socket = io("https://Health-Link-video.onrender.com", { transports: ["websocket"] });
+const socket = io("https://OnCure-video.onrender.com", { transports: ["websocket"] });
 
 let pc;
 let localStream;
@@ -274,7 +274,7 @@ function App() {
             <i className="fas fa-phone-slash"></i>
           </button>
           <button
-            className="bg-blue-500 text-white p-4 rounded-full shadow-lg hover:bg-blue-600 focus:outline-none"
+            className="bg-blue-500 text-white p-4 rounded-full shadow-lg hover:bg-blue-400 focus:outline-none"
             ref={muteAudButton}
             onClick={muteAudio}
           >

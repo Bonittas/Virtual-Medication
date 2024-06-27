@@ -26,7 +26,7 @@ function Header() {
     >
       <div className="flex w-4/5 mx-auto bg-transparent justify-between items-center h-16">
         <div className="logo">
-          <h4 className="text-xl  font-cursive text-white font-cursive">On-Cure          <FontAwesomeIcon icon={faStethoscope} spin className="text-2xl text-blue-950 mr-2" />
+          <h4 className="text-xl  font-A text-white font-">On-Cure          <FontAwesomeIcon icon={faStethoscope} spin className="text-2xl text-blue-950 mr-2" />
 </h4>
         </div>
         <ul className="flex space-x-4 justify-between items-center">

@@ -16,12 +16,12 @@ const LandingPage = () => {
       <section className="relative text-white">
   <div className="flex items-center h-full justify-center">
     <img src={bgimage} alt="Health Care Image" className="object-cover" />
-    <div className="absolute top-0 left-0 h-full w-full bg-black opacity-50"></div>
+    <div className="absolute top-0 left-0 h-full w-full bg-black opacity-30"></div>
     <div className="absolute top-24 left-20 w-2/3 lg:w-1/2">
-      <h1 className="mb-4 text-4xl font-bold text-gray-300">
+      <h1 className="mb-4 text-4xl font-bold  text-white ">
         Unlock Personalized <span className="text-blue-400 px-1">Healthcare</span> with Our Expert Professionals
       </h1>
-      <p className="mb-8 text-lg text-gray-300">
+      <p className="mb-8 text-lg text-white">
       Experience secure and confidential video or audio sessions tailored to your needs.
       </p>
       <div className="lg:text-left">

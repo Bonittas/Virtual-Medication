@@ -38,7 +38,7 @@ function DoctorPage() {
           </button>
           <button
             onClick={handleAddPatientDetail}
-            className="bg-blue-500 text-white py-3 px-6 rounded-lg w-full flex items-center justify-center space-x-2 hover:bg-blue-600 transition duration-300"
+            className="bg-blue-500 text-white py-3 px-6 rounded-lg w-full flex items-center justify-center space-x-2 hover:bg-blue-400 transition duration-300"
           >
             <FontAwesomeIcon icon={faUserPlus} className="text-lg" />
             <span>Add Patient Detail</span>

@@ -94,7 +94,7 @@ const PrescriptionList = () => {
             </div>
             </div>
             <div className="mt-4">
-              <PDFDownloadLink document={<PrescriptionPDF prescription={prescription} />} fileName={`prescription_${index}.pdf`} className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+              <PDFDownloadLink document={<PrescriptionPDF prescription={prescription} />} fileName={`prescription_${index}.pdf`} className="bg-blue-500 hover:bg-blue-400 text-white font-semibold py-2 px-4 rounded">
                 {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download PDF')}
               </PDFDownloadLink>
             </div>

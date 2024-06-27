@@ -84,7 +84,7 @@ const Register = () => {
                 Sign in as an Admin
               </Typography>
               <Typography variant="h5" paragraph sx={raleway}>
-                Only verified admins of Health-Link can login using the email ID
+                Only verified admins of OnCure can login using the email ID
                 provided to them
               </Typography>
 

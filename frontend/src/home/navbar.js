@@ -15,7 +15,7 @@ const Navbar = (props) => {
           noWrap
           sx={title}
         >
-          Health-Link
+          OnCure
         </Typography>
       </Toolbar>
 

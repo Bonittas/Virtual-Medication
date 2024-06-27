@@ -77,7 +77,7 @@ const Navbar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Health-Link (Patients)
+            OnCure (Patients)
           </Typography>
         </Toolbar>
       </AppBar>

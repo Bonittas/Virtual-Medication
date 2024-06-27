@@ -88,7 +88,7 @@ const Posts = () => {
                         setEditImage(post.image);
                         setEditablePostId(post._id);
                       }}
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mr-2"
+                      className="bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded mr-2"
                     >
                       Edit
                     </button>
