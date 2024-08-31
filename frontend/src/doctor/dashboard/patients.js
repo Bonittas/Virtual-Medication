@@ -50,7 +50,7 @@ const Patients = () => {
   return (
     <>
       <Nav />
-      <div className=" relative top-32 p-4">
+      <div className=" mt-32 p-4">
         <div className="mb-4 flex justify-center">
           <button
             className={`px-4 py-6 mx-8 rounded ${showApproved ? 'bg-gray-400 text-white' : 'bg-gray-200 text-gray-700'}`}

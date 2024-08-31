@@ -22,7 +22,6 @@ const DoctorDashboard = () => {
 
   // Function to approve an appointment and generate a video conference room
   const handleApproveAppointment = async (appointmentId) => {
-    // Your existing code to approve the appointment
     const token = localStorage.getItem('token');
     if (!token) {
       setError('Unauthorized: No token found');
