@@ -22,8 +22,7 @@ const theme = createTheme();
 const Admin_Signin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const authError = useSelector((state) => state.auth.error);
-  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
