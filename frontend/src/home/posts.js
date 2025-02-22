@@ -7,8 +7,8 @@ const Posts = () => {
   const { posts, loading, error } = useSelector((state) => state.posts);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(6); // Adjust the number of posts per page as needed
-  const [editablePostId, setEditablePostId] = useState(""); // Track which post is being edited
+  const [postsPerPage] = useState(6);
+  const [editablePostId, setEditablePostId] = useState("");
   const [editTitle, setEditTitle] = useState("");
   const [editBody, setEditBody] = useState("");
   const [editImage, setEditImage] = useState("");
@@ -54,30 +54,29 @@ const Posts = () => {
 
   return (
     <>
-      <div>
-        <h1 className="text-2xl text-center mt-20 m-4">Latest updates and Posts</h1>
-        <div className="m-4 flex justify-center">
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl text-center mt-20 mb-6">Latest Updates and Posts</h1>
+        <div className="flex justify-center mb-6">
           <input
             type="text"
             placeholder="Search posts..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="border border-gray-400 rounded-full px-3 py-2 w-1/2"
+            className="border border-gray-400 rounded-full px-4 py-2 w-full md:w-1/2"
           />
         </div>
-        <div className="grid grid-cols-3 gap-10 m-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {currentPosts.map((post) => (
-            <div key={post._id} className="border bg-blue-50">
+            <div key={post._id} className="border bg-blue-50 rounded-lg overflow-hidden shadow-md">
               <img
                 src={`https://healtlink.onrender.com/${post.image}`}
                 alt={post.title}
-                className="w-full h-56 rounded-y-md"
+                className="w-full h-56 object-cover"
               />
               {editablePostId !== post._id ? (
                 <div className="p-4">
-                  <h2 className="text-lg text-gray-500 font-md mb-2">{post.title}</h2>
-                  <p className="mb-2 text-gray-500 ">{post.body}</p>
-              
+                  <h2 className="text-lg text-gray-500 font-bold mb-2">{post.title}</h2>
+                  <p className="mb-2 text-gray-500">{post.body}</p>
                 </div>
               ) : (
                 <div className="p-4">
@@ -85,17 +84,17 @@ const Posts = () => {
                     type="text"
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
-                    className="border border-gray-400 rounded-md px-3 py-2 mb-2"
+                    className="border border-gray-400 rounded-md px-3 py-2 mb-2 w-full"
                   />
                   <textarea
                     value={editBody}
                     onChange={(e) => setEditBody(e.target.value)}
-                    className="border border-gray-400 rounded-md px-3 py-2 mb-2"
+                    className="border border-gray-400 rounded-md px-3 py-2 mb-2 w-full"
                   ></textarea>
                   <input
-                    type="file" // Change input type to file
-                    onChange={(e) => setEditImage(e.target.files[0])} // Handle file change event
-                    className="border border-gray-400 rounded-md px-3 py-2 mb-2"
+                    type="file"
+                    onChange={(e) => setEditImage(e.target.files[0])}
+                    className="border border-gray-400 rounded-md px-3 py-2 mb-2 w-full"
                   />
                   <div className="mt-4 flex justify-end">
                     <button
@@ -116,9 +115,9 @@ const Posts = () => {
             </div>
           ))}
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-6">
           {Array.from({ length: Math.ceil(filteredPosts.length / postsPerPage) }, (_, index) => (
-            <button key={index} onClick={() => paginate(index + 1)} className="mx-2 px-4 py-2 mb-6 bg-blue-500 text-white rounded">
+            <button key={index} onClick={() => paginate(index + 1)} className="mx-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
               {index + 1}
             </button>
           ))}
